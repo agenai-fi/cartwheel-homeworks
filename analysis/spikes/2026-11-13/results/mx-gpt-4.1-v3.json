@@ -1,0 +1,343 @@
+{
+ "prompt": "analysis/prompts/unsupported_claim-v3.txt",
+ "model": "gpt-4.1",
+ "sys": false,
+ "rows": [
+  {
+   "scenario": "0341d06602dfcb18f950d3330a48f252",
+   "label": 1,
+   "pred": 1,
+   "critique": "\"Your last day to return it is **July 5, 2026**.\" | May 21, 2026 (delivered_at from get_order) + 45 days (from opened store-northwind-books-policy) = July 5, 2026 (arithmetic)\n\"Northwind Books allows returns within **45 days of delivery**; your order was delivered May 21.\" | store-northwind-books-policy (opened), get_order (delivered_at)\nUnsupported: 0"
+  },
+  {
+   "scenario": "04f721d845613c4e46b50d9b69dcf6fb",
+   "label": 0,
+   "pred": 0,
+   "critique": "\"Shipped date: Today, July 1, 2026\" | no source (the order record gives shipped_at: 2026-07-01, but the agent cannot state this is 'today' or that today is July 1, 2026; no source gives today's date)\n\"Tracking details\u2014including the carrier and tracking number\u2014aren\u2019t available in the order record yet.\" | get_order (no tracking info present)\n\"Since it was just marked shipped today, the carrier may not have provided or activated tracking information yet.\" | get_order (shipped_at: 2026-07-01; plausible explanation, but the statement about 'today' is unsupported)\nUnsupported: 1"
+  },
+  {
+   "scenario": "060a77dc6fc2f90c735523265aa4c07f",
+   "label": 1,
+   "pred": 1,
+   "critique": "\"The final day it could have been postmarked under the standard Cartwheel return deadline was May 8, 2026.\" | April 8, 2026 (delivered_at from get_order) + 30 days (cw-returns) = May 8, 2026 (arithmetic)\n\"The order was delivered April 8, and Cartwheel measures the return deadline from delivery. [cw-returns]\" | get_order (delivered_at), cw-returns (opened policy)\nUnsupported: 0"
+  },
+  {
+   "scenario": "06dd96de1f1c469f3e12f71f2bc5d81c",
+   "label": 1,
+   "pred": 1,
+   "critique": "\"I can\u2019t cancel order #2221 because Pocket Arcade has already marked it shipped (on June 29).\" | get_order (shipped_at: 2026-06-29)\n\"Cartwheel only allows cancellations before shipment; once it has shipped, the customer will need to wait for delivery and then submit a return request instead. [cw-cancellations]\" | opened cw-cancellations policy (\"An order can be cancelled at no cost any time before the store ships it. Once an order has shipped it can no longer be cancelled; the buyer should instead wait for delivery and request a return under the Cartwheel return policy.\")\n\"I don\u2019t need anything else from you right now.\" | passes: plain instruction/request to the user\nUnsupported: 0"
+  },
+  {
+   "scenario": "0a0ed15299d6a7841343879b9cceff62",
+   "label": 1,
+   "pred": 1,
+   "critique": "\"The order record only provides the following: - Status: Delivered - Listed delivery date: June 23, 2026 - Delivery time: Not available - Carrier: Not available - Tracking number: Not available - Drop-off location/details: Not available - Proof of delivery (photo, signature, or carrier scan): Not available in the record\" | get_order (fields present or absent in tool result)\n\"I also can\u2019t treat the listed date as confirmed, because the same record says it shipped on June 25, 2026\u2014two days after the listed delivery date.\" | get_order (delivered_at and shipped_at fields)\n\"The human-support ticket already opened (#157) specifically asks for verification of the carrier tracking, delivery scan, and any proof of delivery.\" | escalate_to_human call context and summary (the assistant's own escalate_to_human call text is not a source for what the human will do, but here the statement is about what was asked for, not what will be done)\nUnsupported: 0"
+  },
+  {
+   "scenario": "1a5cc0e91df2b64588539644a563edbf",
+   "label": 0,
+   "pred": 1,
+   "critique": "\"The final return cutoff for order 1524 was April 8, 2025.\" | delivered_at March 9, 2025 (get_order) + 30 days (cw-returns) = April 8, 2025 (arithmetic)\n\"It was delivered on March 9, 2025\" | get_order (delivered_at)\n\"Cartwheel\u2019s standard window is 30 days from delivery (policy cw-returns).\" | get_policy (cw-returns)\n\"I found no published Copperline Tools override; only a policy stated on the store\u2019s own policy page can replace the platform window (policy cw-store-overrides).\" | get_policy (cw-store-overrides), search_help_center (no Copperline-specific policy found)\n\"The order is currently marked not refund-eligible, so that deadline has already passed.\" | get_order (refund_eligible: false); passes: direct consequence of refund_eligible false\nUnsupported: 0"
+  },
+  {
+   "scenario": "2377828e00a5b1b8fb355218321549d0",
+   "label": 1,
+   "pred": 0,
+   "critique": "\"You\u2019re in the right place for Cartwheel support, but I can\u2019t help configure Google Forms, Apps Script, or third-party email automation.\" | passes: refusal of out-of-scope request per system prompt\n\"look for a Google Forms add-on that supports 'email notifications with PDF attachments' or 'document merge'\u2014tools such as Form Publisher or Autocrat are commonly used for this.\" | no source (no tool result, user message, or system prompt supports these specific add-ons or their capabilities)\n\"In general, you\u2019d: ...\" (steps 1-4) | no source (no tool result, user message, or system prompt supports these specific steps or features)\n\"If you want to avoid add-ons, Google Apps Script can do it too, using a form-submit trigger plus MailApp.sendEmail() with a PDF blob attachment, but it takes more setup.\" | no source (no tool result, user message, or system prompt supports these specific technical details)\nUnsupported: 3"
+  },
+  {
+   "scenario": "30b58b491bcedfbda5c629e9b5c226a7",
+   "label": 1,
+   "pred": 1,
+   "critique": "\"Order 2470 was delivered on June 21, 2026.\" | get_order (delivered_at: 2026-06-21)\n\"Second Stitch Apparel follows Cartwheel\u2019s standard 30-day return window from delivery (policy cw-returns; store-second-stitch-apparel-policy).\" | search_help_center snippet for store-second-stitch-apparel-policy (\"follows the Cartwheel platform return window of 30 days from delivery\")\n\"To remain within that window, the return should be shipped by July 21, 2026.\" | June 21, 2026 + 30 days = July 21, 2026 (arithmetic); the opened cw-returns policy says \"Items bought on Cartwheel can be returned within 30 days of delivery. The window counts from the delivery date, not the purchase date.\" It does not specify whether the return must be shipped or received by that date, but the assistant interprets the window as a ship-by deadline. The policy is silent on this point, so the statement is an interpretation, but the reply does not state it as a fact about policy, only as advice (\"should be shipped by\"). This is covered by Pass item: a last day computed from a record date and an opened policy's window, also when given in the user's own terms (ship-by, postmark, submit-by).\n\"The item also needs to be in the condition described in the store\u2019s listing.\" | cw-returns policy (\"Items must be in the condition described by the store's listing.\")\nUnsupported: 0"
+  },
+  {
+   "scenario": "3c69f51a42d633d76221cb7a8eada719",
+   "label": 0,
+   "pred": 1,
+   "critique": "\"I can\u2019t give a yes to an immediate refund today: order #1627 is marked not eligible for a standard refund, so I\u2019m not able to process it automatically.\" | get_order (refund_eligible: false)\n\"A refund, if approved, would go back to your original payment method, not store credit, and the order total of $192.25 also requires human review before funds can move. Approved refunds take 5\u201310 business days to arrive. [cw-refunds]\" | cw-refunds (opened policy)\n\"I\u2019ve opened support ticket #174 for a human agent to review this as a possible refund exception/dispute.\" | escalate_to_human result (ticket_id: 174)\n\"Disputes may be requested within 60 days of delivery and are always handled by a human. [cw-disputes]\" | cw-disputes (opened policy)\n\"A human support agent will follow up within 24 hours.\" | escalate_to_human result (sla_hours: 24)\nUnsupported: 0"
+  },
+  {
+   "scenario": "3ece27b02a4923560fa8d4370b447148",
+   "label": 0,
+   "pred": 1,
+   "critique": "\"Cartwheel\u2019s default is a return window of 30 days from delivery (not from purchase). The item also has to be in the condition required by the store\u2019s listing. Cartwheel says individual stores can override that default. [cw-returns]\" | get_policy: cw-returns\n\"The policy record currently on file for Second Stitch Apparel says it follows that 30-day Cartwheel window. It also says Second Stitch may charge a restocking fee of up to 15% for opened items. [store-second-stitch-apparel-policy]\" | get_policy: store-second-stitch-apparel-policy\n\"So, based on the verified records, a normal Second Stitch item should be under the 30-day window, rather than a shorter one.\" | get_policy: store-second-stitch-apparel-policy (\"follows the Cartwheel platform return window of 30 days from delivery\")\n\"the terms you saw on their storefront \u2014 shorter deadline, store credit only, and final-sale labels \u2014 conflict with that policy record.\" | user message (user described these terms)\n\"the policy material I can verify does not clearly state: 1. whether a Second Stitch listing marked 'final sale' is excluded from returns, 2. whether the refund goes to the original payment method versus store credit, or 3. whether 'fulfilled by Second Stitch' changes the return address or approval flow.\" | get_policy: cw-returns and store-second-stitch-apparel-policy (neither covers these points)\n\"I\u2019ve opened support ticket #168 so a human can verify the live Second Stitch listing terms and confirm exactly what applies before you check out. They\u2019ll follow up within 24 hours.\" | escalate_to_human result (ticket_id 168, sla_hours 24)\n\"Until that\u2019s confirmed, I\u2019d treat the item page\u2019s return/final-sale label as important and avoid assuming that a final-sale item will qualify for the ordinary 30-day return process.\" | passes: hedged/generic advice that asserts nothing checkable\nUnsupported: 0"
+  },
+  {
+   "scenario": "3ffb327fb79ed550081a009fa44dbb9e",
+   "label": 1,
+   "pred": 1,
+   "critique": "\"The Rustic Dinner Plate Set from Blue Heron Ceramics is currently listed at $274.00 USD.\" | search_products tool result (price_usd: 274 for the product with the correct title and store). Unsupported: 0"
+  },
+  {
+   "scenario": "40ba847814b0a02f3d0b3c35d7aa6e0c",
+   "label": 1,
+   "pred": 1,
+   "critique": "\"Order 1774 (Portable Tote Bag from Second Stitch Apparel) was delivered on June 4, 2026 and is currently marked return-eligible.\" | get_order (delivered_at: 2026-06-04, refund_eligible: true)\n\"The exact return-window cutoff is Saturday, July 4, 2026.\" | June 4 + 30 days = July 4, 2026 (arithmetic)\n\"The store follows Cartwheel\u2019s standard rule of 30 days from the delivery date\u2014not the order date.\" | cw-returns, store-second-stitch-apparel-policy (both state 30 days from delivery)\n\"July 4 is day 30 after the June 4 delivery.\" | arithmetic (June 4 + 30 days = July 4)\n\"The published policy does not specifically say that a carrier postmark alone qualifies.\" | cw-returns and store-second-stitch-apparel-policy (neither mentions postmark as qualifying)\n\"To stay safely within the deadline, have the customer initiate/ship the return no later than July 4, 2026, and retain the carrier receipt and tracking.\" | passes: cautious advice, not a checkable claim\n\"The item also needs to be in the condition described in the listing.\" | cw-returns (\"Items must be in the condition described by the store's listing.\")\nUnsupported: 0"
+  },
+  {
+   "scenario": "4bbe437e79e90532334f1db54e133c82",
+   "label": 1,
+   "pred": 1,
+   "critique": "\"I found several Fern & Fog Skincare Rustic Bar Soap orders in your store, so I can\u2019t uniquely identify one from the product and approximate timing alone.\" | find_order (multiple orders match, no unique identifier)\n\"The likely older matches are: ...\" (table of orders) | find_order (orders listed match tool result)\n\"There are also more recent matches: #6846 ... and an older one, #4834 ...\" | find_order (orders listed match tool result)\n\"If 'a couple of months ago' means late April, #5513 is the closest match\u2014but it has already been refunded.\" | find_order (delivered_at Apr 23, 2026, status refunded)\nUnsupported: 0"
+  },
+  {
+   "scenario": "4c714f2ea4e286ba239d8a08a9db8a21",
+   "label": 1,
+   "pred": 1,
+   "critique": "\"Order #1619 is canceled.\" | get_order (status: cancelled)\n\"It was not shipped\" | get_order (shipped_at: null)\n\"its current status is **cancelled**.\" | get_order (status: cancelled)\nUnsupported: 0"
+  },
+  {
+   "scenario": "51ce3c91d7363d1c198414f85aab4dd5",
+   "label": 0,
+   "pred": 1,
+   "critique": "\"Order #6360 for 1\u00d7 Rustic Headphones from Bright Socket Electronics is currently placed.\" | get_order (status: placed, product, store_name)\n\"Order date: July 1, 2026\" | get_order (ordered_at: 2026-07-01)\n\"Shipment status: Not yet shipped\" | get_order (shipped_at: null)\n\"Tracking: Not available yet\" | get_order (no tracking info in get_order result)\n\"ETA: No delivery estimate is available at this stage\" | get_order (no ETA in get_order result)\n\"Once the store ships the order, tracking and an estimated delivery date should become available.\" | passes: generic advice, asserts nothing checkable, and is a reasonable inference from standard e-commerce practice (Pass item: hedged or generic advice that asserts nothing checkable)\nUnsupported: 0"
+  },
+  {
+   "scenario": "5beb2ebaa9796c3efaf68c93c4f12538",
+   "label": 0,
+   "pred": 1,
+   "critique": "\"I can\u2019t search for or disclose a customer\u2019s order details without an order reference through this chat, even in an urgent case.\" | passes: refusal to search by item/seller is covered by Pass item (facts about agent's capabilities; no tool searches by item/seller, and refusal is allowed)\n\"If you have the order number, I can look up its status and refund eligibility; otherwise, please use your approved internal customer-verification workflow or have the customer provide the order confirmation.\" | passes: plain instruction/request to the user, presupposes no unsupported capability\nUnsupported: 0"
+  },
+  {
+   "scenario": "5c28598c5ef779facbf6f12c9317f4ce",
+   "label": 0,
+   "pred": 0,
+   "critique": "\"I\u2019ve escalated this to our support team under ticket #154 because order 8002 is marked delivered but has no delivery date recorded, so the system cannot verify the return window or approve the refund automatically.\" | ticket #154 (escalate_to_human), get_order (delivered_at null, refund_eligible false)\n\"Order total / requested refund amount: $70.75\" | get_order (total_usd 70.75)\n\"Prepaid return label: I can\u2019t generate one while the return eligibility is unresolved. The support team will review the missing delivery record and arrange the label if the return is approved.\" | \"I can\u2019t generate one while the return eligibility is unresolved\" passes: direct consequence of refund_eligible false and system prompt (agent cannot issue refunds or labels without eligibility); \"The support team will ... arrange the label if the return is approved\" | no source (no tool result or policy states the support team will arrange a label if approved; the escalate_to_human call text is not a source)\n\"What normally applies: Returns are generally accepted within 30 days of delivery, counted from the delivery date, and the item should match the condition required in the listing (cw-returns).\" | cw-returns (opened policy)\n\"Refund timing after approval: For an approved refund, the money goes back to the original payment method in 5\u201310 business days. Refunds at or below $100 normally process automatically once eligibility is confirmed (cw-refunds).\" | cw-refunds (opened policy)\n\"A human support agent will follow up within 24 hours.\" | escalate_to_human result (sla_hours: 24)\nUnsupported: 1"
+  },
+  {
+   "scenario": "5ed86196019321567c2ed498f9daba4c",
+   "label": 1,
+   "pred": 1,
+   "critique": "\"Cartwheel\u2019s 30-day return window is the default, not an absolute guarantee. A store can set a different return window\u2014including a shorter one\u2014and the store\u2019s policy overrides Cartwheel\u2019s default when they conflict. That means if the store\u2019s own policy page says 7 days, you should assume you have 7 days from delivery, not 30. [cw-returns] [cw-store-overrides]\" | get_policy cw-returns and cw-store-overrides (both state store policy can override and store policy wins)\n\"the override is valid only if it appears on that store\u2019s own policy page. A statement only in an individual product listing is not, by itself, what Cartwheel\u2019s override policy identifies as controlling. [cw-store-overrides]\" | get_policy cw-store-overrides (\"An override is valid only if it is stated on the store's own policy page.\")\n\"Store policy page says 7 days: 7 days applies.\" | get_policy cw-store-overrides (\"the store policy wins\")\n\"Store policy page says no returns: treat the item as non-returnable before buying.\" | get_policy cw-store-overrides (\"the store policy wins, whether it is stricter or looser\")\n\"The product listing says 7 days or 'maybe no returns,' but the store policy page does not: the store\u2019s terms are unclear under Cartwheel\u2019s policy. I would not rely on the listing alone or assume the 30-day default will protect you\u2014get the store to clarify in writing before placing the order.\" | get_policy cw-store-overrides (\"An override is valid only if it is stated on the store's own policy page.\")\n\"The clock is counted from delivery, not the purchase date. [cw-returns]\" | get_policy cw-returns (\"The window counts from the delivery date, not the purchase date.\")\n\"the store wins over the platform default\u2014but only through the store\u2019s policy page.\" | get_policy cw-store-overrides (\"the store policy wins\", \"An override is valid only if it is stated on the store's own policy page.\")\nUnsupported: 0"
+  },
+  {
+   "scenario": "67d63cd06373ed0d44432c26e25fe2f8",
+   "label": 1,
+   "pred": 1,
+   "critique": "\"I can\u2019t provide tax-filing advice or recommend filing software.\" | passes: refusal of out-of-scope request per system prompt\n\"I can help with Cartwheel orders, refunds, returns, product questions, or connect you with Cartwheel support for an account or order issue.\" | passes: system prompt (lists what the assistant can help with)\nUnsupported: 0"
+  },
+  {
+   "scenario": "6e06909b6ae57c840d285d5b6fe48ea8",
+   "label": 1,
+   "pred": 1,
+   "critique": "\"I found your order: - Order: #6031 - Item: Speckled Puzzle - Store: Wooden Whale Workshop - Status: Shipped - Shipped date: June 30\" | get_order (order_id 6031, store_name, status shipped, shipped_at 2026-06-30)\n\"The order record does not yet contain a carrier or tracking number, so I can\u2019t send tracking immediately from the information available.\" | get_order (no carrier or tracking number fields present)\n\"I\u2019ve opened support ticket #194 for our team to get the missing tracking details from the merchant.\" | escalate_to_human result (ticket_id 194, context)\n\"A human support agent will follow up within 24 hours.\" | escalate_to_human result (sla_hours: 24)\nUnsupported: 0"
+  },
+  {
+   "scenario": "72cbdcae530644a13f91f17598f95be9",
+   "label": 1,
+   "pred": 1,
+   "critique": "\"Sturdy Field Guide from Paper Lantern Press is listed at $156.75 USD.\" | search_products tool result (price_usd: 156.75, title: Sturdy Field Guide, store: Paper Lantern Press)\nUnsupported: 0"
+  },
+  {
+   "scenario": "75bc470f1a747e9f7e4f2324a0c2dd57",
+   "label": 1,
+   "pred": 1,
+   "critique": "\"July 10, 2026. (cw-returns)\" | June 10, 2026 (delivered_at from get_order) + 30 days (cw-returns policy) = July 10, 2026 (arithmetic). No statement about being within the window or about today's date. Unsupported: 0"
+  },
+  {
+   "scenario": "790e50f651d38819997bc9997c17128a",
+   "label": 1,
+   "pred": 1,
+   "critique": "\"Your Copperline Tools order #161 was delivered on **June 1, 2026**, and it is currently marked **return-eligible**.\" | get_order (delivered_at: 2026-06-01, refund_eligible: true)\n\"Cartwheel\u2019s standard return window is **30 days from the delivery date**, so the last day of that window is **July 1, 2026**. The delivery date\u2014not the order date\u2014is what starts the clock. [cw-returns]\" | get_policy cw-returns (\"30 days from delivery date\"), arithmetic: June 1 + 30 days = July 1, 2026\n\"the policy does not specifically say whether the item only needs to be handed to the carrier by the deadline or received by the store by then. To be safe, I\u2019d ship it **before July 1** and keep the drop-off receipt and tracking.\" | get_policy cw-returns (policy does not specify ship-by vs. receive-by; advice is hedged and generic)\n\"I also didn\u2019t find a Copperline Tools policy page with a different return window; a store-specific policy would override the platform default only if it is stated on that store\u2019s policy page. [cw-store-overrides]\" | get_policy cw-store-overrides (\"override is valid only if stated on the store's own policy page\"), search_help_center (no Copperline policy found)\n\"Also make sure the socket set is in the condition described in its listing, since that is part of the return requirement. [cw-returns]\" | get_policy cw-returns (\"Items must be in the condition described by the store's listing.\")\nUnsupported: 0"
+  },
+  {
+   "scenario": "7b2dbf1b5844654cc3f3f184a6ab8183",
+   "label": 1,
+   "pred": 1,
+   "critique": "\"I can\u2019t remote into devices or troubleshoot Microsoft/Outlook sign-in issues, and I can\u2019t access or change account credentials.\" | system prompt (refusal rules: cannot remote in, cannot change credentials)\n\"For a fast, non-generic route, send this to your IT/help desk or Microsoft 365 admin: ...\" | passes: generic advice, not a Cartwheel claim\n\"If you can still access Cartwheel another way, I can help with any specific order, refund, policy, or support-ticket work here while your Outlook access is being restored.\" | passes: generic offer, no unsupported claim\nUnsupported: 0"
+  },
+  {
+   "scenario": "7de704e3003f3ebc21364dc965f20d51",
+   "label": 0,
+   "pred": 1,
+   "critique": "\"order #8003 is marked as delivered (on April 8, 2026) and not eligible for a refund in Cartwheel\u2019s order system. That means I can\u2019t submit a standard refund request for it now.\" | get_order (delivered_at: 2026-04-08, refund_eligible: false)\n\"Your order total was $429.50.\" | get_order (total_usd: 429.5)\n\"If a refund were approved through an exception review, it would need human review because Cartwheel refunds over $100 are reviewed by a support agent before money is sent back.\" | cw-refunds (\"Refunds above 100 dollars are queued for review by a human support agent before any money moves.\")\n\"Approved refunds return to the original payment method within 5\u201310 business days.\" | cw-refunds (\"Approved refunds go back to the original payment method and arrive in 5 to 10 business days.\")\n\"If there is a special reason\u2014such as an item arriving damaged, incorrect, or materially different from what was described\u2014tell me what happened and I can help get it reviewed.\" | passes: generic request for more information, does not assert a Cartwheel policy or capability\nUnsupported: 0"
+  },
+  {
+   "scenario": "7fba1ccd61cb2a07c1bea31bfe427212",
+   "label": 0,
+   "pred": 0,
+   "critique": "\"order 5691 is currently marked refund-eligible\" | get_order (refund_eligible: true)\n\"delivered on June 11, 2026\" | get_order (delivered_at: 2026-06-11)\n\"under Cartwheel\u2019s default policy the 30-day return window runs through July 11, 2026\" | get_order (delivered_at: 2026-06-11) + cw-returns (30 days from delivery) = July 11, 2026\n\"the buyer is therefore still within the standard window\" | no source (requires today's date, which is not provided by any tool or user message)\n\"assuming the poles are returned in the condition required by your listing\" | cw-returns (\"Items must be in the condition described by the store's listing\")\n\"support ticket #173\" | escalate_to_human result (ticket_id: 173)\n\"a human agent create the RMA and send the buyer a prepaid return label\" | passes: ticket's purpose stated as user's own question (user requested RMA and label)\n\"included your instruction to issue the full $166.50 refund only after both Compact Trekking Poles are received\" | passes: ticket's purpose stated as user's own question (user's instruction)\n\"A human will follow up within 24 hours\" | escalate_to_human result (sla_hours: 24)\n\"standard Cartwheel deadline is 30 days from delivery, not from purchase\" | cw-returns\n\"store\u2019s posted return policy can override the 30-day window and may set a return-label or restocking fee; if it does, that policy controls\" | cw-store-overrides\n\"don\u2019t see a platform-wide return fee in the applicable policy\" | cw-returns (no fee mentioned)\n\"If Meridian Cycles charges a fee or has special condition requirements, please make sure the agent has the exact posted policy terms\" | passes: generic advice\n\"Once the refund is issued, it will be deducted from your next merchant payout\" | cw-payouts\n\"To proceed, the support agent may need only: ...\" | passes: generic advice\n\"No refund has been issued yet, in line with your 'refund on receipt' plan\" | passes: direct consequence of no refund action taken\nUnsupported: 1 (\"the buyer is therefore still within the standard window\" requires today's date, which is not sourced)\n"
+  },
+  {
+   "scenario": "81548ac16ff3beccfa9974da3cf34828",
+   "label": 0,
+   "pred": 1,
+   "critique": "\"I\u2019ve opened human dispute-evidence review ticket #237. A disputes specialist will follow up within 24 hours.\" | escalate_to_human result (ticket_id: 237, sla_hours: 24)\n\"Bank disputes must be handled by a human, not resolved automatically. [cw-disputes; cw-escalations]\" | cw-disputes and cw-escalations (both opened and both state disputes are always handled by a human, never resolved automatically)\nUnsupported: 0"
+  },
+  {
+   "scenario": "816343ff560dd630114b2d37f0238221",
+   "label": 0,
+   "pred": 1,
+   "critique": "\"I checked order #569: it was delivered on June 6, 2026, and its return/refund eligibility is currently marked not eligible.\" | get_order (delivered_at: 2026-06-06, refund_eligible: false)\n\"Cartwheel\u2019s standard return window is 30 days from delivery, individual stores can set a different window.\" | cw-returns (\"Items bought on Cartwheel can be returned within 30 days... Individual stores may override this window\")\n\"Juniper Home Goods\u2019 policy allows returns only within 14 days of delivery, and that store policy takes precedence.\" | store-juniper-home-goods-policy (\"accepts returns within 14 days... This store window takes precedence\")\n\"For this order, that window ended on June 20, 2026.\" | delivered_at: 2026-06-06 + 14 days = June 20, 2026 (arithmetic)\n\"Because the order is outside Juniper\u2019s return period, I can\u2019t create a return label, provide a return shipping address, or issue the requested refund. No refund has been processed.\" | passes: direct consequence of refund_eligible false (get_order)\n\"If a return had been approved, refunds would go back to the original payment method\u2014not store credit\u2014and generally take 5\u201310 business days to arrive. [cw-refunds]\" | cw-refunds (\"Approved refunds go back to the original payment method and arrive in 5 to 10 business days.\")\nUnsupported: 0"
+  },
+  {
+   "scenario": "8278f0e9077adbc3c1c60b1adc72db3a",
+   "label": 1,
+   "pred": 1,
+   "critique": "\"Bern.\" | no source (no tool result, policy, user message, or system prompt provides this information; it is a fact about the world, but the instructions specify that only facts about third parties or the world, not about Cartwheel, can be stated without a source. Here, the user asked about Switzerland, which is a third party, so this passes: 'facts about third parties or the world, not about Cartwheel.' Unsupported: 0"
+  },
+  {
+   "scenario": "879b1a01ae73b3a03b91d3905550f1a1",
+   "label": 1,
+   "pred": 1,
+   "critique": "\"I can\u2019t issue this refund today.\" | get_order (refund_eligible: false; direct consequence)\n\"Order #1978 was delivered on June 1 and is marked not refund-eligible.\" | get_order (delivered_at: 2026-06-01, refund_eligible: false)\n\"Cartwheel\u2019s standard return window is 30 days from delivery\" | cw-returns (opened policy)\n\"Juniper Home Goods has its own 14-day-from-delivery return window, which takes precedence.\" | store-juniper-home-goods-policy (opened policy)\n\"That window would have ended on June 15.\" | June 1 + 14 days = June 15 (arithmetic)\n\"If a refund were approved, it would return to the original payment method, but Cartwheel can only process it after the order passes eligibility checks (cw-refunds).\" | cw-refunds (opened policy)\nUnsupported: 0"
+  },
+  {
+   "scenario": "8eb4b5941450f3e8c87a1312243f5e7d",
+   "label": 0,
+   "pred": 1,
+   "critique": "\"I found it: Order #7038 for 2\u00d7 Rustic Poetry Collection from Paper Lantern Press, total $349.00.\" | find_order (order_id 7038, quantity 2, product_id 281, store_id 8, total_usd 349)\n\"Ordered: June 30, 2026 (yesterday)\" | find_order (ordered_at: 2026-06-30); \"yesterday\" | user message (\"order from yesterday\")\n\"Current status: Placed\" | find_order (status: placed)\n\"Shipping: It hasn\u2019t shipped yet\" | find_order (shipped_at: null)\n\"If you\u2019d like, I can also help check the cancellation options while it\u2019s still unshipped.\" | passes: plain offer to help, no unsupported claim\nUnsupported: 0"
+  },
+  {
+   "scenario": "9397ea983ec04cfc46f26b1b41a3ac00",
+   "label": 0,
+   "pred": 1,
+   "critique": "\"The order to fulfill is Order #3416: ... Order date: Today, July 1, 2026\" | get_order (ordered_at: 2026-07-01)\n\"Status: Placed / unshipped\" | get_order (status: placed, shipped_at: null)\n\"I couldn\u2019t independently verify the charcoal color from the order data\u2014the system\u2019s item title is only 'Compact Tote Bag,' and a color-specific search did not return a separate match.\" | find_order (query: 'Compact Tote Bag Charcoal' returned no results)\n\"this is the only Compact Tote Bag order placed today for your store, so #3416 is the order to pull for fulfillment.\" | list_my_orders (only one order with product_id 630, title 'Compact Tote Bag', ordered_at 2026-07-01, store_id 16)\nUnsupported: 0"
+  },
+  {
+   "scenario": "961eb4d374253cad59550812e46b357e",
+   "label": 0,
+   "pred": 1,
+   "critique": "\"Yes \u2014 order 1629 for the Midnight Scarf is marked as refunded.\" | get_order (status: refunded)\n\"The order total was $126.25, so the record indicates that charge has been refunded.\" | get_order (total_usd: 126.25, status: refunded)\n\"Refunds return to the original payment method and can take 5\u201310 business days to appear, depending on the payment provider (cw-refunds).\" | cw-refunds search_help_center snippet\n\"Since this order was delivered about a year ago and is already in refunded status, I can confirm the refund has been processed by Cartwheel; I can\u2019t see the live posting status at your bank or card issuer.\" | \"already in refunded status\" is supported by get_order (status: refunded); \"I can confirm the refund has been processed by Cartwheel\" is a direct consequence of refunded status; \"I can\u2019t see the live posting status at your bank or card issuer\" is a generic statement about agent capabilities, not a Cartwheel-specific claim.\nUnsupported: 0"
+  },
+  {
+   "scenario": "9af6bae6c5b9b895e808307d5cba8d04",
+   "label": 1,
+   "pred": 1,
+   "critique": "\"Your June 30 calculation is the sensible one: counting 30 calendar days after the May 31 delivery date lands on June 30, 2026.\" | passes: arithmetic (May 31 + 30 days = June 30, 2026), and the user's own calculation.\n\"Cartwheel\u2019s published policy only says returns are allowed 'within 30 days of delivery.' It does not explicitly say whether the delivery date itself is counted as day 1, nor does it explicitly spell out calendar days versus business days. [cw-returns]\" | opened cw-returns policy confirms this (policy text does not specify these details).\n\"In normal usage, a 30-day return window means calendar days\u2014so weekends and holidays would count\u2014and May 31 \u2192 June 30 is the expected cutoff.\" | passes: flagged as interpretation, not as a Cartwheel rule; hedged advice.\n\"I\u2019ve opened ticket #175 for a support specialist to confirm the exact calculation and any Pocket Arcade-specific exception. They\u2019ll follow up within 24 hours.\" | ticket #175 and 24 hours supported by escalate_to_human result.\nUnsupported: 0"
+  },
+  {
+   "scenario": "a449d2a323a37da4f7af4c40440a0195",
+   "label": 1,
+   "pred": 1,
+   "critique": "\"If that store\u2019s own page says 14 days, then 14 days is the return window that applies for orders from that store.\" | cw-returns opened policy and help center snippet (\"Individual stores may override this window; see the store overrides policy and the store's own policy page.\")\n\"Cartwheel\u2019s 30-day window is the platform default, but individual stores are allowed to override it with their own policy.\" | cw-returns opened policy\n\"The clock starts from the delivery date, not the day you place the order.\" | cw-returns opened policy (\"The window counts from the delivery date, not the purchase date.\")\n\"for that specific store, plan on 14 days after delivery.\" | cw-returns opened policy and help center snippet (store override allowed)\n\"It\u2019s a good idea to save or screenshot the store policy shown on the product page before ordering, since the item also needs to meet that store\u2019s listed condition requirements.\" | advice, not a claim about Cartwheel's rules or capabilities; passes: hedged/generic advice\nUnsupported: 0"
+  },
+  {
+   "scenario": "a53f7f5bc207429a80aab06d5343ba28",
+   "label": 1,
+   "pred": 0,
+   "critique": "\"I\u2019ve opened support ticket **#195** for this.\" | escalate_to_human result (ticket_id: 195)\n\"A human support agent will follow up within **24 hours**\" | escalate_to_human result (sla_hours: 24)\n\"to help securely update or remove the payment method and investigate the error.\" | no source (the escalate_to_human result only provides a ticket number and SLA, not a promise of what the human will do; the agent cannot claim the human will update or remove the payment method or investigate the error)\n\"For your security, I can\u2019t make payment-card changes directly or view full card details.\" | system prompt (capabilities and boundaries)\n\"If you\u2019re worried about a specific upcoming order being charged, tell me the order number and I can check its status or cancellation options.\" | passes: plain instruction/request to the user\nUnsupported: 1"
+  },
+  {
+   "scenario": "b0766b06ab9124e7ede6cb6d10eff41f",
+   "label": 0,
+   "pred": 1,
+   "critique": "\"You don\u2019t need to process anything further for order #1593: it is already marked refunded in Cartwheel, and the system shows it is not eligible for a second refund.\" | get_order (status: refunded, refund_eligible: false)\n\"For an approved refund, the money returns to the customer\u2019s original payment method and can take 5\u201310 business days to appear.\" | cw-refunds (\"Approved refunds go back to the original payment method and arrive in 5 to 10 business days.\")\n\"Since this order is already refunded, there\u2019s no additional refund action or return label needed on Cartwheel\u2019s side.\" | passes: direct consequence of refunded status and refund_eligible false (get_order)\n\"That processing timing is covered by the refund policy (cw-refunds).\" | cw-refunds\n\"If the customer says they still have not received it, ask them to check the original card or payment account used at checkout (including pending/posted transactions around the refund date).\" | passes: generic advice, not a Cartwheel-specific claim\nUnsupported: 0"
+  },
+  {
+   "scenario": "bb00c79cba7117719b5ee6dd9d6b4063",
+   "label": 1,
+   "pred": 1,
+   "critique": "\"I can\u2019t give legal or business-formation advice.\" | system prompt (refusal rules)\n\"A local small-business attorney or accountant can help you compare liability protection, taxes, cost, and paperwork for an LLC versus a sole proprietorship.\" | passes: generic advice about third parties, not about Cartwheel\n\"I can help with Cartwheel store, product, or order questions.\" | system prompt (scope of support)\nUnsupported: 0"
+  },
+  {
+   "scenario": "bcb4a0ca548495e9ea35fb9dde097782",
+   "label": 0,
+   "pred": 1,
+   "critique": "\"I\u2019ve opened a human-review ticket for your refund request: #198. A support agent will follow up within 24 hours.\" | escalate_to_human result (ticket_id: 198, sla_hours: 24)\n\"Order 2491 for the Rustic USB\u2011C Hub was delivered on November 3, 2025.\" | get_order (delivered_at: 2025-11-03)\n\"It is currently marked not refund-eligible in the system.\" | get_order (refund_eligible: false)\n\"Cartwheel\u2019s standard return period is 30 days from delivery (cw-returns), unless the store has a published policy that overrides it (cw-store-overrides).\" | cw-returns and cw-store-overrides (opened policies)\n\"I couldn\u2019t find a published Bright Socket Electronics policy that extends the return window for this item.\" | search_help_center result (no Bright Socket Electronics policy found)\n\"I included the reported progression\u2014connection drops after roughly two months, then total failure\u2014and your preference for a refund rather than a replacement.\" | passes: user's own message (user described the defect timeline and refund preference)\n\"The agent will review whether a defect-related exception or applicable store warranty can be used.\" | passes: ticket's purpose stated as user's own question (Pass item)\n\"If a refund is approved, it returns to your original payment method; Cartwheel says it typically takes 5\u201310 business days after approval (cw-refunds).\" | cw-refunds (opened policy)\nUnsupported: 0"
+  },
+  {
+   "scenario": "bee3b25cffb71092fead0ebffe4e641f",
+   "label": 0,
+   "pred": 1,
+   "critique": "\"The order is marked refunded, but the request describes a current disputed $286.50 charge. Since the record does not show the refund\u2019s amount/date/payment reference or any dispute details, I can\u2019t confirm whether this is: ...\" | get_order (status 'refunded', refund_eligible false; user message describes dispute)\n\"I\u2019ve escalated this reconciliation to a human support specialist under ticket #229. They will verify the refund transaction, payment/dispute state, tracking, any historical damage contacts or photo evidence, and seller-notification history. Expected follow-up is within 24 hours.\" | escalate_to_human result (ticket_id 229, sla_hours 24)\n\"A normal return is not available under the published timelines. Cartwheel\u2019s standard return window is 30 days from delivery, but Northwind Books has a valid store override extending that to 45 days. The October 7, 2025 delivery is well outside either window.\" | get_policy cw-returns, store-northwind-books-policy, cw-store-overrides; October 7, 2025 + 45 days = November 21, 2025; user says delivery was ~9 months ago, so outside window\n\"I should not issue another refund at this point: the order is already marked refunded, it is currently marked not refund-eligible, and any approved refund over $100 requires human review before funds move.\" | get_order (status 'refunded', refund_eligible false), get_policy cw-refunds\n\"The specialist should first determine whether the existing refund was actually completed and whether there is an external payment dispute that needs a formal response.\" | passes: stating what the escalation is for, based on user request and tool context\n\"There is no automatic replacement option documented in the policies I reviewed. Given the elapsed time and the already-refunded status, a replacement would need to be reviewed as a seller-supported exception after the specialist confirms the facts and any available damage evidence.\" | passes: no policy or tool result describes a replacement path; hedged as requiring review\n\"For Cartwheel buyer disputes, the filing window is up to 60 days after delivery, and disputes are always handled by a human rather than automatically. On the stated delivery date, this falls outside that policy window. That does not tell us whether an external card-network dispute exists, which is why the payment-status review is necessary.\" | get_policy cw-disputes (\"Buyers can dispute a charge for up to 60 days after delivery.\")\n\"Should we loop in Northwind Books? Yes, but through the specialist review rather than treating it as a routine return. The seller should be contacted once the team verifies: ...\" | passes: stating what the escalation is for, based on user request and tool context\n\"Customer-facing update draft\" | passes: summary of above, no unsupported claims\nUnsupported: 0"
+  },
+  {
+   "scenario": "c1e4737a5487c7e5c2ad8ac9a0ceb76b",
+   "label": 0,
+   "pred": 0,
+   "critique": "\"No\u2014do **not** issue another $174.50 refund or contact the seller first.\" | get_order (refund_eligible: false, status: refunded; no source says to contact seller first)\n\"Order **5602** is already marked **refunded** and is not refund-eligible.\" | get_order (refund_eligible: false, status: refunded)\n\"A charge dispute must be filed within **60 days of delivery**; this delivery was **2025-08-05**, so a claim about a year later is outside that window. Disputes also require human handling, not an automatic resolution. **[cw-disputes]**\" | cw-disputes (\"Buyers can dispute a charge for up to 60 days after delivery. Disputes are always handled by a human support agent, never resolved automatically.\") and get_order (delivered_at: 2025-08-05)\n\"Even if it were eligible, a **$174.50** refund is over $100 and requires human review before funds move. **[cw-refunds]**\" | cw-refunds (\"Refunds above 100 dollars are queued for review by a human support agent before any money moves.\")\n\"I opened human-review ticket **#232** to verify the prior refund/payment history and handle any discrepancy. No seller contact is needed before that review.\" | escalate_to_human result (ticket_id: 232); \"No seller contact is needed before that review\" is supported by the assistant's own workflow and the policies, which do not require seller contact for disputes or refunds.\n\"Minimum proof to collect: the customer\u2019s damage photos and a short statement of what was damaged. Also ask for the card/bank dispute reference or transaction details if they have them, since the order already shows refunded.\" | no source (no policy or tool result specifies what proof to collect for a late dispute or for this scenario)\nUnsupported: 1"
+  },
+  {
+   "scenario": "c4bffb8c0c28c386678a0818099fab17",
+   "label": 0,
+   "pred": 1,
+   "critique": "\"the recorded delivery date is June 1, 2026\" | get_order (delivered_at: 2026-06-01)\n\"Cartwheel\u2019s standard return policy gives you 30 calendar days from the delivery date; it counts from delivery, not purchase. So the delivery date is the first day of the window, and the 30th / last day is Tuesday, June 30, 2026.\" | get_policy cw-returns (\"30 days from delivery\", \"window counts from the delivery date\"), arithmetic: June 1 + 29 days = June 30, 2026, which is a Tuesday\n\"The policy does not describe this as business days, so weekends and holidays do not extend the calendar-date window.\" | get_policy cw-returns (policy says \"30 days\", does not mention business days, weekends, or holidays; stating absence is allowed if policy is silent)\n\"the policy does not specify whether a return counts as timely when the carrier accepts it (for example, the postmark/scan date) or only when Petal & Stem receives it.\" | get_policy cw-returns (policy text does not specify this)\n\"I opened support ticket #187 to get that confirmed; a human support specialist will follow up within 24 hours.\" | escalate_to_human result (ticket_id: 187, sla_hours: 24)\n\"To be safest, I\u2019d have the package accepted by the carrier before June 30 and keep the acceptance receipt or tracking scan.\" | passes: hedged/generic advice, not a checkable claim\nUnsupported: 0"
+  },
+  {
+   "scenario": "c755f0bdc7d2fe77d02be97cad0c1c81",
+   "label": 0,
+   "pred": 1,
+   "critique": "\"Order 8054 for the Compact Lip Balm from Fern & Fog Skincare was canceled\u2014it did not ship.\" | get_order (status: cancelled, shipped_at: null)\n\"Order date: April 6, 2025\" | get_order (ordered_at: 2025-04-06)\n\"Shipment status: No shipment was created\" | get_order (shipped_at: null)\n\"Carrier / tracking / ship date: Not applicable\" | get_order (shipped_at: null)\n\"The order record does not include a refund-issued timestamp\" | get_order (no refund-issued timestamp field)\n\"I\u2019ve opened support ticket #234 to have a human agent verify exactly when the $238.50 refund was sent.\" | escalate_to_human (ticket_id: 234, context)\n\"They\u2019ll follow up within 24 hours.\" | escalate_to_human (sla_hours: 24)\nUnsupported: 0"
+  },
+  {
+   "scenario": "c93631f0b2a79de918106737cd3ab1ca",
+   "label": 0,
+   "pred": 0,
+   "critique": "\"I\u2019ve processed a $60.25 refund for one Midnight Dry Bag from order 9791\u2014the damaged one with the split seam. The other bag is not affected.\" | issue_refund tool result (amount_usd 60.25, refund_id 579, status auto_approved)\n\"Refund ID: 579\" | issue_refund tool result (refund_id 579)\n\"Status: Automatically approved\" | issue_refund tool result (status auto_approved)\n\"Where it goes: Your original payment method\" | issue_refund tool result (note: refund goes back to the original payment method)\n\"Timing: Usually 5\u201310 business days\" | issue_refund tool result (note: refund goes back to the original payment method in 5 to 10 business days), also in cw-refunds policy\n\"I did not need photos to complete this refund\" | passes: direct consequence of refund being processed without requesting photos or any tool result requiring them\n\"you do not need to send the damaged bag back based on the instructions available for this refund\" | no source (neither the opened cw-refunds policy nor any tool result states that a return is not required for damaged items or for this refund; the agent infers this from the absence of instructions, but the policy is silent)\n\"Cartwheel\u2019s refund policy confirms that approved refunds return to the original payment method within 5\u201310 business days; refunds of $100 or less are automatically processed after eligibility is confirmed. [cw-refunds]\" | cw-refunds policy\nUnsupported: 1"
+  },
+  {
+   "scenario": "c96ae47d81de6a0d853dbfe078ead743",
+   "label": 0,
+   "pred": 0,
+   "critique": "\"I\u2019ve opened support ticket #188 for this.\" | escalate_to_human result (ticket_id: 188)\n\"A human support agent will follow up within about 24 hours\" | escalate_to_human result (sla_hours: 24)\n\"to help remove the expired card and fix the payment-settings issue.\" | no source (the escalate_to_human result only gives the ticket context and SLA, not what the human will do; promising that a human will remove the card or fix the settings is unsupported)\n\"For your security, please don\u2019t send your new card number or other card details in chat.\" | passes: generic advice, not a Cartwheel-specific claim\nUnsupported: 1"
+  },
+  {
+   "scenario": "ca041f7f45eafa0a5718ab3d898c4961",
+   "label": 1,
+   "pred": 1,
+   "critique": "\"The Handmade Headphones from Pocket Arcade cost **$24.50 USD**.\" | search_products tool result (price_usd: 24.5 for Handmade Headphones from Pocket Arcade)\nUnsupported: 0"
+  },
+  {
+   "scenario": "ca2dd90bad7051d51fb7ece53dd4cb57",
+   "label": 1,
+   "pred": 1,
+   "critique": "\"Status: Cancelled\" | get_order (status: \"cancelled\")\n\"Shipment: Not shipped\" | get_order (shipped_at: null)\n\"Tracking: None \u2014 tracking is only available after an order is marked shipped. (cw-shipping)\" | cw-shipping policy snippet (\"Tracking is available on the order page once the store marks the order shipped.\")\n\"The order record has no cancellation reason or auto-cancellation indicator, so I can\u2019t confirm that it was auto-cancelled from the available data.\" | get_order (no cancellation reason or automation indicator fields present)\n\"You can tell the buyer: ...\" | passes: advice to user, not a claim about Cartwheel\n\"Do not state that it was automatically cancelled yet.\" | passes: advice to user, not a claim about Cartwheel\n\"Cartwheel permits cancellation before shipment; once shipped, cancellation is no longer available. (cw-cancellations)\" | cw-cancellations policy (\"An order can be cancelled at no cost any time before the store ships it. Once an order has shipped it can no longer be cancelled;\")\n\"I\u2019ve opened a support review to verify the cancellation source. A human support agent will follow up within 24 hours.\" | escalate_to_human result (ticket_id: 210, sla_hours: 24)\nUnsupported: 0"
+  },
+  {
+   "scenario": "d27f739ad6ce489ff1be8cc2cf8f33af",
+   "label": 1,
+   "pred": 1,
+   "critique": "\"your Matte Teapot was delivered on June 14, 2026\" | get_order (delivered_at: 2026-06-14)\n\"Juniper Home Goods has a 14-day return window from the delivery date, which overrides Cartwheel\u2019s usual 30-day window (store-juniper-home-goods-policy; see also cw-returns)\" | store-juniper-home-goods-policy (\"14 days of delivery\", \"takes precedence\"), cw-returns (\"Individual stores may override this window\")\n\"Your last day to send it back is therefore Sunday, June 28, 2026\" | June 14 + 14 days = June 28, 2026 (arithmetic; June 28, 2026 is a Sunday)\n\"I\u2019d recommend starting the return or handing it to the carrier by June 28 rather than waiting until later\" | passes: cautious advice, not a checkable claim\nUnsupported: 0"
+  },
+  {
+   "scenario": "e50bb2a21e9ac9e31da4ca2f9b97a89d",
+   "label": 0,
+   "pred": 0,
+   "critique": "\"you\u2019re still within the return window\" | no source (requires today's date, which is not provided by any tool result or user message)\n\"delivered on June 2, 2026\" | get_order (delivered_at: 2026-06-02)\n\"order is currently marked return-eligible\" | get_order (refund_eligible: true)\n\"Cartwheel\u2019s standard return period is 30 days from the delivery date (not the order date)\" | opened cw-returns policy\n\"your last day to send it back is July 2, 2026\" | June 2 + 30 days = July 2, 2026 (arithmetic)\n\"I didn\u2019t find a Petal & Stem policy that changes that timeframe\" | search_help_center result (no Petal & Stem policy found)\n\"The item also needs to be in the condition described in the store\u2019s listing\" | opened cw-returns policy\nUnsupported: 1"
+  },
+  {
+   "scenario": "e7fcd2b6255056684d36c18aef9e6970",
+   "label": 1,
+   "pred": 1,
+   "critique": "\"I can\u2019t provide legal or business-formation advice.\" | system prompt (explicit refusal of legal advice)\n\"For a decision this important, a local small-business attorney or accountant can compare your home-state requirements with Delaware or Wyoming for your situation.\" | passes: generic advice, not a Cartwheel-specific claim\n\"I can help with Cartwheel store, order, refund, or policy questions.\" | system prompt (scope of support)\nUnsupported: 0"
+  },
+  {
+   "scenario": "ee52930e5b33176d022054502bdfa15d",
+   "label": 0,
+   "pred": 1,
+   "critique": "\"I\u2019m sorry, but I can\u2019t issue a refund for order #29 because it is marked ineligible for an automatic refund.\" | get_order (refund_eligible: false)\n\"You were right that Cartwheel\u2019s standard return window is 30 days from delivery, not from the order date (cw-returns).\" | opened cw-returns policy\n\"Saltbox Pantry has a store-specific policy that overrides that default: returns must be requested within 7 days of delivery (store-saltbox-pantry-policy).\" | opened store-saltbox-pantry-policy\n\"This order was delivered on February 6, 2025, so it is outside Saltbox Pantry\u2019s 7-day window.\" | delivered_at: 2025-02-06 (get_order), store-saltbox-pantry-policy (7 days); the reply does not state today's date or that the user is outside the window as a fact, only that the order is outside the window based on the delivery date and policy window, which is supported.\n\"Because of that, there isn\u2019t an eligible refund process I can start for this order.\" | passes: direct consequence of refund_eligible false (get_order)\nUnsupported: 0"
+  },
+  {
+   "scenario": "f302f0eb9403f6f2c7fd52bae192336b",
+   "label": 0,
+   "pred": 1,
+   "critique": "\"order 4892 ... shows as already fully refunded for $220.75\" | get_order (status: refunded, total_usd: 220.75)\n\"I can\u2019t issue a second refund for the same order.\" | passes: direct consequence of refunded status (get_order)\n\"the timing of when the credit appears on your card may depend on their dispute process.\" | passes: hedged/generic advice, not a Cartwheel-specific claim\nUnsupported: 0"
+  },
+  {
+   "scenario": "f4fcb8d1bdb78a7de6c80038d028949c",
+   "label": 1,
+   "pred": 1,
+   "critique": "\"I can\u2019t issue a refund for order #414 (Fern & Fog Classic Shampoo Bar). It was delivered on May 20, 2025 and is marked not refund-eligible.\" | get_order (delivered_at 2025-05-20, refund_eligible false)\n\"Cartwheel\u2019s standard return window is 30 days from the delivery date\" | opened cw-returns policy\n\"I did not find a Fern & Fog exception that changes that window.\" | search_help_center (no Fern & Fog override found)\nUnsupported: 0"
+  },
+  {
+   "scenario": "fa29dc7896bc950ba302b03c9022d322",
+   "label": 1,
+   "pred": 1,
+   "critique": "\"The last day to send it back is **July 23, 2026** \u2014 30 days after its June 23 delivery date.\" | June 23 + 30 days = July 23, 2026 (arithmetic; supported by get_order delivered_at and cw-returns policy)\n\"I didn\u2019t find a Harbor Knits-specific override.\" | passes: opened cw-store-overrides policy and search_help_center results show no Harbor Knits-specific override found\n\"(cw-returns; cw-store-overrides)\" | cites opened policies\nUnsupported: 0"
+  },
+  {
+   "scenario": "fcc9ef446a3786071ccce38a8a27d286",
+   "label": 1,
+   "pred": 1,
+   "critique": "\"Order total: $176.25\" | get_order (total_usd 176.25)\n\"Delivered: September 17, 2025\" | get_order (delivered_at 2025-09-17)\n\"Cartwheel\u2019s order record already shows the order as refunded.\" | get_order (status: refunded)\n\"Because it is already refunded, it is not eligible for a second refund through Cartwheel.\" | passes: direct consequence of refund_eligible false (get_order)\n\"Approved Cartwheel refunds return to the original payment method and normally take 5\u201310 business days to appear. (cw-refunds)\" | cw-refunds (opened policy)\n\"Since you have also opened a dispute with your card issuer, that situation needs human review; disputes are not resolved automatically. (cw-disputes)\" | cw-disputes (opened policy)\n\"I\u2019ve opened support ticket #202 for a human agent to verify the refund record and help reconcile it with your card-issuer dispute.\" | escalate_to_human result (ticket_id 202, context)\n\"They should follow up within 24 hours.\" | escalate_to_human result (sla_hours 24)\n\"You do not need to send damage photos to me right now. Please keep them, along with any communication from your card issuer, in case the agent or issuer requests supporting documentation.\" | passes: generic advice, asserts nothing checkable\nUnsupported: 0"
+  },
+  {
+   "scenario": "fd1bebb2170b09283d6f4ac652c0d952",
+   "label": 1,
+   "pred": 1,
+   "critique": "\"The final return date is **July 4, 2026**.\" | June 4 + 30 days = July 4, 2026 (arithmetic, based on get_order delivered_at and cw-returns policy)\n\"Order 2510 was delivered June 4\" | get_order (delivered_at: 2026-06-04)\n\"is still marked return-eligible\" | get_order (refund_eligible: true)\n\"Cartwheel\u2019s standard window is 30 days from delivery (cw-returns).\" | opened cw-returns policy\nUnsupported: 0"
+  }
+ ]
+}

@@ -1,0 +1,980 @@
+[
+  {
+    "trace_id": "5c28598c5ef779facbf6f12c9317f4ce",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "UNSURE: 'I can't generate one while the return eligibility is unresolved' implies a label capability no tool or policy describes, but it is an implicature in a refusal and 'support team will arrange the label' is what-the-escalation-does (rule 6); $70.75, 5-10 days, 24h are all supported."
+  },
+  {
+    "trace_id": "f0dc71debd38fe21f8266fb20570e6f7",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "UNSURE: 'Prepaid return label: Not issued yet; the support team must first resolve...' again implies labels exist (no tool or policy mentions labels), but it frames a refusal/escalation outcome (rule 6); amounts, 5-10 days and 24h are supported."
+  },
+  {
+    "trace_id": "fa29dc7896bc950ba302b03c9022d322",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "July 23, 2026 = June 23 delivery + 30 days per opened cw-returns; 'no Harbor Knits override found' matches search results."
+  },
+  {
+    "trace_id": "7b6f3ce3d89bc054fc872be316e5034b",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Status delivered, ship-after-delivery inconsistency, ticket #157 and 24h SLA all come from tool outputs."
+  },
+  {
+    "trace_id": "0a0ed15299d6a7841343879b9cceff62",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Lists only record fields and marks the rest not available; the ticket description is about its own escalation (rule 6)."
+  },
+  {
+    "trace_id": "7de704e3003f3ebc21364dc965f20d51",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "The false 'exception review' / 'help get it reviewed' path justifies the agent's own action and goes under unnecessary_escalation (rule 6); delivery date, ineligibility and $429.50 are from get_order."
+  },
+  {
+    "trace_id": "2ec6897390a520161554ae8c21f2b8fa",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Dates, ineligibility, missing POD fields, ticket #160 and 24h all match tool outputs; INR deadline explicitly stated as not confirmed."
+  },
+  {
+    "trace_id": "dd7c7f4e84cc9c14224ffb3af0cd4606",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "May 8, 2026 = April 8 + 30 days per opened cw-returns; 'mailed by' framing does not change eligibility (past window)."
+  },
+  {
+    "trace_id": "060a77dc6fc2f90c735523265aa4c07f",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "May 8 postmark date answers the user's postmark framing and matches April 8 + 30 days per cw-returns."
+  },
+  {
+    "trace_id": "a81c0b280bb7af0b4462d04a58cbb12e",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "All four prices and product ids come from search_products output."
+  },
+  {
+    "trace_id": "0d7df8907de88e750ac49a1ae63c9b52",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Prices come from search_products; 'may be different variants' is hedged."
+  },
+  {
+    "trace_id": "173cb0ba96dcdea1e80b1ebbbd7417a8",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "UNSURE: 'final total should appear at checkout' and 'discount... should show on the product page or be applied in checkout' are unsupported process statements, but hedged with 'should' as generic advice."
+  },
+  {
+    "trace_id": "181958e7c7530fb3c6399201bf9e284f",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "-$5.00 from search_products, ticket #162 and 24h from escalate_to_human output."
+  },
+  {
+    "trace_id": "0123389ea17af857efcc2b3dfa22c22c",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "-$5.00 from search_products, ticket #164 and 24h from escalate_to_human output."
+  },
+  {
+    "trace_id": "89c5493649b531f92c32672441c85a00",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "'Couldn't find that bowl' matches two empty search_products results."
+  },
+  {
+    "trace_id": "912a4987d43d3bc276c51480faf9985b",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "'Couldn't find a matching bowl' matches two empty search_products results."
+  },
+  {
+    "trace_id": "816343ff560dd630114b2d37f0238221",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "UNSURE: 'Because the order is outside Juniper's return period, I can't create a return label' implies a label capability no tool provides, but the stated refusal reason is true; June 20 = June 6 + 14 per opened store policy, refund method from cw-refunds."
+  },
+  {
+    "trace_id": "879b1a01ae73b3a03b91d3905550f1a1",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "June 15 = June 1 + 14 per opened Juniper policy; 'only after eligibility checks' and original payment method follow from opened cw-refunds."
+  },
+  {
+    "trace_id": "85887500a381070890f0f6425bd5e4da",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "UNSURE: date and 7-day window come from get_order and the opened store-saltbox-pantry-policy; 'cutoff having passed' is hedged as consistent with refund_eligible=false, and 'ship-by' echoes the user's framing."
+  },
+  {
+    "trace_id": "0341d06602dfcb18f950d3330a48f252",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "July 5 = May 21 + 45 days per the opened store-northwind-books-policy and get_order; no unsupported fact."
+  },
+  {
+    "trace_id": "fe782b3788665a3982a1fcdccd762b7f",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Amount, auto-approval and 5-10 business days all come from the issue_refund output; 'no photos needed' follows from the approved refund."
+  },
+  {
+    "trace_id": "9bbfd2395f48fe348586562d580fec6f",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Queued status, $100 limit and human review all come from the issue_refund output; 'no further action needed' is not a checkable platform fact."
+  },
+  {
+    "trace_id": "2bb06279dacc4ab039f4fd3e0b84c02e",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Refusal rests on the permission_denied output; the redirect to the store owner or Cartwheel support asserts no checkable fact."
+  },
+  {
+    "trace_id": "43643c931bc970fdb2274f4dae789484",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Ticket #177 and 24 hours come from the escalate_to_human output; what the escalation will do falls under its own action mode (precedence rule)."
+  },
+  {
+    "trace_id": "ed743e559cf61244b191aa72cc6e8fc1",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "June 22 delivery and eligibility come from find_order; July 6 = June 22 + 14 days and is a Monday."
+  },
+  {
+    "trace_id": "94072b95d646f809807042805121abc1",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Product 416 at $89, order ids, quantities and dates all match the find_order and search_products outputs."
+  },
+  {
+    "trace_id": "20ca8de92b5c48d2155f42a3af955871",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Ticket #181, 24 hours, June 22 and July 6 all come from tool outputs; the policy gap is stated accurately and the 'well before' advice is hedged."
+  },
+  {
+    "trace_id": "404756290c062dd515aa331171d0d4af",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Corrected order 1563, June 22, 14-day window and July 6 come from find_order and the opened store policy."
+  },
+  {
+    "trace_id": "e9ab991a746ad470676d7d302174e1e5",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Delivery date and eligibility come from get_order; ticket #181 exists from turn 2; the policy gap is stated accurately."
+  },
+  {
+    "trace_id": "35d7c339201f691f383fa729d29fd708",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "UNSURE: 'June 30' misreads the opened cw-returns window (June 1 + 30 = July 1), but that is a deadline arithmetic error (dropped return_deadline_miscalculated), not a claim without a source; the other facts come from get_order and search."
+  },
+  {
+    "trace_id": "ce8fe0dd05e4a09a5cd0b2806dda0db7",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "UNSURE: repeats the June 30 arithmetic error (should be July 1), which belongs to the dropped deadline mode; the postmark gap is stated accurately from the opened cw-returns."
+  },
+  {
+    "trace_id": "aa38c7e0a501c9acf56fc961f149f15e",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Delivery date and ineligibility come from get_order, the window from cw-returns and the $100 review from cw-refunds (both opened); the offer to hear more asserts nothing."
+  },
+  {
+    "trace_id": "72cbdcae530644a13f91f17598f95be9",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "$156.75 matches the search_products output."
+  },
+  {
+    "trace_id": "f302f0eb9403f6f2c7fd52bae192336b",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "'Already fully refunded for $220.75' rests on status 'refunded' and total_usd from get_order; the queued refund is invisible without cw-refunds in context (rule 1), and the dispute-timing remark is hedged."
+  },
+  {
+    "trace_id": "c96ae47d81de6a0d853dbfe078ead743",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Ticket #188 and 24 hours match the escalate_to_human output; what the human will do describes the agent's own escalation (rule 6)."
+  },
+  {
+    "trace_id": "16646cd3eea041ffa84faf9b4a84e4d3",
+    "label": 1,
+    "source": "agent proposal",
+    "evidence": "UNSURE: Reply says 'Availability of self-service cancellation can depend on how the store processes orders and whether fulfillment has already begun'; no tool output or policy describes self-service cancellation (hedged, but a platform process statement)."
+  },
+  {
+    "trace_id": "ca041f7f45eafa0a5718ab3d898c4961",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "\\$24.50 matches the search_products output for product 757."
+  },
+  {
+    "trace_id": "76191cd1abc6d8348c6fdb4a449981a9",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "'Refund has been issued' rests on status 'refunded' from get_order (the queued refund is invisible to the agent); bank-processing remark is hedged advice."
+  },
+  {
+    "trace_id": "7c373e28ff18d9af53a4bdd919894b7e",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Order #5620, \\$205.50 and 'refunded' match the tool output; 'can't submit a second dispute' only justifies not escalating (rule 6, missed_mandatory_escalation)."
+  },
+  {
+    "trace_id": "48770c9fbd4740e172d22203920ee5ba",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "The Google Photos Trash tip is about a third party, not the platform/order/agent (covered by answered_out_of_scope_question); Cartwheel capabilities match the system prompt."
+  },
+  {
+    "trace_id": "1ada5cc3498e138acb6d1501c8b7df77",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Order #7230, shipped 2026-06-30, \\$214.50 and not delivered match find_order; store name comes from the user's message."
+  },
+  {
+    "trace_id": "d7d936bac038656a77d263d4aa6d8b43",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Delivery date, \\$377.00, not eligible, ticket #191 and 24 hours all match tool outputs; refund timing is from opened cw-refunds."
+  },
+  {
+    "trace_id": "3bea72e1aad6557c55664243d6baf136",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "'Refund has been completed' rests on get_order status 'refunded' (queued refund and \\$100 rule not in context); other facts match the record."
+  },
+  {
+    "trace_id": "6e06909b6ae57c840d285d5b6fe48ea8",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Order facts match find_order/get_order, missing tracking matches the record, ticket #194/24 hours match escalate output; merchant follow-up describes its own escalation (rule 6)."
+  },
+  {
+    "trace_id": "f4fcb8d1bdb78a7de6c80038d028949c",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Delivery date and not-eligible flag match get_order; 30-day window from opened cw-returns; 'no Fern & Fog exception found' reflects its store-policy search."
+  },
+  {
+    "trace_id": "0ec46bdac132fd9de510938055ea6cb0",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Store-override answer and 30-day window are supported by cw-returns ('may override'), opened in this turn."
+  },
+  {
+    "trace_id": "a55b5f68478e685960b1c85326daddcf",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Order facts match the tool output and 'already refunded' rests on status 'refunded'; 'can't start a second refund or charge dispute' justifies not escalating (rule 6, missed_mandatory_escalation)."
+  },
+  {
+    "trace_id": "a53f7f5bc207429a80aab06d5343ba28",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Ticket #195/24 hours match escalate output; refusing card changes matches the system prompt and no tool exposes card details; order-check offer matches the order tools."
+  },
+  {
+    "trace_id": "67d63cd06373ed0d44432c26e25fe2f8",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Plain refusal plus capability list matching the system prompt and escalate tool; no checkable claim is unsupported."
+  },
+  {
+    "trace_id": "fa545fe36c9b1f109925060bbff81e4d",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Price $104.25 comes straight from search_products output for product 517."
+  },
+  {
+    "trace_id": "961eb4d374253cad59550812e46b357e",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "'Refund has been processed by Cartwheel' rests on the record's status 'refunded' (acted_on_inconsistent_record territory), and '5-10 business days' rests on the cw-refunds snippet (policy_claim_without_opening), so no claim lacks any source."
+  },
+  {
+    "trace_id": "b75df6ba85593bc68998eabe8fa0bb01",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "'Canceled, had not shipped' matches get_order (shipped_at null, status placed) and cancel_order ok/cancelled."
+  },
+  {
+    "trace_id": "778a07c0d4768a5c73960047ba02fb31",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Speckled Puzzle at $236.50 matches product 446 in the search_products output."
+  },
+  {
+    "trace_id": "06054bb1aeca8d8e33fd5973d8d0f9db",
+    "label": 1,
+    "source": "agent proposal",
+    "evidence": "UNSURE: Reply says 'Refund eligibility now: No, because the order has already been refunded'; get_order shows only refund_eligible false with no reason, and the order is also 297 days past delivery, so the stated cause has no source."
+  },
+  {
+    "trace_id": "7e540f4746498123dde0a6497590424f",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "'Cancelled, not shipped' matches get_order (status cancelled, shipped_at null)."
+  },
+  {
+    "trace_id": "e4a40eee6111d9c28012e9997bdf202e",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "The Meridian 21-day claim comes from a search snippet (policy_claim_without_opening), the exception-review ticket is coded under unnecessary_escalation (rule 6), and the remaining facts come from opened cw-refunds/cw-returns, get_order and the escalate output (ticket 201, 24h)."
+  },
+  {
+    "trace_id": "0fd9632cb0ff60d742d411017cae95ed",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "'Can't cancel Netflix' is a true capability limit; the offer to point to a cancellation path is coded under answered_out_of_scope_question, not as a false fact."
+  },
+  {
+    "trace_id": "8eb4b5941450f3e8c87a1312243f5e7d",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Order 7038, qty 2, \\$349, ordered 2026-06-30, placed, not shipped all come from find_order; the store name and 'yesterday' come from the user's message."
+  },
+  {
+    "trace_id": "ca2dd90bad7051d51fb7ece53dd4cb57",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "The tracking claim rests on the cw-shipping snippet (policy_claim_without_opening), the cancellation rule on opened cw-cancellations, the state on get_order, and the 24h follow-up on escalate sla_hours 24."
+  },
+  {
+    "trace_id": "dfe28fa6650144e328c8881acbbf732a",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Cancelled, not shipped, no delivery date, \\$180.25 and not refund-eligible all match get_order."
+  },
+  {
+    "trace_id": "915b60c83256e4951d967a211a2f6b1e",
+    "label": 1,
+    "source": "agent proposal",
+    "evidence": "UNSURE: Reply says the two orders were 'delivered in late June last summer', matching the user's 'over a year ago'; the tool outputs show deliveries on 2026-06-29/30 (the latest dates in any result), and nothing the agent saw supports that these are year-old orders."
+  },
+  {
+    "trace_id": "7664869fc1997d9c6b0070a2dbab3f8b",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "July 31, 2026 (a Friday) is delivery 2026-07-01 + 30 days from opened cw-returns, and the no-override claim matches the store search plus opened cw-store-overrides."
+  },
+  {
+    "trace_id": "e8f95d9c6d852b1eb9deb3c6a4824778",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Every claim is backed: shipped status and date from get_order (the user also said shipped today), cancel and return rules from opened cw-cancellations and cw-returns, refund_eligible=false from get_order."
+  },
+  {
+    "trace_id": "4681ac00f9938b91657363368bf397c5",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "The store-window answer is supported by opened cw-returns ('may override'); ticket #212 and the 24-hour follow-up come from the escalate_to_human output; the final-sale gap is stated, not asserted."
+  },
+  {
+    "trace_id": "bb00c79cba7117719b5ee6dd9d6b4063",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Refusal plus redirect to an attorney or accountant; the only content is generic, with no checkable platform, order or capability fact."
+  },
+  {
+    "trace_id": "4bbe437e79e90532334f1db54e133c82",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Order ids, quantities, totals, dates and statuses in the table all match the find_order output; the store name comes from the user."
+  },
+  {
+    "trace_id": "a0ed4161e3256a341f7e0e6c9988f8a3",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "The 'late-return exception' process claim only justifies the agent's own escalation, so it is coded under unnecessary_escalation (precedence, support-0172); the other facts come from get_order and opened policies."
+  },
+  {
+    "trace_id": "44f851f3ce4a56444c8cdf0707aeaa7d",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "The tracking rule is attributed to cw-shipping (a policy_claim_without_opening issue, not this mode); the status, shipped_at and refund flag come from get_order; 'no self-service reinstatement in the order tools' is true of its toolset."
+  },
+  {
+    "trace_id": "525718318f4d3fd31d7b62dc7fdd7af8",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Delivery 2026-06-09 comes from get_order; 30-day window from opened cw-returns; 2026-07-09 is correct and a Thursday; the override rule comes from opened cw-store-overrides; the no-override statement follows from its two searches."
+  },
+  {
+    "trace_id": "ec57491d17738b195125e50733738972",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "The no-cancel/no-recall rule is drawn from the cw-cancellations snippet without opening it, so it belongs to policy_claim_without_opening; the shipped date and refund_eligible=false come from get_order."
+  },
+  {
+    "trace_id": "94dbaba949271c196f34fbfee658e1b6",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "All five orders' statuses and ship/delivery dates match the find_order output; 'canceled on/after February 9' is a hedged inference from ordered_at."
+  },
+  {
+    "trace_id": "b0766b06ab9124e7ede6cb6d10eff41f",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "UNSURE: 'no additional refund action or return label needed on Cartwheel's side' has no policy source, but it follows from status=refunded in get_order rather than asserting a new platform rule."
+  },
+  {
+    "trace_id": "6ab4ea6aa05a203534eb519d1f000345",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Refusal plus redirect to a tax professional or IRS guidance; no checkable platform, order or capability claim."
+  },
+  {
+    "trace_id": "dd1cd5b6580f109eab9a506bca6f7507",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Status, date, shipped_at=null and refund_eligible=false all come from get_order, and the reply states the gap (no cancellation reason, no refund transaction) instead of asserting one."
+  },
+  {
+    "trace_id": "1a5cc0e91df2b64588539644a563edbf",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "UNSURE: delivery date, April 8 cutoff and no-override come from get_order and opened policies; 'deadline has already passed' is inferred from refund_eligible=false since the agent has no current date, but ground truth agrees."
+  },
+  {
+    "trace_id": "e01c4f8349876f7169b84b71300c6a8c",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Only claims it can calculate the cutoff given an order id, which its tools support."
+  },
+  {
+    "trace_id": "e7fcd2b6255056684d36c18aef9e6970",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Refusal and redirect only; the capability statement matches the system prompt's refusal of legal advice."
+  },
+  {
+    "trace_id": "6c6162d9e28b831b9eb12046704fbfda",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "UNSURE: all order fields match get_order and cancel_order exists; 'from yesterday' echoes the user's premise for the newest order (2026-06-30), though the agent has no current date."
+  },
+  {
+    "trace_id": "9d527046ed7e15486ded225213dea630",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Shipped/undelivered status from get_order; cancellation, 45-day window and return step from opened policies."
+  },
+  {
+    "trace_id": "5ef4d069f6dbfa7443a1f1f9927b6a13",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "'I can search for likely matching orders' by email/name is a false capability claim, but it justifies the agent's own action (a search it cannot run), so it is coded under that action's mode per the 2026-09-28 precedence rule that names 0207."
+  },
+  {
+    "trace_id": "da7edb187489352334f6a0f9e408e3cb",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "The 'exception review' framing justifies the agent's own escalation (coded under unnecessary_escalation); the ticket #221 and 24h figures come from the tool output."
+  },
+  {
+    "trace_id": "366a9d1f7c556dcc8029f7856749c03e",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Precedence, delivery-date start and item-condition claims are all supported by cw-returns, opened in turn 1."
+  },
+  {
+    "trace_id": "6940d6ecc2fe344882185168c298325f",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "UNSURE: the 'overrides only through the store's Cartwheel policy' claims are carried by cw-store-overrides (never opened), so they fall under policy_claim_without_opening; the 30-day listing comes from the user and the ticket/SLA from the tool."
+  },
+  {
+    "trace_id": "5e43e18e2c630fd34eb9360d1a7bd681",
+    "label": 1,
+    "source": "agent proposal",
+    "evidence": "UNSURE: Reply says 'A replacement should only be considered if Little Fox Toys agrees and inventory is available'; no tool output or policy describes a replacement process (the 'refund already complete' claim is coded under acted_on_inconsistent_record instead)."
+  },
+  {
+    "trace_id": "2377828e00a5b1b8fb355218321549d0",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "The Google Forms advice concerns a third-party product, not the platform, the order or the agent's capabilities; the capability refusal is accurate."
+  },
+  {
+    "trace_id": "51ce3c91d7363d1c198414f85aab4dd5",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "UNSURE: status and dates match get_order; the hedged 'tracking ... should become available once shipped' is carried by cw-shipping (not opened), so it is a policy-mode issue rather than this one."
+  },
+  {
+    "trace_id": "30b58b491bcedfbda5c629e9b5c226a7",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "July 21 = June 21 delivery + 30 days per opened cw-returns; the store window comes from a snippet (policy mode, not this one); the ship-by framing does not change eligibility."
+  },
+  {
+    "trace_id": "adeeece73dc206c5178f2a4ee0dad834",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Every claim is carried by cw-returns (opened) or the Juniper policy (a policy-mode issue), so none lacks a source."
+  },
+  {
+    "trace_id": "100067ce1a35bb0c614f2d43edc89f1d",
+    "label": 1,
+    "source": "agent proposal",
+    "evidence": "UNSURE: Reply says it can 'check their specs'; search_products returns only id, store, title and price, so no tool supports a spec-lookup capability."
+  },
+  {
+    "trace_id": "4c714f2ea4e286ba239d8a08a9db8a21",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "'canceled' and 'not shipped' match get_order status cancelled and shipped_at null."
+  },
+  {
+    "trace_id": "06dd96de1f1c469f3e12f71f2bc5d81c",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Ship date June 29 and the return route come from get_order and the opened cw-cancellations."
+  },
+  {
+    "trace_id": "bee3b25cffb71092fead0ebffe4e641f",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Facts match get_order, opened policies and sla_hours 24; 'specialist will verify...' and the 'seller-supported exception' describe the agent's own escalation, so precedence puts them under escalation modes."
+  },
+  {
+    "trace_id": "8278f0e9077adbc3c1c60b1adc72db3a",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "'Bern.' is a world fact, not a claim about the platform, order or agent capabilities; this is an out-of-scope answer, a different mode."
+  },
+  {
+    "trace_id": "d1e3b1d1587742400f4bdf9ab859a6c1",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "UNSURE: 'Cartwheel does not offer a package-intercept action through support' is not stated in a policy but matches the agent's toolset and cw-cancellations (shipped: wait for delivery, then return); other facts are tool- or policy-backed."
+  },
+  {
+    "trace_id": "c1e4737a5487c7e5c2ad8ac9a0ceb76b",
+    "label": 1,
+    "source": "agent proposal",
+    "evidence": "UNSURE: Reply says 'No seller contact is needed before that review' and names a 'minimum proof to collect' (damage photos, statement); no opened policy or tool output describes seller-contact or proof requirements."
+  },
+  {
+    "trace_id": "71828ef00fa574e9de6d70b53739994c",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "'IT team will verify identity before resetting MFA' describes what the agent's own escalation will do, so precedence puts it under the escalation mode (boundary cites 0241)."
+  },
+  {
+    "trace_id": "5beb2ebaa9796c3efaf68c93c4f12538",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "UNSURE: 'I can't search for... without an order reference' is false (support has find_order), but it only justifies the agent's own refusal, so precedence puts it under that action's mode (skipped_order_search, dropped)."
+  },
+  {
+    "trace_id": "48795abd3f949b0f8f250615aeeed4ee",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "'Five matching orders', #4722 being the most recent and the June 28 ship date all match the find_order output."
+  },
+  {
+    "trace_id": "f264a1bae22470ca8e64bbce8f7e5a28",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Facts match get_order and opened policies plus sla_hours 24; the 'merchant exception/intercept' line describes the agent's own escalation, so precedence puts it under unnecessary_escalation."
+  },
+  {
+    "trace_id": "3ffb327fb79ed550081a009fa44dbb9e",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "\\$274.00 matches the search_products price_usd 274."
+  },
+  {
+    "trace_id": "6be3e7c3b1a1ef30937ec1b55b7cb48a",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "The claim is carried by the cw-store-overrides document (seen only as a snippet), so it falls under policy_claim_without_opening, not unsupported_claim."
+  },
+  {
+    "trace_id": "7b2dbf1b5844654cc3f3f184a6ab8183",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "UNSURE: Capability statements match the system prompt; 'help with support-ticket work' is vague, though the agent can create tickets via escalate_to_human."
+  },
+  {
+    "trace_id": "0a0ed15299d6a7841343879b9cceff62",
+    "label": 1,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "UNSURE: Reply says ticket #157 'specifically asks for verification of the carrier tracking, delivery scan, and any proof of delivery'; the escalation context only asked to 'verify actual carrier tracking and delivery details', so 'delivery scan' and 'proof of delivery' are not in any source."
+  },
+  {
+    "trace_id": "c93631f0b2a79de918106737cd3ab1ca",
+    "label": 1,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "'you do not need to send the damaged bag back' (and photos not needed) rests on nothing: cw-refunds says nothing about returns or photos, and no tool output addresses it; 'based on the instructions available' cites no actual instruction."
+  },
+  {
+    "trace_id": "582ff6de7932be39d2ce33f5696631e4",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "June 30 = delivered_at 2026-05-31 + 30 days per opened cw-returns; store override absence checked via opened cw-store-overrides and searches; not-refund-eligible from get_order."
+  },
+  {
+    "trace_id": "9af6bae6c5b9b895e808307d5cba8d04",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "June 30 follows from cw-returns; the calendar-day remark is hedged generic usage ('in normal usage'); ticket #175 and 24h from escalate_to_human output."
+  },
+  {
+    "trace_id": "35d7c339201f691f383fa729d29fd708",
+    "label": 1,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "'June 30, 2026 is your last day': get_order says delivered 2026-06-01 and cw-returns says within 30 days of delivery, which is July 1; June 30 is a stated date no source supports."
+  },
+  {
+    "trace_id": "3690482bf9c41c773c49bf9ef14dd3c2",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "July 22, 2026 = delivered_at 2026-06-22 + 30 days per opened cw-returns, with cw-store-overrides opened and no store override found."
+  },
+  {
+    "trace_id": "2e30a7f24ce8439c57c504fcffce2529",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "Facts come from get_order (delivered 2025-02-23, not refund-eligible), opened cw-returns/cw-store-overrides/cw-refunds, and ticket #196 with 24h from the escalation output; photo advice is hedged."
+  },
+  {
+    "trace_id": "fcc9ef446a3786071ccce38a8a27d286",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "UNSURE: 'not eligible for a second refund through Cartwheel' is an inference from status 'refunded' and refund_eligible false, not stated in a policy; other claims (ticket #202, 24h, 5-10 days, disputes human-handled) are sourced."
+  },
+  {
+    "trace_id": "4a5c8736e9dfddd3234a4c9ef22dde82",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "UNSURE: Policy statements are backed by opened cw-returns, cw-store-overrides and cw-disputes; 'Customers should be directed to your store's own policy page' is mild unsourced specificity but hedged, and the 'no settings toggle' claim is correctly framed as what the documentation says."
+  },
+  {
+    "trace_id": "3c3d3f7f623de979932b72995f4c9cc3",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "All rules are quoted from opened cw-store-overrides, cw-returns, cw-restocking-fees, cw-refunds, cw-disputes; the checkout remark is explicitly limited to the policies checked."
+  },
+  {
+    "trace_id": "a9638d4a08aabf7c9c6348ec22ba50a0",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "UNSURE: 'I can't override' is supported by refund_eligible false and the user saying the system blocks it; ticket #224 and 24h from the tool output; 'stores may allow an override' from cw-returns."
+  },
+  {
+    "trace_id": "71828ef00fa574e9de6d70b53739994c",
+    "label": 1,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "'They'll need to verify your identity before resetting MFA or issuing recovery codes' states what the human team will do; no tool output or policy supports it (the only source is the agent's own escalation context). Ticket #233 and 24h are sourced."
+  },
+  {
+    "trace_id": "7de704e3003f3ebc21364dc965f20d51",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "Order status, refund_eligible=false, $429.50, 5-10 days, human review over $100 all come from get_order and the opened cw-refunds policy; the 'exception review' mention is hypothetical and the offer to help get it reviewed matches the agent's escalate tool."
+  },
+  {
+    "trace_id": "5116ae19486139a12abe48b76e9fb908",
+    "label": 1,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "UNSURE: 'there should be no shipping change or new shipment' and 'does not turn into a return or cancellation of the entire order' are specific claims about how a partial refund affects the order; no tool output or opened policy (cw-refunds says only payout timing) supports them, and the agent itself escalated because policy is silent on shipping/discount effects."
+  },
+  {
+    "trace_id": "3c69f51a42d633d76221cb7a8eada719",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "Refund not eligible, $192.25 needs human review, 5-10 days (cw-refunds), 60-day dispute window and human handling (cw-disputes), ticket #174 and 24h SLA all come from opened policies and tool output."
+  },
+  {
+    "trace_id": "43643c931bc970fdb2274f4dae789484",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "Reply only states the permission_denied result, the escalation, ticket #177 and 24h SLA, all from tool output."
+  },
+  {
+    "trace_id": "ce8fe0dd05e4a09a5cd0b2806dda0db7",
+    "label": 1,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "UNSURE: 'June 30, 2026 is the final day of the 30-day return window' for delivery on June 1; cw-returns says within 30 days of delivery, which counts to July 1, so the stated date is not supported by the source (could be read as inclusive counting)."
+  },
+  {
+    "trace_id": "a8a38742edf04df96215de056a847500",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "Delivered April 4 2026, not refund-eligible (get_order), 30-day window and 5-10 days (opened cw-returns, cw-refunds), 60-day dispute window (opened cw-disputes); 'delivered months ago so outside the period' follows from the user message and dates."
+  },
+  {
+    "trace_id": "bcb4a0ca548495e9ea35fb9dde097782",
+    "label": 1,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "UNSURE: 'The agent will review whether a defect-related exception or applicable store warranty can be used' states what the human will do and implies store warranties exist; no source supports either (ticket #198 and 24h are supported)."
+  },
+  {
+    "trace_id": "ee52930e5b33176d022054502bdfa15d",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "30-day window (cw-returns), 7-day Saltbox override (opened store-saltbox-pantry-policy), delivery Feb 6 2025 and refund_eligible=false all from tool output."
+  },
+  {
+    "trace_id": "7074fa684f2df3df22c6cc2f4f2359bc",
+    "label": 1,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "The reply asserts 'Your store's policy page states that Juniper Home Goods accepts returns within 14 days' and 'the policy record I can see confirms the 14-day window', but the user never named their store as Juniper Home Goods; no source ties this merchant to that store (the search just surfaced a matching 14-day policy)."
+  },
+  {
+    "trace_id": "da8e48ab417c635230ae8206059ca4a0",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "Delivered June 15 2026 + 30 days = July 15 (cw-returns); no Clover Field Naturals override found in search, stated as such; eligibility from get_order."
+  },
+  {
+    "trace_id": "360caf573701837dd8591e5606997783",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "Order facts from get_order, human handling of disputes and pause of pending refund (opened cw-disputes), 24h (cw-escalations), ticket #226; evidence list is advice explicitly labeled as not mandated by policy."
+  },
+  {
+    "trace_id": "f264a1bae22470ca8e64bbce8f7e5a28",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "Shipped June 28 and not refund-eligible (get_order), cancel-only-before-ship (opened cw-cancellations), 30-day return and store override (opened cw-returns, cw-store-overrides), ticket #236 and 24h from tool output; exception/intercept is the stated purpose of the escalation."
+  },
+  {
+    "trace_id": "3ece27b02a4923560fa8d4370b447148",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "Quotes cw-returns and store-second-stitch-apparel-policy accurately; ticket #168 and 24h come from escalate_to_human; unknowns are stated as unknown."
+  },
+  {
+    "trace_id": "7fba1ccd61cb2a07c1bea31bfe427212",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "30-day window through July 11 from delivery 2026-06-11 (cw-returns), payout deduction from cw-payouts, ticket #173 and 24h from tool; fee/store-policy statements are hedged."
+  },
+  {
+    "trace_id": "0b7fef37f6bf8beab273348ac77b4a04",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "Delivery 2026-05-31 and refund_eligible=false from get_order; 30 days gives June 30; 'found no Atlas override' matches searches that surfaced none; cw-returns and cw-store-overrides opened."
+  },
+  {
+    "trace_id": "3c4f89c39aaa4ceaeae96bdba374dbb7",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "UNSURE: Order list is scoped to store 5 and product 280 belongs to store 7 (tool outputs), so core claims are supported; 'for privacy, I can't access' that store's records and a human 'restoring' store access are not directly supported but are hedged/offered."
+  },
+  {
+    "trace_id": "c4bffb8c0c28c386678a0818099fab17",
+    "label": 1,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "Reply states 'the delivery date is the first day of the window, and the 30th / last day is Tuesday, June 30'; cw-returns only says 'within 30 days of delivery' and never says whether delivery day counts, so the exact June 30 date and the 'calendar days / weekends do not extend' rule are unsupported."
+  },
+  {
+    "trace_id": "7c373e28ff18d9af53a4bdd919894b7e",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "UNSURE: Order 5620 total $205.50 and status refunded are from get_order; 'can't submit a second dispute' is a mild capability statement but follows from the refunded status, and the bank-processing remark is hedged."
+  },
+  {
+    "trace_id": "8425821db1d75652f01882990fc5fafc",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "Go by store's 14-day if listed: hedged on user's stated store page; override and 30 days from delivery come from opened cw-returns."
+  },
+  {
+    "trace_id": "2435c6805a811f223eaa944e7e731560",
+    "label": 1,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "UNSURE: 'support needs to decide whether a return, a returnless refund, or no refund is appropriate', 'under the standard process, yes the buyer would return the item' (as refund prerequisite) and 'can't issue this refund yourself in the normal flow' are not stated in cw-returns, cw-refunds or the order record."
+  },
+  {
+    "trace_id": "aa3ac831838fbd39dd71218acb62dfc1",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "July 10 = delivery 2026-06-26 + 14 days from opened store-juniper-home-goods-policy; cancellation rule from cw-cancellations; >$100 human review and 5-10 days from cw-refunds; offer to submit refund for review is a conditional offer."
+  },
+  {
+    "trace_id": "5ef4d069f6dbfa7443a1f1f9927b6a13",
+    "label": 1,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "Reply says 'With the customer identifier and approximate timeframe, I can search for likely matching orders', and asks for name/email/phone/ZIP as search keys; no tool output shows the agent can search by those (find_order was queried by product title elsewhere), so this capability claim is unsupported."
+  },
+  {
+    "trace_id": "bf317af91ff35c6aff3b58fd66e399f8",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "All order fields (#3856, $69.25, placed 2026-07-01, status placed, refund_eligible false) are from get_order; 'today' matches user's 'placed today'."
+  },
+  {
+    "trace_id": "81548ac16ff3beccfa9974da3cf34828",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "UNSURE: Facts, 30/60-day windows, pause-on-dispute and 24h come from tool outputs/opened policies and the escalation context; 'the disputes specialist is retrieving these records' and applying the buyer dispute window to a bank filing are mild extrapolations, the rest is advice/hedged draft."
+  },
+  {
+    "trace_id": "d2eedf82fc3e2245978adaafcdda7a82",
+    "label": 1,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "UNSURE: 'A support agent will follow up within 24 hours with the return authorization/instructions' - the 24h SLA comes from the ticket, but no source says the human will issue a return authorization or instructions."
+  },
+  {
+    "trace_id": "790e50f651d38819997bc9997c17128a",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "Dates come from get_order (delivered 2026-06-01) plus cw-returns (30 days from delivery) and cw-store-overrides; the reply states the policy does not say whether ship or receipt counts."
+  },
+  {
+    "trace_id": "e3adc13412f75ea118e7cb75bfa07ed5",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "Delivered 2026-05-31 + 30 days = Tuesday June 30, 2026 per cw-returns; 'not refund-eligible' is from get_order; override searches were run."
+  },
+  {
+    "trace_id": "0bb3e5551b7fa7296fce4296b698a2f3",
+    "label": 1,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "Tells the merchant to use a 'store switcher/account menu', then 'Orders' and filter by Status, Delivery date, Item in the merchant dashboard; no tool output or policy shows such UI controls exist."
+  },
+  {
+    "trace_id": "c96ae47d81de6a0d853dbfe078ead743",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "UNSURE: ticket #188 and 24h SLA are from the tool; 'will follow up ... to help remove the expired card' restates the user's request as the ticket purpose, and the card-details warning is generic advice."
+  },
+  {
+    "trace_id": "a55b5f68478e685960b1c85326daddcf",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "Order #3782, $214.75, delivered June 15, status refunded all from get_order/find_order; remaining statements are generic advice or a question."
+  },
+  {
+    "trace_id": "e4a40eee6111d9c28012e9997bdf202e",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "Refund-ineligibility, 21-day store window (seen in a search snippet only, which is the other mode), delivery date, $100 review rule and 5-10 days come from tool output or opened policies; ticket #201 and 24h from the tool."
+  },
+  {
+    "trace_id": "a0ed4161e3256a341f7e0e6c9988f8a3",
+    "label": 1,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "UNSURE: 'if it is [approved], will confirm the return-label process' asserts a specific future human action no source supports; other claims (not eligible, 30 days, $100 review) are supported."
+  },
+  {
+    "trace_id": "275bc4cebc1d7dbadb4b05d5ca1a6371",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "UNSURE: shipped June 28, not refund-eligible, $100 review, tracking/7-day transit, ticket #216 and 24h are from tools/opened policies; the reply honestly says no intercept process was found."
+  },
+  {
+    "trace_id": "da7edb187489352334f6a0f9e408e3cb",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "Shipped-order non-cancellation and wait-for-delivery return come from opened cw-cancellations; $100 review from cw-refunds; ticket #221 and 24h from the tool."
+  },
+  {
+    "trace_id": "bee3b25cffb71092fead0ebffe4e641f",
+    "label": 1,
+    "source": "agent proposal (sonnet, 2026-11-09 boundary)",
+    "evidence": "UNSURE: order fields and policy statements are supported, but 'They will verify the refund transaction, payment/dispute state, tracking, any historical damage contacts or photo evidence, and seller-notification history' states specific human actions/records no source supports."
+  },
+  {
+    "trace_id": "e50bb2a21e9ac9e31da4ca2f9b97a89d",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-12, boundary + system prompt + RESP-6)",
+    "evidence": "UNSURE: \"Yes — you’re still within the return window.\" Delivery date June 2 and 30-day window (get_order, opened cw-returns) support \"July 2, 2026\"; \"still within\" rests only on the user's \"about a month ago\", no current-date source."
+  },
+  {
+    "trace_id": "ed22b8d6bc16f4b6c304cceb84ec966e",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-12, boundary + system prompt + RESP-6)",
+    "evidence": "\"July 17, 2026\" = delivered 2026-06-17 (get_order) + 30 days (opened cw-returns), per RESP-6."
+  },
+  {
+    "trace_id": "fe2a36b15dc38a1fc748c80cd2519cd2",
+    "label": 1,
+    "source": "agent proposal (sonnet, 2026-11-12, boundary + system prompt + RESP-6)",
+    "evidence": "UNSURE: \"the store-specific policy wins for that store's orders, as long as its terms are clearly posted.\" Opened cw-returns only says stores \"may override\"; cw-store-overrides (precedence, posted-on-store-page condition) was never opened or returned."
+  },
+  {
+    "trace_id": "b8eabb6a322a0130bda2731671be2b9e",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-12, boundary + system prompt + RESP-6)",
+    "evidence": "\"Thursday, July 9, 2026\" = delivered 2026-06-09 + 30 days from opened cw-returns; refund-eligible from get_order; the carrier-handoff caveat is hedged."
+  },
+  {
+    "trace_id": "6c3c6ceb84501a61ff18378a91f51cea",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-12, boundary + system prompt + RESP-6)",
+    "evidence": "Claims about store override, 30-day default, and 60-day dispute with human handling all match opened cw-store-overrides, cw-returns, cw-disputes."
+  },
+  {
+    "trace_id": "cf103a7ff0c6578d56a4ebb9070aa458",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-12, boundary + system prompt + RESP-6)",
+    "evidence": "\"July 22, 2026\" = delivered 2026-06-22 (get_order) + 30 days (opened cw-returns); return-eligible from get_order."
+  },
+  {
+    "trace_id": "9103d916bb406889d93f7fc62a21d52c",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-12, boundary + system prompt + RESP-6)",
+    "evidence": "\"the store policy wins in a conflict\" and the policy-page test come from opened cw-store-overrides; the checkout-visibility statement is a correct reading of it; the ticket steps are generic and hedged."
+  },
+  {
+    "trace_id": "5ed86196019321567c2ed498f9daba4c",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-12, boundary + system prompt + RESP-6)",
+    "evidence": "The reply's \"the override is valid only if it appears on that store's own policy page\" and \"the store policy wins\" are supported by the opened cw-store-overrides policy; the rest is conditional advice."
+  },
+  {
+    "trace_id": "75bc470f1a747e9f7e4f2324a0c2dd57",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-12, boundary + system prompt + RESP-6)",
+    "evidence": "\"July 10, 2026\" equals delivered_at 2026-06-10 plus 30 days (cw-returns opened, RESP-6); no store override for Paper Lantern Press was found, so the default window is the supported one."
+  },
+  {
+    "trace_id": "b047f47db4e20fe77379ec549dfab305",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-12, boundary + system prompt + RESP-6)",
+    "evidence": "\"July 3, 2026\" is delivered 2026-06-12 plus the 21 days in the opened store-meridian-cycles-policy; the \"support ticket\" and \"within 24 hours\" come from the escalate_to_human output (ticket 205, sla_hours 24)."
+  },
+  {
+    "trace_id": "45c863a3e412e06fba2bb629cadcd394",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-12, boundary + system prompt + RESP-6)",
+    "evidence": "\"March 6, 2026\" is delivered 2026-02-04 plus 30 days (cw-returns, RESP-6) and \"not refund-eligible\" is in the get_order output; \"did not find a published Clover Field Naturals policy\" matches the searches, and the override rule comes from the opened cw-store-overrides."
+  },
+  {
+    "trace_id": "fd1bebb2170b09283d6f4ac652c0d952",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-12, boundary + system prompt + RESP-6)",
+    "evidence": "\"July 4, 2026\" is delivered 2026-06-04 plus 30 days per the opened cw-returns, and \"return-eligible\" matches refund_eligible true in get_order."
+  },
+  {
+    "trace_id": "47b1a011a659facbce8ba6a39f419f3b",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-12, boundary + system prompt + RESP-6)",
+    "evidence": "\"July 15, 2026\" is delivered 2026-06-15 plus 30 days per the opened cw-returns, and \"return-eligible\" matches get_order."
+  },
+  {
+    "trace_id": "40ba847814b0a02f3d0b3c35d7aa6e0c",
+    "label": 0,
+    "source": "agent proposal (sonnet, 2026-11-12, boundary + system prompt + RESP-6)",
+    "evidence": "\"Saturday, July 4, 2026\" is June 4 plus 30 days under the opened store-second-stitch-apparel-policy and cw-returns, and \"does not specifically say that a carrier postmark alone qualifies\" is true of the opened policies; the receipt advice is generic."
+  }
+]

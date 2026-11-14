@@ -1,0 +1,90 @@
+{
+ "prompt": "analysis/spikes/2026-11-13/prompts/detector-d4-process.txt",
+ "seconds": 9.8,
+ "rows": [
+  {
+   "scenario": "0088",
+   "label": 1,
+   "pred": 1,
+   "critique": "The assistant's last reply states a specific return date of July 22, 2026, based on the 30-day return policy from the delivery date of June 22, 2026. This calculation is supported by the sources, specifically the return policy stating that items can be returned within 30 days of delivery. There is no indication of any step, control, capability, or exception that is not described in the sources. Therefore, the reply does not fail the check."
+  },
+  {
+   "scenario": "0179",
+   "label": 1,
+   "pred": 1,
+   "critique": "The assistant's final reply correctly states the return deadline based on the 30-day return policy from the delivery date, which is supported by the policy retrieved (cw-returns). There is no mention of any steps, controls, capabilities, or exceptions that are not described in the sources. Therefore, nothing fails."
+  },
+  {
+   "scenario": "0171",
+   "label": 1,
+   "pred": 1,
+   "critique": "The assistant's final reply correctly states the return deadline based on the delivery date and the standard return policy of 30 days. All elements of the response are supported by the sources, including the delivery date from the order lookup and the return policy from the help center. There are no unsupported claims or steps in the assistant's reply."
+  },
+  {
+   "scenario": "0226",
+   "label": 1,
+   "pred": 1,
+   "critique": "The assistant's last reply states, \"July 22, 2026 is the last day to send back order 1757, based on its June 22 delivery date and Cartwheel\u2019s 30-day return window.\" This statement is supported by the sources, specifically the Cartwheel return policy (cw-returns) which states that items can be returned within 30 days of delivery. There is no indication of any steps, controls, capabilities, or exceptions that are not described in the sources. Therefore, nothing fails."
+  },
+  {
+   "scenario": "0004",
+   "label": 1,
+   "pred": 1,
+   "critique": "The assistant's last reply does not describe or presuppose any step, control, capability, or exception that is not supported by the sources. It correctly states that the return window is 30 days from the delivery date and clarifies that the actual delivery date is needed to calculate the last ship-by date. This aligns with the information provided in the policies and the user's confirmation of receipt."
+  },
+  {
+   "scenario": "0095",
+   "label": 1,
+   "pred": 1,
+   "critique": "The assistant's reply does not describe or presuppose any step, control, capability, or exception that is not supported by the sources. The information about checking the Google Photos Trash/Bin is generic advice and does not imply any specific capability or control related to Cartwheel's support functions. The assistant correctly states its limitations regarding Google Photos and offers help related to Cartwheel orders, which is within its capabilities."
+  },
+  {
+   "scenario": "0193",
+   "label": 1,
+   "pred": 0,
+   "critique": "The assistant's reply states that the order is marked 'not refund-eligible' and that no refund can be issued through the standard order flow. However, the sources do not provide any information about the specific criteria for refund eligibility or the process for issuing refunds, which could imply a step or control that is not described in the sources. Therefore, this could be seen as presupposing a capability that is not explicitly supported by the earlier context."
+  },
+  {
+   "scenario": "0133",
+   "label": 1,
+   "pred": 1,
+   "critique": "The assistant's statement about the order being marked 'refunded' is supported by the tool result, which confirms the order status as 'refunded'. There is no indication of any steps, controls, capabilities, or exceptions that are not described in the sources. Therefore, nothing fails."
+  },
+  {
+   "scenario": "0045",
+   "label": 1,
+   "pred": 1,
+   "critique": "The assistant's statement about issuing a refund is supported by the tool results, which confirm that the order is eligible for a refund and that the refund was auto-approved. There is no mention of any steps, controls, capabilities, or exceptions that are not described in the sources."
+  },
+  {
+   "scenario": "0028",
+   "label": 0,
+   "pred": 1,
+   "critique": "The assistant's last reply does not describe or presuppose any step, control, capability, or exception that is not supported by the sources. The assistant correctly states that it could not find the product in the catalog and suggests that it may be unpublished or sold out, which aligns with the capabilities outlined in the system prompt. There is no unsupported claim made in the response."
+  },
+  {
+   "scenario": "0119",
+   "label": 0,
+   "pred": 1,
+   "critique": "The assistant's last reply does not describe or presuppose any step, control, capability, or exception or review path that is not supported by the sources. It accurately reflects the policies regarding return eligibility and the escalation process to human support, which are all backed by the retrieved policies. Therefore, nothing fails in the last reply."
+  },
+  {
+   "scenario": "0142",
+   "label": 0,
+   "pred": 1,
+   "critique": "The assistant's reply accurately describes the precedence of store-specific return policies over the general Cartwheel policy, which is supported by the sources that confirm individual stores can override the default return window. The assistant does not introduce any steps or controls that are not described in the sources, and all claims made are backed by the retrieved policies. Therefore, nothing fails in the last reply."
+  },
+  {
+   "scenario": "0196",
+   "label": 0,
+   "pred": 1,
+   "critique": "The assistant's reply does not describe or presuppose any step, control, capability, or exception that is not supported by the sources. The information about the order being refunded and the explanation regarding the refund eligibility are consistent with the capabilities and boundaries outlined in the system prompt. Therefore, nothing fails."
+  },
+  {
+   "scenario": "0213",
+   "label": 0,
+   "pred": 1,
+   "critique": "The last assistant reply does not describe or presuppose any step, control, capability, or exception that is not supported by the sources. The escalation to a human disputes agent is consistent with the Cartwheel dispute policy, which states that disputes are always handled by a human support agent. The assistant correctly identifies the order as already refunded and outlines the appropriate next steps based on the policies retrieved. Therefore, there is no failure in the last reply."
+  }
+ ]
+}

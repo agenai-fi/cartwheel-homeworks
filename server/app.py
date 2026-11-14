@@ -123,8 +123,42 @@ def create_session(body: SessionCreate) -> dict[str, Any]:
     session id and a signed token. The token payload must contain session_id,
     user_id, role, store_id, and issued_at.
     """
-    ### YOUR CODE HERE (HW2)
-    raise NotImplementedError("HW2: implement POST /sessions")
+    # Order matters: reject a malformed claim before touching the database,
+    # and establish the user exists before comparing anything to it.
+    if body.role not in ROLES:
+        raise HTTPException(status_code=400, detail=f"unknown role: {body.role!r}")
+
+    with db.connection() as conn:
+        user = db.get_user(conn, body.user_id)
+    if user is None:
+        raise HTTPException(status_code=404, detail=f"no user #{body.user_id}")
+    if user.role != body.role:
+        # Exists, but the claim is not yours. 404 for both would hide whether
+        # the user exists; the course keeps the distinction visible.
+        raise HTTPException(
+            status_code=403,
+            detail=f"user #{user.id} is not a {body.role}",
+        )
+
+    # Unpredictable on purpose: a guessable id would leave the signature as the
+    # only thing standing between a caller and someone else's session.
+    session_id = uuid.uuid4().hex
+    # Every field is read off the verified database row, never off the request
+    # body, and never off a later chat message. store_id in particular was
+    # never sent by the client.
+    ctx = AuthContext(user_id=user.id, role=user.role, store_id=user.store_id)
+    _SESSIONS[session_id] = (ctx, SQLiteSession(session_id, SESSIONS_DB))
+
+    token = create_token(
+        {
+            "session_id": session_id,
+            "user_id": ctx.user_id,
+            "role": ctx.role,
+            "store_id": ctx.store_id,
+            "issued_at": int(time.time()),
+        }
+    )
+    return {"session_id": session_id, "token": token}
 
 
 def _authorize(session_id: str, authorization: str | None) -> AuthContext:
@@ -138,6 +172,15 @@ def _authorize(session_id: str, authorization: str | None) -> AuthContext:
     if session_id not in _SESSIONS:
         raise HTTPException(status_code=404, detail="unknown session (server restarted?)")
     return _SESSIONS[session_id][0]
+
+
+def _genai_messages(role: str, text: str) -> str:
+    """One OTel GenAI message, serialized.
+
+    Span attributes hold only scalars and flat sequences of scalars, so the
+    list-of-dicts GenAI format has to travel as a JSON string.
+    """
+    return json.dumps([{"role": role, "parts": [{"type": "text", "content": text}]}])
 
 
 @app.post("/sessions/{session_id}/messages")
@@ -158,8 +201,57 @@ async def post_message(
     gen_ai.output.messages on the root span as JSON arrays of OTel GenAI
     messages with role and parts fields.
     """
-    ### YOUR CODE HERE (HW2)
-    raise NotImplementedError("HW2: implement the traced message endpoint")
+    ctx = _authorize(session_id, authorization)
+    # _authorize hands back only the context; the conversation history is the
+    # other half of the tuple and Runner.run needs it, or every turn starts
+    # from an empty history.
+    _, session = _SESSIONS[session_id]
+    agent = build_agent(ctx, model=body.model)
+    # Hash of the TEMPLATE only. Role, user_id and store_id are substituted
+    # after this point, so the version is stable across callers and moves only
+    # when the prompt text itself changes.
+    version = prompt_version()
+    # Gate content on the same flag OpenLLMetry reads, so the root span and the
+    # model spans agree about what was captured.
+    record_content = (
+        os.environ.get("TRACELOOP_TRACE_CONTENT", "false").strip().lower() == "true"
+    )
+
+    with _tracer.start_as_current_span("cartwheel.session_message") as span:
+        if span.is_recording():
+            span.set_attribute("cartwheel.session_id", session_id)
+            span.set_attribute("cartwheel.user_role", ctx.role)
+            span.set_attribute("cartwheel.user_id", str(ctx.user_id))
+            span.set_attribute("cartwheel.prompt_version", version)
+            # Nonempty, not merely not-None: "" is a valid str but not a valid
+            # scenario id, and None would be dropped as an invalid value anyway.
+            if body.scenario_id:
+                span.set_attribute("cartwheel.scenario_id", body.scenario_id)
+            if record_content:
+                span.set_attribute(
+                    "gen_ai.input.messages", _genai_messages("user", body.message)
+                )
+
+        # Inside the span on purpose: OpenLLMetry parents the model and tool
+        # spans onto whatever is current when it opens them.
+        result = await Runner.run(
+            agent,
+            body.message,
+            session=session,
+            context=ctx,
+            max_turns=MAX_TURNS,
+        )
+        # str(): final_output is a str here, but an agent with an output_type
+        # returns a structured object, and the attribute must be text.
+        reply = str(result.final_output)
+
+        # Only knowable now, and the span ends at the end of this block.
+        if span.is_recording() and record_content:
+            span.set_attribute(
+                "gen_ai.output.messages", _genai_messages("assistant", reply)
+            )
+
+    return {"session_id": session_id, "reply": reply, "prompt_version": version}
 
 
 @app.get("/health")

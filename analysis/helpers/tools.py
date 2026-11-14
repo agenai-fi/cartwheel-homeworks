@@ -519,6 +519,7 @@ def run_judge(
         prediction cache on disk.
     """
     judge = _load_judge(judge_id)
+    guards.require_frozen_for_test(judge, split)  # no test predictions before the freeze (hw5.md:11)
     mode = judge["mode"]
     if not isinstance(batch_size, int) or batch_size < 1:
         raise ValueError("batch_size must be a positive integer")

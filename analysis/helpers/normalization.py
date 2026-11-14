@@ -191,6 +191,9 @@ def _messages(record: dict[str, Any]) -> list[dict[str, Any]]:
 
 
 def _flatten(messages: list[dict[str, Any]]) -> str:
+    """One line per message, `role: content`. Tool lines name the tool
+    (`tool_call get_policy: {...}`), since a judge reads only this text and
+    the arguments alone do not say which lookup ran."""
     parts: list[str] = []
     for message in messages:
         role = str(message.get("role") or "step")
@@ -198,9 +201,29 @@ def _flatten(messages: list[dict[str, Any]]) -> str:
             content = _text(message.get("arguments"))
         else:
             content = _text(message.get("text", message.get("content")))
+        if role in {"tool_call", "tool_result"} and message.get("name"):
+            role = f"{role} {message['name']}"
         if content:
             parts.append(f"{role}: {content}")
     return "\n".join(parts)
+
+
+def _message_features(messages: list[dict[str, Any]]) -> dict[str, int]:
+    """Features derived from the message list. One function, so a merged
+    conversation recomputes every one of them rather than a subset."""
+    tool_calls = [m for m in messages if m.get("role") == "tool_call"]
+    tools = {str(m.get("name")) for m in tool_calls if m.get("name")}
+    retrieval = any(
+        "retriev" in str(m.get("label", m.get("name", ""))).lower()
+        or "policy" in str(m.get("label", m.get("name", ""))).lower()
+        for m in messages
+    )
+    return {
+        "turn_count": sum(m.get("role") in {"user", "assistant"} for m in messages),
+        "tool_call_count": len(tool_calls),
+        "distinct_tools": len(tools),
+        "has_retrieval": int(retrieval),
+    }
 
 
 def normalize_trace(value: Any) -> dict[str, Any]:
@@ -221,13 +244,6 @@ def normalize_trace(value: Any) -> dict[str, Any]:
     if not messages and not isinstance(raw.get("features"), dict):
         raise ValueError(f"trace {trace_id} contains no renderable messages or segments")
 
-    tool_calls = [m for m in messages if m.get("role") == "tool_call"]
-    tools = {str(m.get("name")) for m in tool_calls if m.get("name")}
-    retrieval = any(
-        "retriev" in str(m.get("label", m.get("name", ""))).lower()
-        or "policy" in str(m.get("label", m.get("name", ""))).lower()
-        for m in messages
-    )
     text = _flatten(messages)
     usage = _data(raw.get("usage"))
     token_total = 0
@@ -235,15 +251,8 @@ def normalize_trace(value: Any) -> dict[str, Any]:
         token_total = int(usage.get("total_tokens") or usage.get("total") or 0)
     supplied_features = raw.get("features")
     features = dict(supplied_features) if isinstance(supplied_features, dict) else {}
-    features.update(
-        {
-            "turn_count": sum(m.get("role") in {"user", "assistant"} for m in messages),
-            "tool_call_count": len(tool_calls),
-            "distinct_tools": len(tools),
-            "has_retrieval": int(retrieval),
-            "tokens": int(features.get("tokens") or token_total or len(text.split())),
-        }
-    )
+    features.update(_message_features(messages))
+    features["tokens"] = int(features.get("tokens") or token_total or len(text.split()))
     meta = {
         "role": metadata.get("cartwheel.user_role") or metadata.get("role"),
         "store": metadata.get("cartwheel.store_id") or metadata.get("store_id"),
@@ -307,21 +316,21 @@ def _merge_multi_turn(traces: list[dict[str, Any]]) -> list[dict[str, Any]]:
             merged.append(group[0])
             continue
         group.sort(key=lambda t: t.get("timestamp") or "")
-        first = dict(group[0])
-        for later in group[1:]:
-            first["trace"].extend(later["trace"])
-            first["observations"].extend(later["observations"])
-            first["models"] = list(
-                dict.fromkeys(first["models"] + later["models"])
-            )
-        first["text"] = _flatten(first["trace"])
-        first["features"]["turn_count"] = sum(
-            m.get("role") in {"user", "assistant"} for m in first["trace"]
+        messages = [m for t in group for m in t["trace"]]
+        merged.append(
+            {
+                **group[0],
+                "trace": messages,
+                "observations": [o for t in group for o in t["observations"]],
+                "models": list(dict.fromkeys(m for t in group for m in t["models"])),
+                "text": _flatten(messages),
+                "features": {
+                    **group[0]["features"],
+                    **_message_features(messages),
+                    "tokens": sum(t["features"]["tokens"] for t in group),
+                },
+            }
         )
-        first["features"]["tool_call_count"] = sum(
-            m.get("role") == "tool_call" for m in first["trace"]
-        )
-        merged.append(first)
     return merged
 
 

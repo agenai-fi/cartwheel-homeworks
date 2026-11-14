@@ -176,6 +176,27 @@ def _trace_text(trace_id: str, traces_by_id: dict[str, dict[str, Any]] | None = 
     raise ValueError(f"trace {trace_id} has no normalized content for judge evaluation")
 
 
+def judge_rows(trace_ids: list[str]) -> list[dict[str, str]]:
+    """``{trace_id, content}`` rows the judge reads.
+
+    When every requested id has an HW5 prepared input (``state/hw5_trace_inputs.json``:
+    the agent's system prompt, then every turn up to the labeled one), the batch is
+    judged on those inputs; this covers every train/dev/test split run. Otherwise
+    the whole batch reads :func:`load_store_traces`, so one call never mixes the two
+    formats. Store text has no system prompt: rates measured on the splits do not
+    transfer to it, so a prevalence correction on the store slice is not valid
+    until the store input is built the same way. Before 2026-11-13 every id took
+    the store path, so the judge never saw the system prompt.
+    """
+    from .normalization import normalize_trace
+
+    inputs = _state.read_json(_state.state_path("hw5_trace_inputs.json"), default=[])
+    index = {t["trace_id"]: t for t in (normalize_trace(r) for r in inputs)}
+    if any(str(tid) not in index for tid in trace_ids):
+        index = {t["trace_id"]: t for t in load_store_traces()}
+    return [{"trace_id": str(tid), "content": _trace_text(tid, index)} for tid in trace_ids]
+
+
 def _classify_docetl(
     prompt_text: str, trace_ids: list[str], model: str
 ) -> dict[str, int]:  # pragma: no cover - live path
@@ -219,10 +240,7 @@ def _run_docetl_map(  # pragma: no cover - requires the docetl extra + a live ke
         PipelineStep,
     )
 
-    store = {trace["trace_id"]: trace for trace in load_store_traces()}
-    rows = [
-        {"trace_id": tid, "content": _trace_text(tid, store)} for tid in trace_ids
-    ]
+    rows = judge_rows(trace_ids)
     tmpdir = Path(tempfile.mkdtemp(prefix="cartwheel-docetl-"))
     in_path = tmpdir / "traces.json"
     out_path = tmpdir / "out.json"
@@ -244,8 +262,20 @@ def _run_docetl_map(  # pragma: no cover - requires the docetl extra + a live ke
             "schema": {
                 "critique": "string",
                 "result": "string",
-            }
+            },
+            # DocETL's default tool mode puts "strict" outside the function, so OpenAI does not
+            # enforce required keys; structured_output sends a strict json_schema that does.
+            "mode": "structured_output",
         },
+        # A model can drop a key (DocETL then fills "Not found"); re-ask instead of failing the batch.
+        validate=[
+            "output['result'] in ('Pass', 'Fail')",
+            "isinstance(output['critique'], str) and output['critique'].strip() != ''",
+        ],
+        num_retries_on_validate_failure=2,
+        # Temperature 0 halves verdict flips between identical runs (analysis/report/spike-v1-dev-noise.json).
+        # Reasoning models (gpt-5*, o*) accept only the default temperature.
+        litellm_completion_kwargs={} if model.startswith(("gpt-5", "o")) else {"temperature": 0},
     )
     pipeline = Pipeline(
         name="cartwheel_judge_batch",

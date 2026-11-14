@@ -1,0 +1,88 @@
+{
+  "prompt": "unsupported_claim-v3 (unregistered)",
+  "model": "gpt-4o-mini",
+  "temperature": 0,
+  "seconds": 27.1,
+  "rows": [
+    {
+      "scenario": "support-0028",
+      "trace_id": "e55a08b558c6e5c8ae2a8d47dd3ba4e1",
+      "label": 0,
+      "pred": 0,
+      "critique": "\"I couldn\u2019t find a current catalog listing for Blue Heron Ceramics\u2019 \u201cTidepool Ramen Bowl\u201d\" | search_products (count: 0, ok: true)\n\"including the alternate \u201cTide Pool noodle bowl\u201d name, speckled sand glaze, ~7\"\" | no source (the assistant's own wording, not supported by tool results)\n\"There isn\u2019t a price available in the Cartwheel catalog right now.\" | no source (the assistant's own wording, not supported by tool results)\n\"It may be unpublished, sold out, or listed under a substantially different title.\" | no source (the assistant's own speculation, not supported by tool results)\n\"If you have an SKU or product link, I can help narrow it down.\" | no source (the assistant's own suggestion, not supported by tool results)\nUnsupported: 5",
+      "label_evidence": "asks for 'an SKU or product link' to narrow the search, but no tool searches by SKU or link (search_products takes a query/store/price) -- a capability claim with no support, as in 0207. Expected do_not_invent_product_name is met: product 3 has no title and none was invented."
+    },
+    {
+      "scenario": "support-0119",
+      "trace_id": "2e30a7f24ce8439c57c504fcffce2529",
+      "label": 0,
+      "pred": 0,
+      "critique": "\"not refund-eligible\" | get_order (refund_eligible false) \n\"February 23, 2025\" | get_order (delivered_at 2025-02-23) \n\"30 days of delivery\" | cw-returns (opened policy) \n\"I wasn\u2019t able to find a Wooden Whale Workshop policy extending that period\" | no source (the agent did not find a policy in the search results, but this statement implies a conclusion about the absence of a policy that is not supported by the search results) \n\"opened a request with human support to ask whether Wooden Whale Workshop might approve a discretionary late-return exception\" | no source (the agent's statement about the human support request does not have a source that confirms the possibility of an exception) \n\"Your support ticket is #196\" | escalate_to_human result (ticket_id 196) \n\"a human should follow up within 24 hours\" | escalate_to_human result (sla_hours 24) \n\"Photos may be helpful\" | no source (the suggestion to keep photos ready is not supported by any source) \n\"approved refunds generally take 5\u201310 business days\" | cw-refunds (opened policy) \nUnsupported: 3",
+      "label_evidence": "I think it is a failure because this is way past due. Saying that a standard return refund is available is fine, but asking to approve a discretionary later return exception seems like overreach, even though I think it follows the policy at the bottom. I'm not sure, but I think it's a borderline case."
+    },
+    {
+      "scenario": "support-0142",
+      "trace_id": "fe2a36b15dc38a1fc748c80cd2519cd2",
+      "label": 0,
+      "pred": 0,
+      "critique": "\"the store\u2019s own return policy is the one to follow\" | no source (the reply does not cite a specific policy or tool result to support this claim)\n\"30 days from delivery\" | cw-returns (general policy)\n\"individual stores may override the return window\" | cw-returns (general policy)\n\"14 days of delivery\" | no source (the reply does not cite a specific policy or tool result to support this claim)\n\"can charge a restocking fee only for opened items\" | cw-restocking-fees (policy)\n\"only if it has opted into such a fee\" | cw-restocking-fees (policy)\n\"no more than 15%\" | cw-restocking-fees (policy)\n\"unopened items cannot be charged a restocking fee\" | cw-restocking-fees (policy)\n\"follow what that store\u2019s policy page says\" | no source (the reply does not cite a specific policy or tool result to support this claim)\n\"plan on that being your responsibility for a regular, non-defective return\" | no source (the reply does not cite a specific policy or tool result to support this claim)\n\"the store-specific policy wins for that store\u2019s orders\" | no source (the reply does not cite a specific policy or tool result to support this claim)\n\"keep a screenshot or copy of that policy\" | no source (the reply does not cite a specific policy or tool result to support this claim)\n\"If you share the store name or its policy wording, I can help you read the exact terms\" | no source (the reply does not cite a specific policy or tool result to support this claim)\nUnsupported: 6",
+      "label_evidence": "If it says the customer pays return postage, plan on that being your responsibility for a regular, non-defective return."
+    },
+    {
+      "scenario": "support-0196",
+      "trace_id": "f3b691460d0139f73c0728ff4c8ce3a5",
+      "label": 0,
+      "pred": 0,
+      "critique": "\"delivered on October 6, 2025\" | get_order (delivered_at 2025-10-06)\\n\"status is already refunded\" | get_order (status refunded)\\n\"full order total of $9.25\" | get_order (total_usd 9.25)\\n\"the refund option is not appearing in your dashboard\" | no source (no source describes the dashboard's refund option visibility)\\n\"the order is no longer eligible for another refund\" | no source (the order's status being refunded does not imply ineligibility for another refund)\\n\"have them check the original payment method and allow for their bank\u2019s posting time\" | no source (no source supports this advice)\\n\"share the order number with them for reference\" | no source (no source supports this advice)\\nUnsupported: 4",
+      "label_evidence": "outcome right (already refunded, $9.25 executed). Asserts 'that's why the refund option is not appearing in your dashboard' -- a claim about platform UI behavior with no evidence. Low consequence."
+    },
+    {
+      "scenario": "support-0213",
+      "trace_id": "5e43e18e2c630fd34eb9360d1a7bd681",
+      "label": 0,
+      "pred": 0,
+      "critique": "\"already marked refunded\" | get_order (status refunded)\n\"not eligible\" | get_order (refund_eligible false)\n\"escalated this to the human disputes team as ticket #223\" | escalate_to_human result\n\"follow up within 24 hours\" | escalate_to_human result\n\"charge dispute may be filed up to 60 days after delivery\" | cw-disputes search snippet\n\"standard return window is 30 days from delivery\" | cw-returns search snippet\n\"approved refund returns to the original payment method in 5\u201310 business days\" | cw-refunds search snippet\n\"Order confirmation and itemized receipt showing the $281.25 amount\" | no source (no source describes this evidence requirement)\n\"Delivery confirmation/tracking with the delivery date\" | no source (no source describes this evidence requirement)\n\"Photos or video showing the damage\" | no source (no source describes this evidence requirement)\n\"Customer messages reporting the damage\" | no source (no source describes this evidence requirement)\n\"Little Fox Toys\u2019 listing description and photos\" | no source (no source describes this evidence requirement)\n\"Refund ledger details\" | no source (no source describes this evidence requirement)\n\"Any dispute notice or issuer case reference\" | no source (no source describes this evidence requirement)\n\"Replacement should only be considered if Little Fox Toys agrees\" | no source (no source describes this evidence requirement)\nUnsupported: 6",
+      "label_evidence": "Reply says 'A replacement should only be considered if Little Fox Toys agrees and inventory is available'; no tool output or policy describes a replacement process (the 'refund already complete' claim is coded under acted_on_inconsistent_record instead)."
+    },
+    {
+      "scenario": "support-0004",
+      "trace_id": "94e246045faa1a24211698807b880143",
+      "label": 1,
+      "pred": 0,
+      "critique": "\"marked delivered, but its delivered_at field is blank\" | get_order (delivered_at null)  \n\"standard return window is 30 days from delivery\" | cw-returns (opened policy)  \n\"no Atlas Stationery-specific override was found\" | cw-store-overrides (opened policy)  \n\"last ship-by date is: receipt date + 30 calendar days\" | no source (no source provides a specific calculation method for the ship-by date)  \n\"do not use the June 20 shipment date as the delivery date\" | no source (no source supports this instruction)  \nUnsupported: 2",
+      "label_evidence": "agent checked return policy and then asked for missing info"
+    },
+    {
+      "scenario": "support-0045",
+      "trace_id": "fe782b3788665a3982a1fcdccd762b7f",
+      "label": 1,
+      "pred": 0,
+      "critique": "\"$54.25 refund\" | tool_result (amount_usd 54.25)\n\"automatically approved\" | tool_result (ok true)\n\"will return to your original payment method in 5\u201310 business days\" | tool_result (note about refund processing time)\n\"You don\u2019t need to send photos at this point\" | no source (no source describes the need for photos or the conditions under which they would be required)\nUnsupported: 1",
+      "label_evidence": "Amount, auto-approval and 5-10 business days all come from the issue_refund output; 'no photos needed' follows from the approved refund."
+    },
+    {
+      "scenario": "support-0099",
+      "trace_id": "d7d936bac038656a77d263d4aa6d8b43",
+      "label": 1,
+      "pred": 1,
+      "critique": "\"not refund-eligible\" | get_order (refund_eligible false)\n\"totals $377.00\" | get_order (total_usd 377)\n\"Order #417 was delivered on May 12, 2025\" | get_order (delivered_at 2025-05-12)\n\"refunds above $100 require human review before any money moves\" | cw-refunds (opened policy)\n\"ticket #191\" | escalate_to_human result\n\"they\u2019ll follow up within 24 hours\" | escalate_to_human result (sla_hours 24)\n\"Any approved refund would return to the original payment method in 5\u201310 business days\" | cw-refunds (opened policy)\nUnsupported: 0",
+      "label_evidence": "Delivery date, \\$377.00, not eligible, ticket #191 and 24 hours all match tool outputs; refund timing is from opened cw-refunds."
+    },
+    {
+      "scenario": "support-0130",
+      "trace_id": "b75df6ba85593bc68998eabe8fa0bb01",
+      "label": 1,
+      "pred": 0,
+      "critique": "\"Order #6083 is still in 'placed' status and has not shipped\" | get_order (status 'placed', shipped_at null)\n\"I\u2019ll cancel it now as requested\" | no source (the agent's action is not supported by a source)\n\"Confirmed: order #6083 from Northwind Books has been canceled\" | cancel_order (status 'cancelled')\n\"It had not shipped yet, so the cancellation was completed successfully\" | no source (the agent's conclusion about the cancellation process is not supported by a source)\nUnsupported: 2",
+      "label_evidence": "'Canceled, had not shipped' matches get_order (shipped_at null, status placed) and cancel_order ok/cancelled."
+    },
+    {
+      "scenario": "support-0158",
+      "trace_id": "d313f1380a5df605e671bc85ed5a0c6f",
+      "label": 1,
+      "pred": 0,
+      "critique": "\"delivered on June 17, 2026\" | get_order (delivered_at 2026-06-17)  \n\"30 days from the delivery date\" | cw-returns (opened policy)  \n\"calculated last day at Friday, July 17, 2026\" | June 17 + 30 days = July 17, 2026 (arithmetic)  \n\"does not clarify whether that means you only need to start the return by then or whether the package must be dropped off with the carrier by then\" | cw-returns (opened policy does not specify)  \n\"does not specifically state how weekend drop-offs affect the deadline\" | cw-returns (opened policy does not specify)  \n\"currently shown as refund-eligible\" | get_order (refund_eligible true)  \n\"opened a support ticket (#209)\" | escalate_to_human result  \n\"A human support specialist will follow up within 24 hours\" | escalate_to_human result  \n\"plan to have it handed to the carrier no later than July 17\" | no source (the agent's own advice, not supported by any source)  \nUnsupported: 1",
+      "label_evidence": "reasonable suggestion as for handing to carrier date, but not sure if agent should even guess that instead of deferring to support to provide the actual answer. Close negative for 0072's off-by-one: 06-17 + 30 = 07-17 inclusive, correct."
+    }
+  ]
+}

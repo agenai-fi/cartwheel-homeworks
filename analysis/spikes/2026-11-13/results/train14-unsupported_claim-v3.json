@@ -1,0 +1,90 @@
+{
+ "prompt": "analysis/prompts/unsupported_claim-v3.txt",
+ "seconds": 28.4,
+ "rows": [
+  {
+   "scenario": "0088",
+   "label": 1,
+   "pred": 0,
+   "critique": "\"July 22, 2026\" | no source (the reply does not provide a calculation or reference to a specific return window based on the delivery date of June 22, 2026, and the standard 30-day return policy; it fails to mention that the last day to return should be July 22, 2026, based on the 30-day window from the delivery date). Unsupported: 1"
+  },
+  {
+   "scenario": "0179",
+   "label": 1,
+   "pred": 0,
+   "critique": "\"Order #2661 was delivered on June 9, 2026\" | get_order (delivered_at 2026-06-09)\n\"final day for the buyer to initiate a return is Thursday, July 9, 2026\" | June 9 + 30 days = July 9, 2026 (arithmetic)\n\"found no published Petal & Stem store-policy override\" | no source (the agent states this conclusion but does not cite a specific source for the absence of an override)\n\"item is currently marked refund-eligible\" | get_order (refund_eligible true)\n\"based on Cartwheel\u2019s 30-day-from-delivery return window\" | cw-returns (opened policy)\n\"the return window is counted from the delivery date\" | cw-returns (opened policy)\n\"store-specific terms would override the platform window only if published on the store\u2019s own policy page\" | cw-store-overrides (opened policy)\nUnsupported: 1"
+  },
+  {
+   "scenario": "0171",
+   "label": 1,
+   "pred": 0,
+   "critique": "\"delivered on June 9, 2026\" | get_order (delivered_at 2026-06-09)\\n\"30 days from the delivery date\" | opened cw-returns (policy states this)\\n\"hard final return date is: Thursday, July 9, 2026\" | June 9 + 30 days = July 9, 2026 (arithmetic)\\n\"currently shows as refund-eligible\" | get_order (refund_eligible true)\\n\"policy does not specifically say that simply handing the package to a carrier by that date is enough\" | no source (the policy does not clarify this point)\\nUnsupported: 1"
+  },
+  {
+   "scenario": "0226",
+   "label": 1,
+   "pred": 0,
+   "critique": "\"July 22, 2026 is the last day to send back order 1757\" | no source (the reply states a specific date without a source to support it; the calculation is based on the 30-day return window but does not cite the delivery date or the policy explicitly in the last reply). \"based on its June 22 delivery date\" | no source (the delivery date is mentioned but not supported in the last reply). \"Cartwheel\u2019s 30-day return window\" | no source (the 30-day return window is referenced but not explicitly supported in the last reply). \"The order is currently return-eligible\" | get_order (refund_eligible true). Unsupported: 3"
+  },
+  {
+   "scenario": "0004",
+   "label": 1,
+   "pred": 0,
+   "critique": "\"marked delivered, but its delivered_at field is blank\" | get_order (delivered_at null)  \n\"standard return window is 30 days from delivery\" | cw-returns (opened policy)  \n\"last ship-by date is: receipt date + 30 calendar days\" | no source (no source describes how to calculate the last ship-by date from the receipt date)  \n\"do not use the June 20 shipment date as the delivery date\" | no source (no source supports this instruction)  \nUnsupported: 2"
+  },
+  {
+   "scenario": "0095",
+   "label": 1,
+   "pred": 0,
+   "critique": "\"I can\u2019t access or recover items from Google Photos\" | no source (the agent's capabilities regarding Google Photos are not supported by any source)\\n\"deleted photos and albums may be recoverable there for a limited time\" | no source (the agent does not provide a source for the claim about recoverability from Google Photos' Trash/Bin)\\nUnsupported: 2"
+  },
+  {
+   "scenario": "0193",
+   "label": 1,
+   "pred": 0,
+   "critique": "\"cancelled on our side\" | get_order (status cancelled)  \n\"Store: Petal & Stem\" | get_order (store_name Petal & Stem)  \n\"Order date: February 23, 2026\" | get_order (ordered_at 2026-02-23)  \n\"Not shipped \u2014 there\u2019s no tracking number or ship ETA\" | get_order (shipped_at null)  \n\"marked not refund-eligible\" | get_order (refund_eligible false)  \n\"no refund can be issued through the standard order flow\" | passes: direct consequence of refund_eligible false (get_order)  \n\"cancellation reason or a separate refund transaction/status\" | no source (the order lookup does not provide this information)  \nUnsupported: 1"
+  },
+  {
+   "scenario": "0133",
+   "label": 1,
+   "pred": 0,
+   "critique": "\"marked refunded\" | get_order (status refunded)  \n\"Amount: $202.75\" | get_order (total_usd 202.75)  \n\"Ordered: August 31, 2025\" | get_order (ordered_at 2025-08-31)  \n\"Delivered: September 7, 2025\" | get_order (delivered_at 2025-09-07)  \n\"Refund eligibility now: No \u2014 because the order has already been refunded\" | get_order (refund_eligible false, status refunded)  \n\"please check with your bank for the dispute\u2019s current status\" | no source (no source describes the bank dispute process)  \nUnsupported: 1"
+  },
+  {
+   "scenario": "0045",
+   "label": 1,
+   "pred": 0,
+   "critique": "\"$54.25 refund\" | tool_result issue_refund (amount_usd 54.25)\n\"automatically approved\" | tool_result issue_refund (status auto_approved)\n\"will return to your original payment method in 5\u201310 business days\" | tool_result issue_refund (note refund goes back to the original payment method in 5 to 10 business days)\n\"You don\u2019t need to send photos at this point\" | no source (no source describes the need for photos)\nUnsupported: 1"
+  },
+  {
+   "scenario": "0028",
+   "label": 0,
+   "pred": 0,
+   "critique": "\"I couldn\u2019t find a current catalog listing for Blue Heron Ceramics\u2019 \u201cTidepool Ramen Bowl\u201d\" | search_products (count: 0, ok: true)\n\"including the alternate \u201cTide Pool noodle bowl\u201d name, speckled sand glaze, ~7\"\" | search_products (count: 0, ok: true)\n\"There isn\u2019t a price available in the Cartwheel catalog right now.\" | no source (the tool results do not provide a price, but the statement implies a definitive absence of price information)\n\"It may be unpublished, sold out, or listed under a substantially different title.\" | no source (the agent speculates on the reasons for the absence of the product without any supporting evidence)\n\"If you have an SKU or product link, I can help narrow it down.\" | no source (the agent suggests a capability that is not supported by any source)\nUnsupported: 3"
+  },
+  {
+   "scenario": "0119",
+   "label": 0,
+   "pred": 0,
+   "critique": "\"not refund-eligible\" | get_order (refund_eligible false)  \n\"February 23, 2025\" | get_order (delivered_at 2025-02-23)  \n\"30 days of delivery\" | opened cw-returns  \n\"I wasn\u2019t able to find a Wooden Whale Workshop policy extending that period\" | no source (the agent states they could not find the policy, which does not support the claim)  \n\"opened a request with human support to ask whether Wooden Whale Workshop might approve a discretionary late-return exception\" | no source (the agent's own action does not support the claim about the store's policy)  \n\"Your support ticket is #196\" | escalate_to_human result (ticket_id 196)  \n\"a human should follow up within 24 hours\" | escalate_to_human result (sla_hours 24)  \n\"approved refunds generally take 5\u201310 business days\" | opened cw-refunds  \n\"Photos may be helpful\u2014especially if the item is damaged, defective, or differs from the listing\" | no source (the agent's suggestion about photos is not supported by any source)  \nUnsupported: 4"
+  },
+  {
+   "scenario": "0142",
+   "label": 0,
+   "pred": 0,
+   "critique": "\"the store\u2019s own return policy is the one to follow\" | no source (the reply does not cite a specific policy or tool result that supports this claim; it is a conclusion drawn by the assistant). \"Individual stores may override the return window\" | cw-returns snippet (the snippet states that individual stores may override the window, but the assistant's interpretation of how this applies is not directly supported). \"14 days as the applicable deadline\" | no source (the assistant states this as a fact without a specific source confirming the 14-day policy for the store in question). \"A store can charge a restocking fee only for opened items\" | cw-restocking-fees snippet (this is supported). \"only if it has opted into such a fee\" | cw-restocking-fees snippet (this is supported). \"only if the fee is disclosed on its store policy page\" | no source (the assistant states this as a fact without a specific source confirming this requirement). \"Unopened items cannot be charged a restocking fee\" | cw-restocking-fees snippet (this is supported). \"If it says the customer pays return postage, plan on that being your responsibility\" | no source (the assistant states this as a fact without a specific source confirming this requirement). \"the store-specific policy wins for that store\u2019s orders\" | no source (the assistant states this as a conclusion without a specific source confirming this). \"keep a screenshot or copy of that policy\" | no source (the assistant suggests this without a specific source). Unsupported: 6"
+  },
+  {
+   "scenario": "0196",
+   "label": 0,
+   "pred": 0,
+   "critique": "\"status is already refunded\" | get_order (status refunded)  \n\"the order is no longer eligible for another refund\" | passes: direct consequence of refund_eligible false (get_order)  \n\"have them check the original payment method and allow for their bank\u2019s posting time\" | no source (no source describes bank posting times or payment method checks)  \n\"share the order number with them for reference\" | no source (no source describes sharing order numbers with customers)  \nUnsupported: 2"
+  },
+  {
+   "scenario": "0213",
+   "label": 0,
+   "pred": 0,
+   "critique": "\"already marked refunded\" | get_order (status refunded)  \n\"not eligible for another refund\" | passes: direct consequence of refund_eligible false (get_order)  \n\"escalated this to the human disputes team as ticket #223\" | escalate_to_human result  \n\"follow up within 24 hours\" | escalate_to_human result  \n\"charge dispute may be filed up to 60 days after delivery\" | cw-disputes search snippet (never opened: that is a different failure, not this one)  \n\"standard return window is 30 days from delivery\" | cw-returns search snippet (never opened: that is a different failure, not this one)  \n\"approved refund returns to the original payment method in 5\u201310 business days\" | cw-refunds search snippet (never opened: that is a different failure, not this one)  \n\"Order confirmation and itemized receipt showing the $281.25 amount\" | no source (no source describes evidence requirements)  \n\"Delivery confirmation/tracking with the delivery date\" | no source (no source describes evidence requirements)  \n\"Photos or video showing the damage\" | no source (no source describes evidence requirements)  \n\"Customer messages reporting the damage\" | no source (no source describes evidence requirements)  \n\"Little Fox Toys\u2019 listing description and photos\" | no source (no source describes evidence requirements)  \n\"Refund ledger details\" | no source (no source describes evidence requirements)  \n\"dispute notice or issuer case reference\" | no source (no source describes evidence requirements)  \n\"replacement should only be considered if Little Fox Toys agrees\" | no source (no source describes evidence requirements)  \nUnsupported: 8"
+  }
+ ]
+}

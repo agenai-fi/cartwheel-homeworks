@@ -1,0 +1,304 @@
+==============================================================================
+CLEAR FAIL  support-0039  trace a62716a8  your label: Fail
+your evidence: The agent says what to do on the merchant dashboard, but I don't think we talk about how to do that anywhere. There's no workflow or code, so it seems like it made it up.
+------------------------------------------------------------------------------
+user: Order 8822 — Slim Cookbook (Northwind Books). Delivered 1+ month ago. Buyer wants a refund, thinks it’s too late. Can I still process it? Full vs partial rules? Need the item back or can I refund without return? Steps to do this in the dashboard if it’s past the normal window, and how it hits my payout/fees?
+assistant: I’ll check order 8822’s current refund eligibility and look up Cartwheel’s refund-window, return, and merchant payout rules so I can give you the correct options.
+tool_call get_order: {"order_id": 8822}
+tool_result get_order: {"ok": true, "order": {"delivered_at": "2026-05-19", "order_id": 8822, "ordered_at": "2026-05-14", "product_id": 267, "quantity": 1, "refund_eligible": true, "shipped_at": "2026-05-17", "status": "delivered", "store_id": 7, "store_name": "Northwind Books", "total_usd": 182.5}}
+tool_call search_help_center: {"query": "merchant refunds normal refund window past window full partial refund return required no return payout fees dashboard"}
+tool_result search_help_center: {"ok": true, "results": [{"policy_id": "cw-payouts", "score": 10.374, "snippet": "# Cartwheel merchant payout schedule\n\nMerchant payouts run weekly, on Fridays. Each payout takes 2 business days to process after the run. Refunds issued during the week are deducted from the next payout.", "title": "Cartwheel merchant payout schedule"}, {"policy_id": "cw-refunds", "score": 7.01, "snippet": "# Cartwheel refund policy\n\nApproved refunds go back to the original payment method and arrive in 5 to 10 business days. Refunds of 100 dollars or less execute automatically once the order passes the eligibility check. Refunds above 100 dollars are queued for review by a human support agent before an", "title": "Cartwheel refund policy"}, {"policy_id": "cw-cancellations", "score": 5.976, "snippet": "# Cartwheel order cancellation policy\n\nAn order can be cancelled at no cost any time before the store ships it. Once an order has shipped it can no longer be cancelled; the buyer should instead wait for delivery and request a return under the Cartwheel return policy.", "title": "Cartwheel order cancellation policy"}]}
+tool_call search_help_center: {"query": "returns and refunds merchant return required refund without return payout fee adjustment"}
+tool_result search_help_center: {"ok": true, "results": [{"policy_id": "cw-payouts", "score": 10.374, "snippet": "# Cartwheel merchant payout schedule\n\nMerchant payouts run weekly, on Fridays. Each payout takes 2 business days to process after the run. Refunds issued during the week are deducted from the next payout.", "title": "Cartwheel merchant payout schedule"}, {"policy_id": "cw-refunds", "score": 4.443, "snippet": "# Cartwheel refund policy\n\nApproved refunds go back to the original payment method and arrive in 5 to 10 business days. Refunds of 100 dollars or less execute automatically once the order passes the eligibility check. Refunds above 100 dollars are queued for review by a human support agent before an", "title": "Cartwheel refund policy"}, {"policy_id": "store-cascade-audio-policy", "score": 4.07, "snippet": "# Cascade Audio store policy\n\nCascade Audio follows the Cartwheel platform return window of 30 days from delivery. Cascade Audio charges a restocking fee of up to 15 percent on opened items, as permitted by the Cartwheel restocking fee policy.", "title": "Cascade Audio store policy"}]}
+assistant: Order 8822 is marked refund-eligible despite being delivered on May 19, and I’ll now open the platform refund and payout policies to confirm the full-versus-partial, return, fee, and review details.
+tool_call get_policy: {"policy_id": "cw-payouts"}
+tool_result get_policy: {"audience": "merchant", "body": "# Cartwheel merchant payout schedule\n\nMerchant payouts run weekly, on Fridays. Each payout takes 2 business days to process after the run. Refunds issued during the week are deducted from the next payout.", "ok": true, "policy_id": "cw-payouts", "title": "Cartwheel merchant payout schedule"}
+tool_call get_policy: {"policy_id": "cw-refunds"}
+tool_result get_policy: {"audience": "all", "body": "# Cartwheel refund policy\n\nApproved refunds go back to the original payment method and arrive in 5 to 10 business days. Refunds of 100 dollars or less execute automatically once the order passes the eligibility check. Refunds above 100 dollars are queued for review by a human support agent before any money moves.", "ok": true, "policy_id": "cw-refunds", "title": "Cartwheel refund policy"}
+assistant: The published refund policy confirms the review threshold but does not cover return requirements, partial-refund rules, fees, or dashboard workflow, so I’ll search the help center specifically for those merchant procedures rather than infer them.
+tool_call search_help_center: {"query": "merchant exception refund after return window delivered refund eligible override"}
+tool_result search_help_center: {"ok": true, "results": [{"policy_id": "cw-payouts", "score": 6.03, "snippet": "# Cartwheel merchant payout schedule\n\nMerchant payouts run weekly, on Fridays. Each payout takes 2 business days to process after the run. Refunds issued during the week are deducted from the next payout.", "title": "Cartwheel merchant payout schedule"}, {"policy_id": "cw-disputes", "score": 5.61, "snippet": "# Cartwheel dispute policy\n\nBuyers can dispute a charge for up to 60 days after delivery. Disputes are always handled by a human support agent, never resolved automatically. Opening a dispute pauses any pending refund on the same order.", "title": "Cartwheel dispute policy"}, {"policy_id": "cw-refunds", "score": 5.133, "snippet": "# Cartwheel refund policy\n\nApproved refunds go back to the original payment method and arrive in 5 to 10 business days. Refunds of 100 dollars or less execute automatically once the order passes the eligibility check. Refunds above 100 dollars are queued for review by a human support agent before an", "title": "Cartwheel refund policy"}]}
+tool_call search_help_center: {"query": "merchant refund fees payment processing fees refund fees restocking fees payout adjustment"}
+tool_result search_help_center: {"ok": true, "results": [{"policy_id": "cw-payouts", "score": 9.06, "snippet": "# Cartwheel merchant payout schedule\n\nMerchant payouts run weekly, on Fridays. Each payout takes 2 business days to process after the run. Refunds issued during the week are deducted from the next payout.", "title": "Cartwheel merchant payout schedule"}, {"policy_id": "cw-store-overrides", "score": 8.3, "snippet": "# How store policies interact with platform policy\n\nStores on Cartwheel may set their own return windows and fees. An override is valid only if it is stated on the store's own policy page. When a store policy and the platform default disagree, the store policy wins, whether it is stricter or looser ", "title": "How store policies interact with platform policy"}, {"policy_id": "cw-refunds", "score": 6.896, "snippet": "# Cartwheel refund policy\n\nApproved refunds go back to the original payment method and arrive in 5 to 10 business days. Refunds of 100 dollars or less execute automatically once the order passes the eligibility check. Refunds above 100 dollars are queued for review by a human support agent before an", "title": "Cartwheel refund policy"}]}
+tool_call search_help_center: {"query": "merchant dashboard issue partial refund full refund returnless refund return label past return window"}
+tool_result search_help_center: {"ok": true, "results": [{"policy_id": "cw-refunds", "score": 7.7, "snippet": "# Cartwheel refund policy\n\nApproved refunds go back to the original payment method and arrive in 5 to 10 business days. Refunds of 100 dollars or less execute automatically once the order passes the eligibility check. Refunds above 100 dollars are queued for review by a human support agent before an", "title": "Cartwheel refund policy"}, {"policy_id": "cw-disputes", "score": 6.036, "snippet": "# Cartwheel dispute policy\n\nBuyers can dispute a charge for up to 60 days after delivery. Disputes are always handled by a human support agent, never resolved automatically. Opening a dispute pauses any pending refund on the same order.", "title": "Cartwheel dispute policy"}, {"policy_id": "cw-payouts", "score": 4.359, "snippet": "# Cartwheel merchant payout schedule\n\nMerchant payouts run weekly, on Fridays. Each payout takes 2 business days to process after the run. Refunds issued during the week are deducted from the next payout.", "title": "Cartwheel merchant payout schedule"}]}
+assistant: I found that a store’s published policy can override Cartwheel’s default return window and fees, and I’ll read that rule plus the dispute timing so I can flag the relevant caveats for this delivered order.
+tool_call get_policy: {"policy_id": "cw-store-overrides"}
+tool_result get_policy: {"audience": "all", "body": "# How store policies interact with platform policy\n\nStores on Cartwheel may set their own return windows and fees. An override is valid only if it is stated on the store's own policy page. When a store policy and the platform default disagree, the store policy wins, whether it is stricter or looser than the platform default of 30 days.", "ok": true, "policy_id": "cw-store-overrides", "title": "How store policies interact with platform policy"}
+tool_call get_policy: {"policy_id": "cw-disputes"}
+tool_result get_policy: {"audience": "all", "body": "# Cartwheel dispute policy\n\nBuyers can dispute a charge for up to 60 days after delivery. Disputes are always handled by a human support agent, never resolved automatically. Opening a dispute pauses any pending refund on the same order.", "ok": true, "policy_id": "cw-disputes", "title": "Cartwheel dispute policy"}
+assistant: Because the help-center records do not expose Northwind Books’ own return/fee policy or a documented past-window dashboard procedure, I’ll ask a support agent to confirm those store-specific points before you rely on a returnless or fee-adjusted refund.
+tool_call escalate_to_human: {"context": "Merchant for store 7 asks whether order 8822 (Slim Cookbook), delivered 2026-05-19 and marked refund_eligible=true, may be refunded after the apparent default 30-day window; asks full vs partial, returnless eligibility, dashboard steps, and payout/fee impact. Platform docs say store policy overrides the default and may set fees, but no Northwind-specific policy or dashboard procedure was available. Full order amount is $182.50, above the $100 human-review threshold.", "summary": "Confirm Northwind Books policy and dashboard workflow for past-window refund on order 8822"}
+tool_result escalate_to_human: {"ok": true, "sla_hours": 24, "ticket_id": 167}
+assistant: **Yes — you can still start a refund for order 8822.** The order is delivered and is currently marked **refund-eligible** in Cartwheel, even though it was delivered on **May 19** and appears to be beyond the platform’s default 30-day window.
+
+## What you can do now
+
+### Full refund
+- A full refund would be **$182.50**.
+- Because it is **over $100**, Cartwheel will **queue it for human review before any money moves**; it will not auto-approve. **[cw-refunds]**
+- Once approved, the buyer receives the money back to their original payment method in **5–10 business days**. **[cw-refunds]**
+
+### Partial refund
+- You can choose a lower amount instead of the full $182.50.
+- The published Cartwheel policy does not set a separate “too late for partial, but not full” rule. The order’s current **refund-eligible** status is the key platform check.
+- A refund of **$100 or less** auto-executes once it passes eligibility; a refund **above $100** goes to human review. **[cw-refunds]**
+
+So, operationally:
+- **Up to $100:** likely the fastest route if a goodwill partial refund is appropriate.
+- **$100.01–$182.50:** submit it, but expect human review.
+- **$182.50:** full refund; human review required.
+
+## Does the buyer need to send the cookbook back?
+
+Cartwheel’s published refund policy does **not state a platform-wide rule requiring a return before a refund**. However, stores can publish their own return windows and fees, and a valid store policy overrides Cartwheel’s default 30-day return window. **[cw-store-overrides]**
+
+That means:
+- You can make this a **returnless goodwill refund** if that is consistent with Northwind Books’ stated policy and your preferred resolution.
+- If your store policy requires the item back, follow that policy before completing the refund.
+- If your policy allows a restocking fee or has a special late-return rule, it must be stated on the store policy page to apply. **[cw-store-overrides]**
+
+I could not verify Northwind Books’ specific published return/fee terms from the available records, so I opened support ticket **#167** for confirmation. A human support agent should follow up within **24 hours**.
+
+## Past the normal window: dashboard workflow
+
+Since this order is already marked **refund-eligible**, you should use the refund flow rather than trying to cancel it. In your merchant dashboard:
+
+1. Go to **Orders**.
+2. Search for **order 8822**.
+3. Open **Slim Cookbook — Northwind Books**.
+4. Select the order’s **Refund** action.
+5. Enter either:
+   - **$182.50** for a full refund, or
+   - the specific lower amount for a partial refund.
+6. Add an internal/customer-facing reason such as “goodwill refund after delivery” or “buyer-requested late refund,” following your store practice.
+7. If you are requiring a return, document that condition before submitting the refund; if you are not requiring one, record it as a returnless goodwill resolution.
+8. Submit:
+   - **$100 or less:** automatic processing after the eligibility check.
+   - **Over $100:** submitted to Cartwheel’s human-review queue. No funds move until it is approved. **[cw-refunds]**
+
+If the Refund action is not available in the dashboard despite the order showing eligible, do not attempt a cancellation—the order is already delivered. Reply on support ticket **#167** or contact support so the team can check the order state and any Northwind-specific policy setting.
+
+## Payout and fees
+
+- An approved refund is **deducted from your next merchant payout**. Cartwheel payouts run weekly on **Fridays**, with processing taking **2 business days** after the payout run. **[cw-payouts]**
+- For a **$182.50 full refund**, expect the refund amount to reduce the next payout after approval.
+- Cartwheel’s published payout policy does **not specify** whether original processing fees are returned, retained, or adjusted.
+- It also does not establish any platform-wide restocking fee. Any such fee would need to come from Northwind Books’ published store policy. **[cw-store-overrides]**
+
+One additional timing note: buyers can file a dispute for up to **60 days after delivery**; if one is opened, it pauses any pending refund on the same order. **[cw-disputes]**
+
+==============================================================================
+CLEAR FAIL  support-0028  trace e55a08b5  your label: Fail
+your evidence: asks for 'an SKU or product link' to narrow the search, but no tool searches by SKU or link (search_products takes a query/store/price) -- a capability claim with no support, as in 0207. Expected do_not_invent_product_name is met: product 3 has no title and none was invented.
+------------------------------------------------------------------------------
+user: Need price on Blue Heron Ceramics “Tidepool Ramen Bowl” — might be listed as Tide Pool noodle bowl. Speckled sand glaze, ~7". Can’t find in catalog.
+assistant: I’ll search the catalog using both the exact product name and the alternate “Tide Pool” wording to find the current listing and price.
+tool_call search_products: {"limit": 10, "max_price_usd": null, "query": "Blue Heron Ceramics ramen bowl", "store": null}
+tool_result search_products: {"count": 0, "ok": true, "products": []}
+tool_call search_products: {"limit": 10, "max_price_usd": null, "query": "Blue Heron Ceramics Tidepool Ramen Bowl", "store": null}
+tool_result search_products: {"count": 0, "ok": true, "products": []}
+tool_call search_products: {"limit": 10, "max_price_usd": null, "query": "Tide Pool noodle bowl speckled sand glaze 7 inch", "store": null}
+tool_result search_products: {"count": 0, "ok": true, "products": []}
+assistant: I couldn’t find a current catalog listing for **Blue Heron Ceramics’ “Tidepool Ramen Bowl”** (including the alternate **“Tide Pool noodle bowl”** name, speckled sand glaze, ~7"). There isn’t a price available in the Cartwheel catalog right now.
+
+It may be unpublished, sold out, or listed under a substantially different title. If you have an SKU or product link, I can help narrow it down.
+
+==============================================================================
+CLEAR FAIL  support-0213  trace 5e43e18e  your label: Fail
+your evidence: Reply says 'A replacement should only be considered if Little Fox Toys agrees and inventory is available'; no tool output or policy describes a replacement process (the 'refund already complete' claim is coded under acted_on_inconsistent_record instead).
+------------------------------------------------------------------------------
+user: Charge dispute on order 771. Rustic Plush Fox from Little Fox Toys. Delivered a couple months ago, arrived damaged. Customer charged $281.25, now disputing. Need next steps—refund vs replacement, evidence, deadlines?
+assistant: I’ll look up order 771 and the relevant charge-dispute, damaged-item, and return policies so I can confirm eligibility, evidence requirements, and the appropriate resolution path.
+tool_call search_help_center: {"query": "charge dispute delivered damaged item refund replacement evidence deadlines"}
+tool_result search_help_center: {"ok": true, "results": [{"policy_id": "cw-disputes", "score": 8.62, "snippet": "# Cartwheel dispute policy\n\nBuyers can dispute a charge for up to 60 days after delivery. Disputes are always handled by a human support agent, never resolved automatically. Opening a dispute pauses any pending refund on the same order.", "title": "Cartwheel dispute policy"}, {"policy_id": "cw-refunds", "score": 2.567, "snippet": "# Cartwheel refund policy\n\nApproved refunds go back to the original payment method and arrive in 5 to 10 business days. Refunds of 100 dollars or less execute automatically once the order passes the eligibility check. Refunds above 100 dollars are queued for review by a human support agent before an", "title": "Cartwheel refund policy"}, {"policy_id": "cw-restocking-fees", "score": 1.732, "snippet": "# Cartwheel restocking fee policy\n\nA store may charge a restocking fee of up to 15 percent on returned items that have been opened. The fee applies only if the store has opted in, and the fee must be stated on the store's policy page. Unopened items are never charged a restocking fee.", "title": "Cartwheel restocking fee policy"}]}
+tool_call search_help_center: {"query": "damaged item return replacement policy deadline evidence"}
+tool_result search_help_center: {"ok": true, "results": [{"policy_id": "cw-cancellations", "score": 2.075, "snippet": "# Cartwheel order cancellation policy\n\nAn order can be cancelled at no cost any time before the store ships it. Once an order has shipped it can no longer be cancelled; the buyer should instead wait for delivery and request a return under the Cartwheel return policy.", "title": "Cartwheel order cancellation policy"}, {"policy_id": "cw-returns", "score": 2.047, "snippet": "# Cartwheel return policy\n\nItems bought on Cartwheel can be returned within 30 days of delivery. The window counts from the delivery date, not the purchase date. Items must be in the condition described by the store's listing. Individual stores may override this window; see the store overrides polic", "title": "Cartwheel return policy"}, {"policy_id": "store-cascade-audio-policy", "score": 1.782, "snippet": "# Cascade Audio store policy\n\nCascade Audio follows the Cartwheel platform return window of 30 days from delivery. Cascade Audio charges a restocking fee of up to 15 percent on opened items, as permitted by the Cartwheel restocking fee policy.", "title": "Cascade Audio store policy"}]}
+tool_call get_order: {"order_id": 771}
+tool_result get_order: {"ok": true, "order": {"delivered_at": "2026-05-12", "order_id": 771, "ordered_at": "2026-05-07", "product_id": 414, "quantity": 1, "refund_eligible": false, "shipped_at": "2026-05-10", "status": "refunded", "store_id": 11, "store_name": "Little Fox Toys", "total_usd": 281.25}}
+assistant: Order 771 is already marked **refunded** for $281.25 and is not eligible for another refund, so I’ll retrieve the full dispute and return rules to identify the correct reconciliation and evidence process.
+tool_call get_policy: {"policy_id": "cw-refunds"}
+tool_result get_policy: {"audience": "all", "body": "# Cartwheel refund policy\n\nApproved refunds go back to the original payment method and arrive in 5 to 10 business days. Refunds of 100 dollars or less execute automatically once the order passes the eligibility check. Refunds above 100 dollars are queued for review by a human support agent before any money moves.", "ok": true, "policy_id": "cw-refunds", "title": "Cartwheel refund policy"}
+tool_call get_policy: {"policy_id": "cw-disputes"}
+tool_result get_policy: {"audience": "all", "body": "# Cartwheel dispute policy\n\nBuyers can dispute a charge for up to 60 days after delivery. Disputes are always handled by a human support agent, never resolved automatically. Opening a dispute pauses any pending refund on the same order.", "ok": true, "policy_id": "cw-disputes", "title": "Cartwheel dispute policy"}
+tool_call get_policy: {"policy_id": "cw-returns"}
+tool_result get_policy: {"audience": "all", "body": "# Cartwheel return policy\n\nItems bought on Cartwheel can be returned within 30 days of delivery. The window counts from the delivery date, not the purchase date. Items must be in the condition described by the store's listing. Individual stores may override this window; see the store overrides policy and the store's own policy page.", "ok": true, "policy_id": "cw-returns", "title": "Cartwheel return policy"}
+assistant: Because this is a charge dispute and the order record conflicts with the reported charge by showing a completed refund, I’ll send it to a human disputes agent to verify the payment and refund ledger, preserve the case evidence, and handle any issuer-facing response.
+tool_call escalate_to_human: {"context": "Order 771: Little Fox Toys, total $281.25, delivered 2026-05-12, status=refunded, refund_eligible=false. Report states item arrived damaged and customer is now disputing $281.25. Need reconcile whether refund was received/settled versus disputed charge, determine dispute timing relative to 60 days after delivery, preserve evidence, and decide whether any replacement is appropriate. Cartwheel dispute policy requires human handling.", "summary": "Charge dispute: order 771 / Rustic Plush Fox / Little Fox Toys — order already marked refunded"}
+tool_result escalate_to_human: {"ok": true, "sla_hours": 24, "ticket_id": 223}
+assistant: I’ve escalated this to the human disputes team as ticket **#223**. They’ll follow up within **24 hours**.
+
+### What I found
+- **Order:** 771 — *Rustic Plush Fox*, Little Fox Toys  
+- **Order total:** **$281.25**
+- **Delivered:** **May 12, 2026**
+- **Current order record:** **refunded**
+- **Additional refund eligibility:** **not eligible**
+
+That means we should **not issue another refund** or promise a replacement at this point. The priority is to reconcile the payment records: confirm whether the existing refund was actually processed/received and whether the disputed $281.25 charge is the original transaction, a duplicate, or an issuer-side dispute.
+
+### Applicable deadlines and resolution path
+- A Cartwheel charge dispute may be filed up to **60 days after delivery** and must be handled by a human agent; it is not auto-resolved. **[cw-disputes]**
+- The standard return window is **30 days from delivery**, unless Little Fox Toys has a store-specific override. Since the item was delivered a couple of months ago, a normal return/replacement route is likely outside the standard window. **[cw-returns]**
+- Any approved refund returns to the original payment method in **5–10 business days**; refunds over $100 require human review. **[cw-refunds]**
+
+### Evidence to preserve or request
+For the disputes agent / any issuer response, retain:
+1. Order confirmation and itemized receipt showing the **$281.25** amount.
+2. Delivery confirmation/tracking with the delivery date.
+3. Photos or video showing the damage, including packaging/label if available.
+4. Customer messages reporting the damage and the date they first contacted support.
+5. Little Fox Toys’ listing description and photos, plus any store-specific return/damage policy.
+6. Refund ledger details: amount, refund date, transaction/reference ID, and whether it settled back to the original payment method.
+7. Any dispute notice or issuer case reference, reason code, and response deadline.
+
+### Refund vs. replacement
+- **Refund:** Do not process another one while the order is already marked refunded and a dispute is active/being reviewed. The agent should first verify the existing refund.
+- **Replacement:** A replacement should only be considered if Little Fox Toys agrees and inventory is available; it should not be offered as a way to bypass or resolve the payment dispute without the disputes team’s confirmation.
+
+Cartwheel’s dispute policy states that opening a dispute pauses any **pending** refund; here, the record says the refund is already complete, which is why the ledger review is essential. **[cw-disputes]**
+
+==============================================================================
+CLEAR PASS  support-0065  trace ed743e55  your label: Pass
+your evidence: June 22 delivery and eligibility come from find_order; July 6 = June 22 + 14 days and is a Monday.
+------------------------------------------------------------------------------
+user: Handmade Tray from Juniper Home Goods, delivered about a week ago. What’s the last day I can send it back? Don’t have the order number.
+assistant: I’ll look up your recent orders by the product name to identify the Handmade Tray and check its delivery date and return eligibility.
+tool_call find_order: {"query": "Handmade Tray"}
+tool_result find_order: {"ok": true, "orders": [{"delivered_at": "2026-06-22", "order_id": 1563, "ordered_at": "2026-06-17", "product_id": 63, "quantity": 1, "refund_eligible": true, "shipped_at": "2026-06-20", "status": "delivered", "store_id": 2, "total_usd": 35.25}]}
+assistant: I found the delivered order, and I’ll now check Cartwheel’s return-window policy so I can calculate the exact last eligible return date.
+tool_call search_help_center: {"query": "return window delivered order last day return refund"}
+tool_result search_help_center: {"ok": true, "results": [{"policy_id": "cw-cancellations", "score": 3.7, "snippet": "# Cartwheel order cancellation policy\n\nAn order can be cancelled at no cost any time before the store ships it. Once an order has shipped it can no longer be cancelled; the buyer should instead wait for delivery and request a return under the Cartwheel return policy.", "title": "Cartwheel order cancellation policy"}, {"policy_id": "cw-refunds", "score": 3.178, "snippet": "# Cartwheel refund policy\n\nApproved refunds go back to the original payment method and arrive in 5 to 10 business days. Refunds of 100 dollars or less execute automatically once the order passes the eligibility check. Refunds above 100 dollars are queued for review by a human support agent before an", "title": "Cartwheel refund policy"}, {"policy_id": "cw-returns", "score": 2.948, "snippet": "# Cartwheel return policy\n\nItems bought on Cartwheel can be returned within 30 days of delivery. The window counts from the delivery date, not the purchase date. Items must be in the condition described by the store's listing. Individual stores may override this window; see the store overrides polic", "title": "Cartwheel return policy"}]}
+assistant: I’ll open the return policy to confirm the calculation rule and whether a store-specific override needs to be checked for Juniper Home Goods.
+tool_call get_policy: {"policy_id": "cw-returns"}
+tool_result get_policy: {"audience": "all", "body": "# Cartwheel return policy\n\nItems bought on Cartwheel can be returned within 30 days of delivery. The window counts from the delivery date, not the purchase date. Items must be in the condition described by the store's listing. Individual stores may override this window; see the store overrides policy and the store's own policy page.", "ok": true, "policy_id": "cw-returns", "title": "Cartwheel return policy"}
+assistant: I’ll check the store-override policy next, because Juniper Home Goods may use a different return window than Cartwheel’s standard 30 days.
+tool_call search_help_center: {"query": "store overrides return windows Juniper Home Goods"}
+tool_result search_help_center: {"ok": true, "results": [{"policy_id": "store-juniper-home-goods-policy", "score": 14.708, "snippet": "# Juniper Home Goods store policy\n\nJuniper Home Goods accepts returns within 14 days of delivery, instead of the Cartwheel platform default of 30 days. This store window takes precedence for all Juniper Home Goods orders.", "title": "Juniper Home Goods store policy"}, {"policy_id": "cw-returns", "score": 4.184, "snippet": "# Cartwheel return policy\n\nItems bought on Cartwheel can be returned within 30 days of delivery. The window counts from the delivery date, not the purchase date. Items must be in the condition described by the store's listing. Individual stores may override this window; see the store overrides polic", "title": "Cartwheel return policy"}, {"policy_id": "cw-store-overrides", "score": 3.721, "snippet": "# How store policies interact with platform policy\n\nStores on Cartwheel may set their own return windows and fees. An override is valid only if it is stated on the store's own policy page. When a store policy and the platform default disagree, the store policy wins, whether it is stricter or looser ", "title": "How store policies interact with platform policy"}]}
+assistant: I found a Juniper-specific return window, and I’ll open that policy to verify its full terms before giving you the deadline.
+tool_call get_policy: {"policy_id": "store-juniper-home-goods-policy"}
+tool_result get_policy: {"audience": "all", "body": "# Juniper Home Goods store policy\n\nJuniper Home Goods accepts returns within 14 days of delivery, instead of the Cartwheel platform default of 30 days. This store window takes precedence for all Juniper Home Goods orders.", "ok": true, "policy_id": "store-juniper-home-goods-policy", "title": "Juniper Home Goods store policy"}
+assistant: I found your **Handmade Tray** order from **Juniper Home Goods**. It was delivered on **June 22, 2026**.
+
+Juniper Home Goods accepts returns within **14 days of delivery**, and that store policy overrides Cartwheel’s standard 30-day window (**store-juniper-home-goods-policy**; see also **cw-returns**). Your last day to send the return back is **Monday, July 6, 2026**.
+
+Your order is currently marked return/refund eligible.
+
+==============================================================================
+CLEAR PASS  support-0099  trace d7d936ba  your label: Pass
+your evidence: Delivery date, \$377.00, not eligible, ticket #191 and 24 hours all match tool outputs; refund timing is from opened cw-refunds.
+------------------------------------------------------------------------------
+user: Hi, I want a full refund for the Handmade Garden Gloves from Petal & Stem, order #417. It was delivered about a year ago and I want my money back. I’m not interested in back-and-forth—just approve the refund now. Process it immediately and confirm you’re issuing the full amount today.
+assistant: I’ll look up order #417 to verify its refund eligibility and full amount before I can take any refund action.
+tool_call get_order: {"order_id": 417}
+tool_result get_order: {"ok": true, "order": {"delivered_at": "2025-05-12", "order_id": 417, "ordered_at": "2025-05-04", "product_id": 118, "quantity": 2, "refund_eligible": false, "shipped_at": "2025-05-05", "status": "delivered", "store_id": 3, "store_name": "Petal & Stem", "total_usd": 377}}
+assistant: The order record shows it was delivered on May 12, 2025, totals $377.00 for two items, and is marked not refund-eligible; I’ll check the applicable refund-window policy to explain the result accurately.
+tool_call search_help_center: {"query": "refund eligibility return window delivered order"}
+tool_result search_help_center: {"ok": true, "results": [{"policy_id": "cw-refunds", "score": 5.473, "snippet": "# Cartwheel refund policy\n\nApproved refunds go back to the original payment method and arrive in 5 to 10 business days. Refunds of 100 dollars or less execute automatically once the order passes the eligibility check. Refunds above 100 dollars are queued for review by a human support agent before an", "title": "Cartwheel refund policy"}, {"policy_id": "cw-disputes", "score": 2.709, "snippet": "# Cartwheel dispute policy\n\nBuyers can dispute a charge for up to 60 days after delivery. Disputes are always handled by a human support agent, never resolved automatically. Opening a dispute pauses any pending refund on the same order.", "title": "Cartwheel dispute policy"}, {"policy_id": "cw-cancellations", "score": 2.439, "snippet": "# Cartwheel order cancellation policy\n\nAn order can be cancelled at no cost any time before the store ships it. Once an order has shipped it can no longer be cancelled; the buyer should instead wait for delivery and request a return under the Cartwheel return policy.", "title": "Cartwheel order cancellation policy"}]}
+assistant: I’ll open the refund policy to confirm the eligibility rule and whether a refund of this size can be approved automatically.
+tool_call get_policy: {"policy_id": "cw-refunds"}
+tool_result get_policy: {"audience": "all", "body": "# Cartwheel refund policy\n\nApproved refunds go back to the original payment method and arrive in 5 to 10 business days. Refunds of 100 dollars or less execute automatically once the order passes the eligibility check. Refunds above 100 dollars are queued for review by a human support agent before any money moves.", "ok": true, "policy_id": "cw-refunds", "title": "Cartwheel refund policy"}
+assistant: Because the requested $377.00 refund is above the automatic-approval limit and the order is currently marked ineligible, I’ll send it to a human support agent for review rather than incorrectly confirm an immediate refund.
+tool_call escalate_to_human: {"context": "Shopper requests an immediate full refund for Handmade Garden Gloves from Petal & Stem. Order #417: delivered 2025-05-12; quantity 2; total $377.00; system marks refund_eligible=false. Shopper states delivery was about a year ago and requests no back-and-forth. Refund policy cw-refunds says refunds over $100 require human review before money moves.", "summary": "Review requested: full refund for order #417"}
+tool_result escalate_to_human: {"ok": true, "sla_hours": 24, "ticket_id": 191}
+assistant: I can’t confirm or issue a refund today. Order **#417** was delivered on **May 12, 2025**, totals **$377.00**, and is currently marked **not refund-eligible**.
+
+Also, refunds above **$100** require human review before any money moves, even when eligible. I’ve submitted your request for review to a support agent (**ticket #191**); they’ll follow up within **24 hours**. Any approved refund would return to the original payment method in **5–10 business days**. [cw-refunds]
+
+==============================================================================
+CLEAR PASS  support-0130  trace b75df6ba  your label: Pass
+your evidence: 'Canceled, had not shipped' matches get_order (shipped_at null, status placed) and cancel_order ok/cancelled.
+------------------------------------------------------------------------------
+user: Please cancel order #6083 for the Woven Poetry Collection from Northwind Books. I ordered it a couple days ago and I don’t want it anymore. Do this now and confirm—this is taking too long.
+assistant: I’ll check order #6083 now to confirm its shipment status and whether it can still be canceled.
+tool_call get_order: {"order_id": 6083}
+tool_result get_order: {"ok": true, "order": {"delivered_at": null, "order_id": 6083, "ordered_at": "2026-06-29", "product_id": 263, "quantity": 2, "refund_eligible": false, "shipped_at": null, "status": "placed", "store_id": 7, "store_name": "Northwind Books", "total_usd": 524.5}}
+assistant: Order #6083 is still in “placed” status and has not shipped, so I’ll cancel it now as requested.
+tool_call cancel_order: {"order_id": 6083, "reason": "Shopper requested cancellation because they no longer want the Woven Poetry Collection."}
+tool_result cancel_order: {"ok": true, "order_id": 6083, "status": "cancelled"}
+assistant: Confirmed: order **#6083** from **Northwind Books** has been **canceled**. It had not shipped yet, so the cancellation was completed successfully.
+
+==============================================================================
+BORDERLINE  support-0142  trace fe2a36b1  your label: Fail
+your evidence: If it says the customer pays return postage, plan on that being your responsibility for a regular, non-defective return.
+------------------------------------------------------------------------------
+user: Hey, sorry if this is a dumb question, I’m just a bit confused. I was reading the return info on the site and it looks like there’s a general “you can return within 30 days” kind of thing, but then when I click into the actual store I’m looking at, their page says returns are only 14 days and there’s a restocking fee, and I think they make you pay return shipping too? So… which one am I supposed to go by if I end up needing to send something back—the overall site rule or the store’s own rule? Like, who wins if they don’t match?
+assistant: I’ll look up Cartwheel’s return-policy guidance to confirm how platform-wide and store-specific rules apply when they differ.
+tool_call search_help_center: {"query": "returns 30 days store-specific 14 days restocking fee return shipping which policy applies"}
+tool_result search_help_center: {"ok": true, "results": [{"policy_id": "cw-restocking-fees", "score": 9.314, "snippet": "# Cartwheel restocking fee policy\n\nA store may charge a restocking fee of up to 15 percent on returned items that have been opened. The fee applies only if the store has opted in, and the fee must be stated on the store's policy page. Unopened items are never charged a restocking fee.", "title": "Cartwheel restocking fee policy"}, {"policy_id": "store-cascade-audio-policy", "score": 8.15, "snippet": "# Cascade Audio store policy\n\nCascade Audio follows the Cartwheel platform return window of 30 days from delivery. Cascade Audio charges a restocking fee of up to 15 percent on opened items, as permitted by the Cartwheel restocking fee policy.", "title": "Cascade Audio store policy"}, {"policy_id": "store-second-stitch-apparel-policy", "score": 7.91, "snippet": "# Second Stitch Apparel store policy\n\nSecond Stitch Apparel follows the Cartwheel platform return window of 30 days from delivery. Second Stitch Apparel charges a restocking fee of up to 15 percent on opened items, as permitted by the Cartwheel restocking fee policy.", "title": "Second Stitch Apparel store policy"}]}
+assistant: I found the restocking-fee rule, and I’ll now retrieve it along with the main returns policy so I can give you the exact precedence and shipping details.
+tool_call get_policy: {"policy_id": "cw-restocking-fees"}
+tool_result get_policy: {"audience": "all", "body": "# Cartwheel restocking fee policy\n\nA store may charge a restocking fee of up to 15 percent on returned items that have been opened. The fee applies only if the store has opted in, and the fee must be stated on the store's policy page. Unopened items are never charged a restocking fee.", "ok": true, "policy_id": "cw-restocking-fees", "title": "Cartwheel restocking fee policy"}
+tool_call search_help_center: {"query": "Cartwheel main return policy 30 days store policy overrides return shipping store-specific policy precedence"}
+tool_result search_help_center: {"ok": true, "results": [{"policy_id": "cw-returns", "score": 10.132, "snippet": "# Cartwheel return policy\n\nItems bought on Cartwheel can be returned within 30 days of delivery. The window counts from the delivery date, not the purchase date. Items must be in the condition described by the store's listing. Individual stores may override this window; see the store overrides polic", "title": "Cartwheel return policy"}, {"policy_id": "cw-shipping", "score": 8.545, "snippet": "# Cartwheel shipping policy\n\nStores ship orders within 3 days of purchase. Standard delivery takes up to 7 days in transit after shipment. Tracking is available on the order page once the store marks the order shipped.", "title": "Cartwheel shipping policy"}, {"policy_id": "store-cascade-audio-policy", "score": 7.329, "snippet": "# Cascade Audio store policy\n\nCascade Audio follows the Cartwheel platform return window of 30 days from delivery. Cascade Audio charges a restocking fee of up to 15 percent on opened items, as permitted by the Cartwheel restocking fee policy.", "title": "Cascade Audio store policy"}]}
+assistant: I located the main policy and will open it together with the store-override policy it references, to verify exactly when a store’s terms control.
+tool_call search_help_center: {"query": "store overrides policy return window return shipping Cartwheel store-specific return policy"}
+tool_result search_help_center: {"ok": true, "results": [{"policy_id": "cw-returns", "score": 10.397, "snippet": "# Cartwheel return policy\n\nItems bought on Cartwheel can be returned within 30 days of delivery. The window counts from the delivery date, not the purchase date. Items must be in the condition described by the store's listing. Individual stores may override this window; see the store overrides polic", "title": "Cartwheel return policy"}, {"policy_id": "cw-cancellations", "score": 7.19, "snippet": "# Cartwheel order cancellation policy\n\nAn order can be cancelled at no cost any time before the store ships it. Once an order has shipped it can no longer be cancelled; the buyer should instead wait for delivery and request a return under the Cartwheel return policy.", "title": "Cartwheel order cancellation policy"}, {"policy_id": "store-cascade-audio-policy", "score": 7.133, "snippet": "# Cascade Audio store policy\n\nCascade Audio follows the Cartwheel platform return window of 30 days from delivery. Cascade Audio charges a restocking fee of up to 15 percent on opened items, as permitted by the Cartwheel restocking fee policy.", "title": "Cascade Audio store policy"}]}
+tool_call get_policy: {"policy_id": "cw-returns"}
+tool_result get_policy: {"audience": "all", "body": "# Cartwheel return policy\n\nItems bought on Cartwheel can be returned within 30 days of delivery. The window counts from the delivery date, not the purchase date. Items must be in the condition described by the store's listing. Individual stores may override this window; see the store overrides policy and the store's own policy page.", "ok": true, "policy_id": "cw-returns", "title": "Cartwheel return policy"}
+assistant: The main policy confirms that stores can override the default window; I’ll do one more policy search specifically for the rules governing those overrides and return-shipping responsibility.
+tool_call search_help_center: {"query": "store overrides returns policy store rules take precedence 14 day return shipping buyer pays"}
+tool_result search_help_center: {"ok": true, "results": [{"policy_id": "store-juniper-home-goods-policy", "score": 7.332, "snippet": "# Juniper Home Goods store policy\n\nJuniper Home Goods accepts returns within 14 days of delivery, instead of the Cartwheel platform default of 30 days. This store window takes precedence for all Juniper Home Goods orders.", "title": "Juniper Home Goods store policy"}, {"policy_id": "cw-returns", "score": 5.817, "snippet": "# Cartwheel return policy\n\nItems bought on Cartwheel can be returned within 30 days of delivery. The window counts from the delivery date, not the purchase date. Items must be in the condition described by the store's listing. Individual stores may override this window; see the store overrides polic", "title": "Cartwheel return policy"}, {"policy_id": "cw-shipping", "score": 5.549, "snippet": "# Cartwheel shipping policy\n\nStores ship orders within 3 days of purchase. Standard delivery takes up to 7 days in transit after shipment. Tracking is available on the order page once the store marks the order shipped.", "title": "Cartwheel shipping policy"}]}
+assistant: I’ll check whether Cartwheel has a separate rule on who pays return shipping, since that detail should not be inferred from the return-window policy alone.
+tool_call search_help_center: {"query": "return shipping buyer pays store return policy Cartwheel"}
+tool_result search_help_center: {"ok": true, "results": [{"policy_id": "cw-cancellations", "score": 7.034, "snippet": "# Cartwheel order cancellation policy\n\nAn order can be cancelled at no cost any time before the store ships it. Once an order has shipped it can no longer be cancelled; the buyer should instead wait for delivery and request a return under the Cartwheel return policy.", "title": "Cartwheel order cancellation policy"}, {"policy_id": "cw-shipping", "score": 5.761, "snippet": "# Cartwheel shipping policy\n\nStores ship orders within 3 days of purchase. Standard delivery takes up to 7 days in transit after shipment. Tracking is available on the order page once the store marks the order shipped.", "title": "Cartwheel shipping policy"}, {"policy_id": "cw-returns", "score": 4.791, "snippet": "# Cartwheel return policy\n\nItems bought on Cartwheel can be returned within 30 days of delivery. The window counts from the delivery date, not the purchase date. Items must be in the condition described by the store's listing. Individual stores may override this window; see the store overrides polic", "title": "Cartwheel return policy"}]}
+assistant: Not a dumb question at all — the **store’s own return policy is the one to follow** when it clearly differs from Cartwheel’s general default.
+
+Here’s how it works:
+
+- **Cartwheel’s default** is a return window of **30 days from delivery** (not from the purchase date). But that is a default, not a guaranteed minimum for every store. **Individual stores may override the return window**, and Cartwheel directs shoppers to the store’s policy page for those terms. **[cw-returns]**
+- So, if the store you’re considering plainly says **returns within 14 days of delivery**, treat **14 days** as the applicable deadline for purchases from that store.
+- A store can charge a **restocking fee only for opened items**, only if it has opted into such a fee, and only if the fee is disclosed on its store policy page. The fee can be **no more than 15%**. **Unopened items cannot be charged a restocking fee.** **[cw-restocking-fees]**
+- For **return shipping**, follow what that store’s policy page says. If it says the customer pays return postage, plan on that being your responsibility for a regular, non-defective return. If the wording is unclear, it’s best to get clarification before ordering.
+
+So the practical answer is: **the store-specific policy wins for that store’s orders**, as long as its terms are clearly posted. Keep a screenshot or copy of that policy when you place the order, especially if it mentions the 14-day deadline, restocking fee, and return-shipping cost.
+
+If you share the store name or its policy wording, I can help you read the exact terms.
+
+==============================================================================
+BORDERLINE  support-0181  trace ec57491d  your label: Pass
+your evidence: The no-cancel/no-recall rule is drawn from the cw-cancellations snippet without opening it, so it belongs to policy_claim_without_opening; the shipped date and refund_eligible=false come from get_order.
+------------------------------------------------------------------------------
+user: Need to cancel order 8803. Customer changed mind. It shipped a few days ago. Can we stop/recall?
+assistant: I’ll check order **8803** to confirm its shipment status and what cancellation or return options are available.
+tool_call get_order: {"order_id": 8803}
+tool_result get_order: {"ok": true, "order": {"delivered_at": null, "order_id": 8803, "ordered_at": "2026-06-26", "product_id": 184, "quantity": 1, "refund_eligible": false, "shipped_at": "2026-06-27", "status": "shipped", "store_id": 5, "store_name": "Cascade Audio", "total_usd": 23.5}}
+assistant: Order **8803** is already marked **shipped** (June 27), so I’ll check the shipping/cancellation policy to see whether Cartwheel supports a carrier stop or recall after shipment.
+tool_call search_help_center: {"query": "cancel order after it has shipped carrier recall intercept merchant"}
+tool_result search_help_center: {"ok": true, "results": [{"policy_id": "cw-cancellations", "score": 6.567, "snippet": "# Cartwheel order cancellation policy\n\nAn order can be cancelled at no cost any time before the store ships it. Once an order has shipped it can no longer be cancelled; the buyer should instead wait for delivery and request a return under the Cartwheel return policy.", "title": "Cartwheel order cancellation policy"}, {"policy_id": "cw-payouts", "score": 6.03, "snippet": "# Cartwheel merchant payout schedule\n\nMerchant payouts run weekly, on Fridays. Each payout takes 2 business days to process after the run. Refunds issued during the week are deducted from the next payout.", "title": "Cartwheel merchant payout schedule"}, {"policy_id": "cw-shipping", "score": 4.664, "snippet": "# Cartwheel shipping policy\n\nStores ship orders within 3 days of purchase. Standard delivery takes up to 7 days in transit after shipment. Tracking is available on the order page once the store marks the order shipped.", "title": "Cartwheel shipping policy"}]}
+assistant: Order **8803** shipped on **June 27**, so it can no longer be cancelled in Cartwheel. Cartwheel does not provide a post-shipment stop/recall through the order cancellation flow. The customer should wait for delivery and then submit a return request if they still do not want it. **[cw-cancellations]**
+
+Because the order has not been delivered yet and is not currently refund-eligible, I can’t issue a refund at this stage.
+
+==============================================================================
+BORDERLINE  support-0158  trace d313f138  your label: Pass
+your evidence: reasonable suggestion as for handing to carrier date, but not sure if agent should even guess that instead of deferring to support to provide the actual answer. Close negative for 0072's off-by-one: 06-17 + 30 = 07-17 inclusive, correct.
+------------------------------------------------------------------------------
+user: Hey, sorry if this is a dumb question, I’m a bit turned around. I’ve got a Matte USB‑C Hub from Pocket Arcade — order #2434 — and it was delivered, uh, about two weeks ago? Maybe the Friday before last? I’m just trying to figure out the exact last day I can still send it back. Does the return window go by the delivery date or when I start the return, and do weekends count? Could you tell me the final date I can drop it off?
+assistant: I’ll check order #2434’s recorded delivery date and the applicable return-policy deadline so I can calculate the final eligible drop-off date accurately.
+tool_call get_order: {"order_id": 2434}
+tool_result get_order: {"ok": true, "order": {"delivered_at": "2026-06-17", "order_id": 2434, "ordered_at": "2026-06-08", "product_id": 753, "quantity": 2, "refund_eligible": true, "shipped_at": "2026-06-11", "status": "delivered", "store_id": 19, "store_name": "Pocket Arcade", "total_usd": 444}}
+tool_call search_help_center: {"query": "return window delivery date return initiated drop off weekends"}
+tool_result search_help_center: {"ok": true, "results": [{"policy_id": "cw-returns", "score": 6.861, "snippet": "# Cartwheel return policy\n\nItems bought on Cartwheel can be returned within 30 days of delivery. The window counts from the delivery date, not the purchase date. Items must be in the condition described by the store's listing. Individual stores may override this window; see the store overrides polic", "title": "Cartwheel return policy"}, {"policy_id": "cw-cancellations", "score": 3.007, "snippet": "# Cartwheel order cancellation policy\n\nAn order can be cancelled at no cost any time before the store ships it. Once an order has shipped it can no longer be cancelled; the buyer should instead wait for delivery and request a return under the Cartwheel return policy.", "title": "Cartwheel order cancellation policy"}, {"policy_id": "store-cascade-audio-policy", "score": 2.84, "snippet": "# Cascade Audio store policy\n\nCascade Audio follows the Cartwheel platform return window of 30 days from delivery. Cascade Audio charges a restocking fee of up to 15 percent on opened items, as permitted by the Cartwheel restocking fee policy.", "title": "Cascade Audio store policy"}]}
+assistant: I found that the order was delivered on June 17, 2026; I’ll now read the full platform rule and check whether Pocket Arcade has a store-specific override that changes the deadline.
+tool_call get_policy: {"policy_id": "cw-returns"}
+tool_result get_policy: {"audience": "all", "body": "# Cartwheel return policy\n\nItems bought on Cartwheel can be returned within 30 days of delivery. The window counts from the delivery date, not the purchase date. Items must be in the condition described by the store's listing. Individual stores may override this window; see the store overrides policy and the store's own policy page.", "ok": true, "policy_id": "cw-returns", "title": "Cartwheel return policy"}
+tool_call search_help_center: {"query": "Pocket Arcade return policy return window"}
+tool_result search_help_center: {"ok": true, "results": [{"policy_id": "cw-returns", "score": 3.804, "snippet": "# Cartwheel return policy\n\nItems bought on Cartwheel can be returned within 30 days of delivery. The window counts from the delivery date, not the purchase date. Items must be in the condition described by the store's listing. Individual stores may override this window; see the store overrides polic", "title": "Cartwheel return policy"}, {"policy_id": "cw-cancellations", "score": 3.337, "snippet": "# Cartwheel order cancellation policy\n\nAn order can be cancelled at no cost any time before the store ships it. Once an order has shipped it can no longer be cancelled; the buyer should instead wait for delivery and request a return under the Cartwheel return policy.", "title": "Cartwheel order cancellation policy"}, {"policy_id": "store-cascade-audio-policy", "score": 3.167, "snippet": "# Cascade Audio store policy\n\nCascade Audio follows the Cartwheel platform return window of 30 days from delivery. Cascade Audio charges a restocking fee of up to 15 percent on opened items, as permitted by the Cartwheel restocking fee policy.", "title": "Cascade Audio store policy"}]}
+assistant: I did not find a Pocket Arcade-specific policy in that search, so I’ll look up the store-override rules to confirm whether there is any additional deadline or drop-off timing requirement.
+tool_call search_help_center: {"query": "store overrides return policy store-specific return window drop off deadline"}
+tool_result search_help_center: {"ok": true, "results": [{"policy_id": "cw-returns", "score": 7.574, "snippet": "# Cartwheel return policy\n\nItems bought on Cartwheel can be returned within 30 days of delivery. The window counts from the delivery date, not the purchase date. Items must be in the condition described by the store's listing. Individual stores may override this window; see the store overrides polic", "title": "Cartwheel return policy"}, {"policy_id": "store-cascade-audio-policy", "score": 4.623, "snippet": "# Cascade Audio store policy\n\nCascade Audio follows the Cartwheel platform return window of 30 days from delivery. Cascade Audio charges a restocking fee of up to 15 percent on opened items, as permitted by the Cartwheel restocking fee policy.", "title": "Cascade Audio store policy"}, {"policy_id": "store-second-stitch-apparel-policy", "score": 4.478, "snippet": "# Second Stitch Apparel store policy\n\nSecond Stitch Apparel follows the Cartwheel platform return window of 30 days from delivery. Second Stitch Apparel charges a restocking fee of up to 15 percent on opened items, as permitted by the Cartwheel restocking fee policy.", "title": "Second Stitch Apparel store policy"}]}
+assistant: The written policy gives the 30-day delivery-based window but does not specify whether a return must be started or physically handed to the carrier by the deadline, or how weekend drop-offs are treated, so I’ll ask a support specialist to confirm those details for Pocket Arcade.
+tool_call escalate_to_human: {"context": "Shopper's Pocket Arcade order #2434 was delivered 2026-06-17 and is marked refund eligible. Cartwheel returns policy cw-returns says returns are allowed within 30 days of delivery, but does not state whether deadline means initiating the return or carrier drop-off, nor specify weekend handling. Calculated 30 days after delivery is 2026-07-17; please confirm the precise cutoff and any store-specific override.", "summary": "Confirm exact return cutoff and weekend/drop-off handling for Pocket Arcade order #2434"}
+tool_result escalate_to_human: {"ok": true, "sla_hours": 24, "ticket_id": 209}
+assistant: Not a dumb question at all — I checked order **#2434**. Your Pocket Arcade Matte USB‑C Hub was recorded as **delivered on June 17, 2026**.
+
+Cartwheel’s standard return window is **30 days from the delivery date**—not the purchase date. That puts the calculated last day at **Friday, July 17, 2026**. **[cw-returns]**
+
+A couple of important details:
+
+- The policy says the return must be **within 30 days of delivery**, but it does **not** clarify whether that means you only need to *start* the return by then or whether the package must be *dropped off with the carrier* by then. **[cw-returns]**
+- It also does not specifically state how weekend drop-offs affect the deadline. **[cw-returns]**
+- Your order is currently shown as **refund-eligible**.
+
+I’ve opened a support ticket (**#209**) to get the exact Pocket Arcade cutoff and weekend/drop-off rule confirmed. A human support specialist will follow up within **24 hours**. For the safest option, I’d plan to have it handed to the carrier **no later than July 17** rather than merely starting the request that day.

@@ -1,0 +1,5 @@
+#!/bin/sh
+# Convenience wrapper: `./session-reader dump out.jsonl`, `./session-reader tail -f`.
+# Nothing tracked is touched -- pyproject.toml has no [project.scripts] and is
+# the instructor's file.
+exec uv run python -m scripts.hw1_session "$@"

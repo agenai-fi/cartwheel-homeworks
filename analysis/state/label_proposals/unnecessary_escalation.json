@@ -1,0 +1,572 @@
+[
+  {
+    "trace_id": "fa29dc7896bc950ba302b03c9022d322",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "dd7c7f4e84cc9c14224ffb3af0cd4606",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "060a77dc6fc2f90c735523265aa4c07f",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "a81c0b280bb7af0b4462d04a58cbb12e",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "0d7df8907de88e750ac49a1ae63c9b52",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "173cb0ba96dcdea1e80b1ebbbd7417a8",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "e55a08b558c6e5c8ae2a8d47dd3ba4e1",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "89c5493649b531f92c32672441c85a00",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "912a4987d43d3bc276c51480faf9985b",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "816343ff560dd630114b2d37f0238221",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "879b1a01ae73b3a03b91d3905550f1a1",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "85887500a381070890f0f6425bd5e4da",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "0341d06602dfcb18f950d3330a48f252",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "fe782b3788665a3982a1fcdccd762b7f",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "ed743e559cf61244b191aa72cc6e8fc1",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "94072b95d646f809807042805121abc1",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "404756290c062dd515aa331171d0d4af",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "35d7c339201f691f383fa729d29fd708",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "ce8fe0dd05e4a09a5cd0b2806dda0db7",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "72cbdcae530644a13f91f17598f95be9",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "f302f0eb9403f6f2c7fd52bae192336b",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "04f721d845613c4e46b50d9b69dcf6fb",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "16646cd3eea041ffa84faf9b4a84e4d3",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "ca041f7f45eafa0a5718ab3d898c4961",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "a449d2a323a37da4f7af4c40440a0195",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "7c373e28ff18d9af53a4bdd919894b7e",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "76191cd1abc6d8348c6fdb4a449981a9",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "48770c9fbd4740e172d22203920ee5ba",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "1ada5cc3498e138acb6d1501c8b7df77",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "0ec46bdac132fd9de510938055ea6cb0",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "a55b5f68478e685960b1c85326daddcf",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "67d63cd06373ed0d44432c26e25fe2f8",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "fa545fe36c9b1f109925060bbff81e4d",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "1c113127d5be1c55ab31aeaf0f0af3cf",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "961eb4d374253cad59550812e46b357e",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "b75df6ba85593bc68998eabe8fa0bb01",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "778a07c0d4768a5c73960047ba02fb31",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "06054bb1aeca8d8e33fd5973d8d0f9db",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "7e540f4746498123dde0a6497590424f",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "0fd9632cb0ff60d742d411017cae95ed",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "8eb4b5941450f3e8c87a1312243f5e7d",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "dfe28fa6650144e328c8881acbbf732a",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "915b60c83256e4951d967a211a2f6b1e",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "7664869fc1997d9c6b0070a2dbab3f8b",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "bb00c79cba7117719b5ee6dd9d6b4063",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "4bbe437e79e90532334f1db54e133c82",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "353eb768d5d7a3a67bfefcc5235b98ef",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "9397ea983ec04cfc46f26b1b41a3ac00",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "525718318f4d3fd31d7b62dc7fdd7af8",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "ec57491d17738b195125e50733738972",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "94dbaba949271c196f34fbfee658e1b6",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "b0766b06ab9124e7ede6cb6d10eff41f",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "6ab4ea6aa05a203534eb519d1f000345",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "dd1cd5b6580f109eab9a506bca6f7507",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "e01c4f8349876f7169b84b71300c6a8c",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "1a5cc0e91df2b64588539644a563edbf",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "f3b691460d0139f73c0728ff4c8ce3a5",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "e7fcd2b6255056684d36c18aef9e6970",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "6c6162d9e28b831b9eb12046704fbfda",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "9d527046ed7e15486ded225213dea630",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "5ef4d069f6dbfa7443a1f1f9927b6a13",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "366a9d1f7c556dcc8029f7856749c03e",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "2377828e00a5b1b8fb355218321549d0",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "51ce3c91d7363d1c198414f85aab4dd5",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "30b58b491bcedfbda5c629e9b5c226a7",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "adeeece73dc206c5178f2a4ee0dad834",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "100067ce1a35bb0c614f2d43edc89f1d",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "4c714f2ea4e286ba239d8a08a9db8a21",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "06dd96de1f1c469f3e12f71f2bc5d81c",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "8278f0e9077adbc3c1c60b1adc72db3a",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "5beb2ebaa9796c3efaf68c93c4f12538",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "48795abd3f949b0f8f250615aeeed4ee",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "3ffb327fb79ed550081a009fa44dbb9e",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "6be3e7c3b1a1ef30937ec1b55b7cb48a",
+    "label": 0,
+    "source": "rule: trigger absent",
+    "evidence": "trigger absent: no escalate_to_human call and no review/exception/ticket offer in the reply"
+  },
+  {
+    "trace_id": "5c28598c5ef779facbf6f12c9317f4ce",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Escalation is warranted: status delivered with delivered_at null and refund_eligible false is an inconsistent record the agent cannot resolve from policy."
+  },
+  {
+    "trace_id": "f0dc71debd38fe21f8266fb20570e6f7",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "No new escalation; the reply refers to existing ticket #154, opened for a warranted record defect."
+  },
+  {
+    "trace_id": "9bbfd2395f48fe348586562d580fec6f",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "No escalate_to_human call and no exception or review path offered beyond the tool's own queue."
+  },
+  {
+    "trace_id": "50f89c78831c993f7fde0e91f475c797",
+    "label": 1,
+    "source": "agent proposal",
+    "evidence": "UNSURE: the agent opens ticket #176 so a human can 'verify the order' although get_order returned permission_denied, which resolves the access question; same pattern as the 0060 positive, though a non-receipt report gives some ground for a human."
+  },
+  {
+    "trace_id": "20ca8de92b5c48d2155f42a3af955871",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Escalates a real gap: the opened policy does not say whether days are calendar or business days, or whether drop-off or receipt counts; for missing information escalation is allowed."
+  },
+  {
+    "trace_id": "e9ab991a746ad470676d7d302174e1e5",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "No new escalation; the reply only refers to existing ticket #181 from turn 2."
+  },
+  {
+    "trace_id": "c96ae47d81de6a0d853dbfe078ead743",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Payment-method change must go to a human (system prompt; scenario expects ESC-2 escalation), so the escalation is required."
+  },
+  {
+    "trace_id": "3bea72e1aad6557c55664243d6baf136",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "No escalation made and no exception path named; offering to get the issue reviewed if the credit is missing is allowed."
+  },
+  {
+    "trace_id": "f4fcb8d1bdb78a7de6c80038d028949c",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "No escalate_to_human call and no exception path offered; refund denied from the record and cw-returns."
+  },
+  {
+    "trace_id": "a53f7f5bc207429a80aab06d5343ba28",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Payment-card change must go to a human per the system prompt (scenario expects ESC-2), so the escalation is required."
+  },
+  {
+    "trace_id": "ca2dd90bad7051d51fb7ece53dd4cb57",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "The cancellation source is information missing from the record; per the ESC-3 reading, escalating for missing information is allowed, not required, and the reply also states the gap."
+  },
+  {
+    "trace_id": "e8f95d9c6d852b1eb9deb3c6a4824778",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "No escalate_to_human call and no exception path offered; reply refuses cancellation per opened cw-cancellations and points to the return route."
+  },
+  {
+    "trace_id": "4681ac00f9938b91657363368bf397c5",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Escalates the final-sale question, which no opened or surfaced policy answers; for missing information, escalation is allowed, not required (ESC-3 reading)."
+  },
+  {
+    "trace_id": "44f851f3ce4a56444c8cdf0707aeaa7d",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Escalates for a cancellation reason that the record lacks (an information gap; escalation allowed) and for reinstatement, an action that neither policy nor tools resolve; no invented exception path."
+  },
+  {
+    "trace_id": "ba7a3cbd98c97fd0f6000b3897f71236",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "UNSURE: escalates RMA/label status, return-shipping responsibility and the metrics/fee effect, none of which any opened policy or the record answers; for missing information, escalation is allowed, and the reply names no invented exception path."
+  },
+  {
+    "trace_id": "6940d6ecc2fe344882185168c298325f",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "UNSURE: the agent saw only cw-returns, which does not say whether an external-site statement is a valid override, so escalating it as a policy gap is warranted (0158 boundary); cw-store-overrides would resolve it but was never surfaced."
+  },
+  {
+    "trace_id": "5e43e18e2c630fd34eb9360d1a7bd681",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "Dispute: cw-disputes (opened) says disputes are always handled by a human, so escalation is required."
+  },
+  {
+    "trace_id": "d1e3b1d1587742400f4bdf9ab859a6c1",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "No escalation and no exception path; it points to the policy return route."
+  },
+  {
+    "trace_id": "c1e4737a5487c7e5c2ad8ac9a0ceb76b",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "A dispute always goes to a human (cw-disputes, ESC-3), and no unpublished exception path is offered."
+  },
+  {
+    "trace_id": "c755f0bdc7d2fe77d02be97cad0c1c81",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "The refund date is information missing from the record; stating the gap is enough, and escalating is allowed (ESC-3 reading, support-0193)."
+  },
+  {
+    "trace_id": "7b2dbf1b5844654cc3f3f184a6ab8183",
+    "label": 0,
+    "source": "agent proposal",
+    "evidence": "No escalation call and no exception path; it redirects to IT/help desk."
+  }
+]

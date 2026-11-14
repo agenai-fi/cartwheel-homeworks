@@ -327,6 +327,7 @@ def write_label_score(
     label: int,
     comment: str | None = None,
     client: Any | None = None,
+    score_id: str | None = None,
 ) -> str:
     """Write a human label back to Langfuse as a numeric score.
 
@@ -342,6 +343,8 @@ def write_label_score(
         label: 0 or 1.
         comment: optional free-text note stored alongside the score.
         client: an existing Langfuse client.
+        score_id: optional stable id; writing again with the same id updates
+            the score instead of adding a second one (a flipped label).
 
     Returns:
         The Langfuse trace id the score was written against.
@@ -352,6 +355,7 @@ def write_label_score(
         name=mode,
         value=int(label),
         trace_id=langfuse_id,
+        score_id=score_id,
         data_type="NUMERIC",
         comment=comment,
     )

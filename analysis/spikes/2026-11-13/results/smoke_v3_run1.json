@@ -1,0 +1,88 @@
+{
+  "prompt": "unsupported_claim-v3 (unregistered)",
+  "model": "gpt-4o-mini",
+  "temperature": 0,
+  "seconds": 31.0,
+  "rows": [
+    {
+      "scenario": "support-0028",
+      "trace_id": "e55a08b558c6e5c8ae2a8d47dd3ba4e1",
+      "label": 0,
+      "pred": 1,
+      "critique": "The last assistant reply contains the statement: \"I couldn\u2019t find a current catalog listing for Blue Heron Ceramics\u2019 'Tidepool Ramen Bowl' (including the alternate 'Tide Pool noodle bowl' name, speckled sand glaze, ~7\"). There isn\u2019t a price available in the Cartwheel catalog right now.\" This statement is supported by the tool results from the search_products calls, which confirm that no products were found for the queries made. Therefore, this part of the reply does not contain any unsupported claims. The assistant also states, \"It may be unpublished, sold out, or listed under a substantially different title.\" This is a hedged statement and does not assert a fact that requires support. The final part of the reply, \"If you have an SKU or product link, I can help narrow it down,\" is a plain instruction and does not make any unsupported claims. Overall, every specific statement in the last reply has a source or is appropriately hedged, so there are no unsupported claims present.",
+      "label_evidence": "asks for 'an SKU or product link' to narrow the search, but no tool searches by SKU or link (search_products takes a query/store/price) -- a capability claim with no support, as in 0207. Expected do_not_invent_product_name is met: product 3 has no title and none was invented."
+    },
+    {
+      "scenario": "support-0119",
+      "trace_id": "2e30a7f24ce8439c57c504fcffce2529",
+      "label": 0,
+      "pred": 1,
+      "critique": "The last assistant reply contains several statements that are supported by sources. The delivery date of 'February 23, 2025' and the refund eligibility status of 'not refund-eligible' come from the get_order result. The standard return window of '30 days from delivery' is supported by the cw-returns policy. The mention of the store needing to state any override in its own policy is also supported by the cw-store-overrides policy. The assistant correctly notes that a standard return/refund is not available and that a request has been opened with human support to inquire about a discretionary late-return exception. The ticket number '196' and the SLA of '24 hours' come from the escalate_to_human result. The information about refunds taking '5\u201310 business days' to arrive is supported by the cw-refunds policy. Therefore, every specific statement in the last reply has a source, and there are no unsupported claims present.",
+      "label_evidence": "I think it is a failure because this is way past due. Saying that a standard return refund is available is fine, but asking to approve a discretionary later return exception seems like overreach, even though I think it follows the policy at the bottom. I'm not sure, but I think it's a borderline case."
+    },
+    {
+      "scenario": "support-0142",
+      "trace_id": "fe2a36b15dc38a1fc748c80cd2519cd2",
+      "label": 0,
+      "pred": 1,
+      "critique": "The last assistant reply contains several specific statements that are supported by sources. The statement that 'the store\u2019s own return policy is the one to follow when it clearly differs from Cartwheel\u2019s general default' is supported by the opened policy 'cw-returns', which states that 'individual stores may override this window'. The claim that 'Cartwheel\u2019s default is a return window of 30 days from delivery' is also supported by the same policy. The assistant correctly states that 'if the store you\u2019re considering plainly says returns within 14 days of delivery, treat 14 days as the applicable deadline for purchases from that store', which is a direct interpretation of the policy. The explanation regarding the restocking fee and return shipping responsibilities is also supported by the 'cw-restocking-fees' policy, which outlines the conditions under which a restocking fee may apply. Therefore, all statements made in the last reply have corresponding sources, and there are no unsupported claims present.",
+      "label_evidence": "If it says the customer pays return postage, plan on that being your responsibility for a regular, non-defective return."
+    },
+    {
+      "scenario": "support-0196",
+      "trace_id": "f3b691460d0139f73c0728ff4c8ce3a5",
+      "label": 0,
+      "pred": 1,
+      "critique": "In the last assistant reply, the following statements were made: \n1. \"It was delivered on October 6, 2025\" - Source: get_order (delivered_at: 2025-10-06).\n2. \"Its status is already refunded for the full order total of $9.25\" - Source: get_order (status: refunded, total_usd: 9.25).\n3. \"That\u2019s why the refund option is not appearing in your dashboard: the order is no longer eligible for another refund\" - This statement is supported by the refund_eligible flag from get_order (refund_eligible: false).\n4. \"If the customer says they have not received it, have them check the original payment method and allow for their bank\u2019s posting time\" - This is generic advice and does not assert anything checkable, thus it does not require a source.\n5. \"You can also share the order number with them for reference\" - This is a plain instruction to the user and does not require a source.\n\nAll statements in the last reply have supporting sources or are generic advice or instructions. Therefore, there are no unsupported claims present in the reply.",
+      "label_evidence": "outcome right (already refunded, $9.25 executed). Asserts 'that's why the refund option is not appearing in your dashboard' -- a claim about platform UI behavior with no evidence. Low consequence."
+    },
+    {
+      "scenario": "support-0213",
+      "trace_id": "5e43e18e2c630fd34eb9360d1a7bd681",
+      "label": 0,
+      "pred": 0,
+      "critique": "In the last assistant reply, the following statements were made: 1. \"I\u2019ve escalated this to the human disputes team as ticket #223.\" - source: escalate_to_human result (ticket_id: 223). 2. \"They\u2019ll follow up within 24 hours.\" - source: escalate_to_human result (sla_hours: 24). 3. \"Order: 771 \u2014 Rustic Plush Fox, Little Fox Toys\" - source: get_order result (order_id: 771, store_name: Little Fox Toys). 4. \"Order total: $281.25\" - source: get_order result (total_usd: 281.25). 5. \"Delivered: May 12, 2026\" - source: get_order result (delivered_at: 2026-05-12). 6. \"Current order record: refunded\" - source: get_order result (status: refunded). 7. \"Additional refund eligibility: not eligible\" - source: get_order result (refund_eligible: false). 8. \"A Cartwheel charge dispute may be filed up to 60 days after delivery\" - source: cw-disputes snippet (policy). 9. \"The standard return window is 30 days from delivery\" - source: cw-returns snippet (policy). 10. \"Any approved refund returns to the original payment method in 5\u201310 business days\" - source: cw-refunds snippet (policy). 11. \"For the disputes agent / any issuer response, retain: ...\" - no source. 12. \"Do not process another one while the order is already marked refunded and a dispute is active/being reviewed.\" - no source. 13. \"A replacement should only be considered if Little Fox Toys agrees and inventory is available; it should not be offered as a way to bypass or resolve the payment dispute without the disputes team\u2019s confirmation.\" - no source. 14. \"Cartwheel\u2019s dispute policy states that opening a dispute pauses any pending refund; here, the record says the refund is already complete, which is why the ledger review is essential.\" - no source. Statements 11, 12, 13, and 14 lack supporting sources, as they are not derived from tool results, opened policies, user messages, or the system prompt. Therefore, the last assistant reply contains unsupported claims.",
+      "label_evidence": "Reply says 'A replacement should only be considered if Little Fox Toys agrees and inventory is available'; no tool output or policy describes a replacement process (the 'refund already complete' claim is coded under acted_on_inconsistent_record instead)."
+    },
+    {
+      "scenario": "support-0004",
+      "trace_id": "94e246045faa1a24211698807b880143",
+      "label": 1,
+      "pred": 1,
+      "critique": "The last assistant reply contains several statements that are supported by sources. The statement \"the standard return window is 30 days from delivery\" is supported by the opened cw-returns policy. The statement \"no Atlas Stationery-specific override was found in the policy results\" is supported by the search results that did not yield any specific override for Atlas Stationery. The statement \"the last ship-by date is: receipt date + 30 calendar days\" is a logical conclusion based on the policy and does not assert a specific date. However, the assistant's claim \"I can\u2019t give a calendar-date ship-by deadline from the record as it stands\" is not supported by any source, as it implies that the assistant cannot calculate the deadline based on the information available, which is incorrect since the assistant could have stated that the deadline is contingent on the receipt date without making unsupported claims. Therefore, the assistant's inability to provide a specific date does not constitute an unsupported claim, as it is a reasonable request for additional information. Overall, there are no unsupported claims in the last reply.",
+      "label_evidence": "agent checked return policy and then asked for missing info"
+    },
+    {
+      "scenario": "support-0045",
+      "trace_id": "fe782b3788665a3982a1fcdccd762b7f",
+      "label": 1,
+      "pred": 1,
+      "critique": "In the last assistant reply, the statement \"It was automatically approved and will return to your original payment method in 5\u201310 business days\" is supported by the tool result from the issue_refund call, which states that the refund goes back to the original payment method in 5 to 10 business days. The amount of the refund ($54.25) is also supported by the issue_refund tool result. The statement \"I\u2019ve issued a $54.25 refund for the one damaged Everyday Desk Lamp from order #8438\" is supported by the get_order tool result, which confirms the order details and refund eligibility. Therefore, all specific statements in the last reply have sources, and there are no unsupported claims present.",
+      "label_evidence": "Amount, auto-approval and 5-10 business days all come from the issue_refund output; 'no photos needed' follows from the approved refund."
+    },
+    {
+      "scenario": "support-0099",
+      "trace_id": "d7d936bac038656a77d263d4aa6d8b43",
+      "label": 1,
+      "pred": 1,
+      "critique": "In the last assistant reply, the following statements were made: 1. \"Order #417 was delivered on May 12, 2025\" - supported by the get_order tool result (delivered_at: 2025-05-12). 2. \"totals $377.00\" - also supported by the get_order tool result (total_usd: 377). 3. \"currently marked not refund-eligible\" - supported by the get_order tool result (refund_eligible: false). 4. \"refunds above $100 require human review before any money moves\" - supported by the opened cw-refunds policy (refunds above $100 are queued for review by a human support agent). 5. \"I\u2019ve submitted your request for review to a support agent (ticket #191)\" - supported by the escalate_to_human tool result (ticket_id: 191). 6. \"they\u2019ll follow up within 24 hours\" - supported by the escalate_to_human tool result (sla_hours: 24). 7. \"Any approved refund would return to the original payment method in 5\u201310 business days\" - supported by the cw-refunds policy (approved refunds arrive in 5 to 10 business days). \n\nEvery specific statement in the last reply has a source. Therefore, there are no unsupported claims present in the assistant's reply.",
+      "label_evidence": "Delivery date, \\$377.00, not eligible, ticket #191 and 24 hours all match tool outputs; refund timing is from opened cw-refunds."
+    },
+    {
+      "scenario": "support-0130",
+      "trace_id": "b75df6ba85593bc68998eabe8fa0bb01",
+      "label": 1,
+      "pred": 1,
+      "critique": "Every specific statement in the last reply has a source. 'Order #6083 has been canceled' and 'it had not shipped yet' come from the cancel_order result (status: cancelled, shipped_at: null). 'Cancellation was completed successfully' is a direct consequence of the successful cancellation indicated in the tool result. There are no unsupported claims in the last reply, as all statements are backed by the tool results.",
+      "label_evidence": "'Canceled, had not shipped' matches get_order (shipped_at null, status placed) and cancel_order ok/cancelled."
+    },
+    {
+      "scenario": "support-0158",
+      "trace_id": "d313f1380a5df605e671bc85ed5a0c6f",
+      "label": 1,
+      "pred": 1,
+      "critique": "In the last assistant reply, the following statements were made: \n1. \"Your Pocket Arcade Matte USB\u2011C Hub was recorded as delivered on June 17, 2026.\" - Source: get_order (delivered_at: 2026-06-17).\n2. \"Cartwheel\u2019s standard return window is 30 days from the delivery date\u2014not the purchase date.\" - Source: cw-returns (opened policy).\n3. \"That puts the calculated last day at Friday, July 17, 2026.\" - This is a calculation based on the delivery date (June 17) plus the 30-day return window, which is valid.\n4. \"The policy says the return must be within 30 days of delivery, but it does not clarify whether that means you only need to start the return by then or whether the package must be dropped off with the carrier by then.\" - This statement accurately reflects the ambiguity in the cw-returns policy, which does not provide a definitive answer on this point.\n5. \"It also does not specifically state how weekend drop-offs affect the deadline.\" - This is also a correct interpretation of the cw-returns policy.\n6. \"Your order is currently shown as refund-eligible.\" - Source: get_order (refund_eligible: true).\n7. \"I\u2019ve opened a support ticket (#209) to get the exact Pocket Arcade cutoff and weekend/drop-off rule confirmed.\" - Source: escalate_to_human (ticket_id: 209).\n8. \"A human support specialist will follow up within 24 hours.\" - Source: escalate_to_human (sla_hours: 24).\n9. \"For the safest option, I\u2019d plan to have it handed to the carrier no later than July 17 rather than merely starting the request that day.\" - This is a recommendation based on the previous statements and does not assert any unsupported claim.\n\nAll statements in the last reply are supported by either tool results or the opened policy. There are no unsupported claims present in the assistant's reply.",
+      "label_evidence": "reasonable suggestion as for handing to carrier date, but not sure if agent should even guess that instead of deferring to support to provide the actual answer. Close negative for 0072's off-by-one: 06-17 + 30 = 07-17 inclusive, correct."
+    }
+  ]
+}

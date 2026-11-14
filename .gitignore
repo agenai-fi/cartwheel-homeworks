@@ -8,7 +8,11 @@
 data/cartwheel.db
 
 # Local conversation state and scenario/replay run outputs.
+# SQLite keeps recent writes in the -wal file: ignoring only .sessions.db would
+# leave raw conversation transcripts to be committed by `git add -A`.
 .sessions.db
+.sessions.db-wal
+.sessions.db-shm
 scenarios/results/
 replay/results/
 .harbor/

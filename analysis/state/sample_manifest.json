@@ -1,0 +1,1845 @@
+{
+  "batches": [
+    {
+      "batch": "uniform-1",
+      "method": "uniform random",
+      "seed": 4,
+      "requested": 10,
+      "scenarios": [
+        "support-0007",
+        "support-0020",
+        "support-0030",
+        "support-0033",
+        "support-0050",
+        "support-0072",
+        "support-0090",
+        "support-0115",
+        "support-0136",
+        "support-0202"
+      ],
+      "eligible_at_draw": 232,
+      "excluded_as_previously_read": [
+        "support-0001",
+        "support-0019",
+        "support-0022",
+        "support-0026",
+        "support-0027",
+        "support-0029",
+        "support-0041",
+        "support-0042",
+        "support-0044",
+        "support-0047",
+        "support-0063",
+        "support-0075",
+        "support-0110",
+        "support-0142",
+        "support-0144",
+        "support-0156",
+        "support-0187",
+        "support-0230"
+      ],
+      "part_b_batch": 1
+    },
+    {
+      "batch": "uniform-2",
+      "method": "uniform random",
+      "seed": 5,
+      "requested": 5,
+      "scenarios": [
+        "support-0084",
+        "support-0112",
+        "support-0185",
+        "support-0217",
+        "support-0232"
+      ],
+      "eligible_at_draw": 222,
+      "excluded_as_previously_read": [
+        "support-0001",
+        "support-0019",
+        "support-0022",
+        "support-0026",
+        "support-0027",
+        "support-0029",
+        "support-0041",
+        "support-0042",
+        "support-0044",
+        "support-0047",
+        "support-0063",
+        "support-0075",
+        "support-0110",
+        "support-0142",
+        "support-0144",
+        "support-0156",
+        "support-0187",
+        "support-0230"
+      ],
+      "part_b_batch": 1
+    },
+    {
+      "batch": "cluster-1",
+      "method": "k-means cluster representatives",
+      "seed": 7,
+      "requested": 15,
+      "features": [
+        "turn_count",
+        "tool_call_count",
+        "distinct_tools",
+        "has_retrieval",
+        "tokens"
+      ],
+      "unit": "conversation (turns merged)",
+      "scenarios": [
+        "support-0009",
+        "support-0056",
+        "support-0109",
+        "support-0113",
+        "support-0131",
+        "support-0158",
+        "support-0162",
+        "support-0168",
+        "support-0170",
+        "support-0172",
+        "support-0179",
+        "support-0196",
+        "support-0207",
+        "support-0210",
+        "support-0224"
+      ],
+      "clusters": {
+        "support-0113": {
+          "cluster": 0,
+          "cluster_size": 39
+        },
+        "support-0179": {
+          "cluster": 13,
+          "cluster_size": 31
+        },
+        "support-0109": {
+          "cluster": 2,
+          "cluster_size": 28
+        },
+        "support-0210": {
+          "cluster": 3,
+          "cluster_size": 26
+        },
+        "support-0224": {
+          "cluster": 5,
+          "cluster_size": 22
+        },
+        "support-0196": {
+          "cluster": 8,
+          "cluster_size": 22
+        },
+        "support-0158": {
+          "cluster": 7,
+          "cluster_size": 18
+        },
+        "support-0172": {
+          "cluster": 12,
+          "cluster_size": 17
+        },
+        "support-0168": {
+          "cluster": 4,
+          "cluster_size": 16
+        },
+        "support-0009": {
+          "cluster": 10,
+          "cluster_size": 11
+        },
+        "support-0170": {
+          "cluster": 1,
+          "cluster_size": 5
+        },
+        "support-0131": {
+          "cluster": 14,
+          "cluster_size": 5
+        },
+        "support-0056": {
+          "cluster": 9,
+          "cluster_size": 4
+        },
+        "support-0207": {
+          "cluster": 11,
+          "cluster_size": 3
+        },
+        "support-0162": {
+          "cluster": 6,
+          "cluster_size": 3
+        }
+      },
+      "eligible_at_draw": 217,
+      "excluded_as_previously_read": [
+        "support-0001",
+        "support-0019",
+        "support-0022",
+        "support-0026",
+        "support-0027",
+        "support-0029",
+        "support-0041",
+        "support-0042",
+        "support-0044",
+        "support-0047",
+        "support-0063",
+        "support-0075",
+        "support-0110",
+        "support-0142",
+        "support-0144",
+        "support-0156",
+        "support-0187",
+        "support-0230"
+      ],
+      "part_b_batch": 1
+    },
+    {
+      "batch": "role-1",
+      "method": "stratified random by product dimension",
+      "dimension": "user_role",
+      "allocation": "equal, 10 per role",
+      "seed": 7,
+      "requested": 30,
+      "scenarios": [
+        "support-0013",
+        "support-0015",
+        "support-0018",
+        "support-0021",
+        "support-0023",
+        "support-0028",
+        "support-0032",
+        "support-0036",
+        "support-0045",
+        "support-0067",
+        "support-0081",
+        "support-0087",
+        "support-0092",
+        "support-0114",
+        "support-0130",
+        "support-0157",
+        "support-0163",
+        "support-0165",
+        "support-0180",
+        "support-0181",
+        "support-0188",
+        "support-0193",
+        "support-0206",
+        "support-0215",
+        "support-0231",
+        "support-0240",
+        "support-0241",
+        "support-0242",
+        "support-0246",
+        "support-0247"
+      ],
+      "per_role": {
+        "shopper": [
+          "support-0015",
+          "support-0021",
+          "support-0032",
+          "support-0045",
+          "support-0081",
+          "support-0087",
+          "support-0092",
+          "support-0114",
+          "support-0130",
+          "support-0157"
+        ],
+        "merchant": [
+          "support-0013",
+          "support-0018",
+          "support-0023",
+          "support-0028",
+          "support-0163",
+          "support-0165",
+          "support-0180",
+          "support-0181",
+          "support-0188",
+          "support-0193"
+        ],
+        "support": [
+          "support-0036",
+          "support-0067",
+          "support-0206",
+          "support-0215",
+          "support-0231",
+          "support-0240",
+          "support-0241",
+          "support-0242",
+          "support-0246",
+          "support-0247"
+        ]
+      },
+      "eligible_at_draw": {
+        "shopper": 108,
+        "merchant": 48,
+        "support": 46
+      },
+      "excluded_as_previously_read": [
+        "support-0001",
+        "support-0019",
+        "support-0022",
+        "support-0026",
+        "support-0027",
+        "support-0029",
+        "support-0041",
+        "support-0042",
+        "support-0044",
+        "support-0047",
+        "support-0063",
+        "support-0075",
+        "support-0110",
+        "support-0142",
+        "support-0144",
+        "support-0156",
+        "support-0187",
+        "support-0230"
+      ],
+      "part_b_batch": 2
+    },
+    {
+      "batch": "depth-1",
+      "method": "depth search",
+      "mode": "policy_claim_without_opening",
+      "round": 1,
+      "rule": "takes precedence|store policy wins|overrid|store-specific|store's own",
+      "definition": "The reply states or cites a policy rule whose document the conversation never opened with get_policy; a search snippet does not count as opened.",
+      "seed": 11,
+      "hits_in_pool": {
+        "strong": 6,
+        "weak": 21
+      },
+      "taken": {
+        "strong": 6,
+        "weak": 6
+      },
+      "scenarios": [
+        "support-0070",
+        "support-0123",
+        "support-0139",
+        "support-0161",
+        "support-0167",
+        "support-0177",
+        "support-0205",
+        "support-0212",
+        "support-0213",
+        "support-0221",
+        "support-0237",
+        "support-0248"
+      ],
+      "eligible_at_draw": 172,
+      "excluded_as_previously_read": [
+        "support-0001",
+        "support-0019",
+        "support-0022",
+        "support-0026",
+        "support-0027",
+        "support-0029",
+        "support-0041",
+        "support-0042",
+        "support-0044",
+        "support-0047",
+        "support-0063",
+        "support-0075",
+        "support-0110",
+        "support-0142",
+        "support-0144",
+        "support-0156",
+        "support-0187",
+        "support-0230"
+      ],
+      "part_b_batch": 3
+    },
+    {
+      "batch": "depth-2",
+      "method": "depth search",
+      "mode": "missed_mandatory_escalation",
+      "round": 1,
+      "rule": "intent == dispute and no escalate_to_human",
+      "definition": "A case SPEC always sends to a human (ESC-1 to ESC-3, e.g. a dispute) ends without an escalate_to_human call.",
+      "seed": 11,
+      "hits_in_pool": {
+        "strong": 4,
+        "weak": 0
+      },
+      "taken": {
+        "strong": 4,
+        "weak": 0
+      },
+      "scenarios": [
+        "support-0083",
+        "support-0093",
+        "support-0103",
+        "support-0133"
+      ],
+      "eligible_at_draw": 160,
+      "excluded_as_previously_read": [
+        "support-0001",
+        "support-0019",
+        "support-0022",
+        "support-0026",
+        "support-0027",
+        "support-0029",
+        "support-0041",
+        "support-0042",
+        "support-0044",
+        "support-0047",
+        "support-0063",
+        "support-0075",
+        "support-0110",
+        "support-0142",
+        "support-0144",
+        "support-0156",
+        "support-0187",
+        "support-0230"
+      ],
+      "suggested_scenarios": [
+        "support-0083",
+        "support-0093",
+        "support-0103",
+        "support-0133"
+      ],
+      "part_b_batch": 3
+    },
+    {
+      "batch": "depth-3",
+      "method": "depth search",
+      "mode": "answered_out_of_scope_question",
+      "round": 1,
+      "rule": "\\busually\\b|look for|point you to|send this|^\\s*\\d+\\.\\s",
+      "definition": "The agent answers a request SCOPE-2 requires it to refuse, instead of declining.",
+      "seed": 11,
+      "hits_in_pool": {
+        "strong": 4,
+        "weak": 0
+      },
+      "taken": {
+        "strong": 4,
+        "weak": 0
+      },
+      "scenarios": [
+        "support-0095",
+        "support-0145",
+        "support-0214",
+        "support-0250"
+      ],
+      "eligible_at_draw": 156,
+      "excluded_as_previously_read": [
+        "support-0001",
+        "support-0019",
+        "support-0022",
+        "support-0026",
+        "support-0027",
+        "support-0029",
+        "support-0041",
+        "support-0042",
+        "support-0044",
+        "support-0047",
+        "support-0063",
+        "support-0075",
+        "support-0110",
+        "support-0142",
+        "support-0144",
+        "support-0156",
+        "support-0187",
+        "support-0230"
+      ],
+      "suggested_scenarios": [
+        "support-0095",
+        "support-0145",
+        "support-0214",
+        "support-0250"
+      ],
+      "part_b_batch": 3
+    },
+    {
+      "batch": "depth-4",
+      "method": "depth search",
+      "mode": "skipped_order_search",
+      "round": 1,
+      "rule": "#\\s?\\d{2,5}\\b|\\bor?der\\s*(?:number|no\\.?|id)?\\s*#?\\s*\\d{2,5}\\b",
+      "definition": "The user describes an order by product and the agent answers without calling find_order although its role may.",
+      "seed": 11,
+      "hits_in_pool": {
+        "strong": 1,
+        "weak": 1
+      },
+      "taken": {
+        "strong": 1,
+        "weak": 1
+      },
+      "scenarios": [
+        "support-0195",
+        "support-0243"
+      ],
+      "eligible_at_draw": 152,
+      "excluded_as_previously_read": [
+        "support-0001",
+        "support-0019",
+        "support-0022",
+        "support-0026",
+        "support-0027",
+        "support-0029",
+        "support-0041",
+        "support-0042",
+        "support-0044",
+        "support-0047",
+        "support-0063",
+        "support-0075",
+        "support-0110",
+        "support-0142",
+        "support-0144",
+        "support-0156",
+        "support-0187",
+        "support-0230"
+      ],
+      "suggested_scenarios": [
+        "support-0195",
+        "support-0243"
+      ],
+      "part_b_batch": 3
+    },
+    {
+      "batch": "depth-5",
+      "method": "depth search",
+      "mode": "answered_out_of_scope_question",
+      "round": 2,
+      "rule": "guidance: \\busually\\b|look for|point you to|send this|^\\s*\\d+\\.\\s | offer: \\bif you (tell|share|send|let) me\\b|\\bI can (help you|point|walk|draft|look)\\b",
+      "definition": "For a request SCOPE-2 requires the agent to refuse, the reply holds more than a refusal and a redirect (task content, steps, or an offer to do the task).",
+      "seed": 11,
+      "hits_in_pool": {
+        "strong": 1,
+        "weak": 9
+      },
+      "taken": {
+        "strong": 1,
+        "weak": 2
+      },
+      "scenarios": [
+        "support-0192",
+        "support-0200",
+        "support-0223"
+      ],
+      "eligible_at_draw": 150,
+      "part_b_batch": 3,
+      "excluded_as_previously_read": [
+        "support-0001",
+        "support-0019",
+        "support-0022",
+        "support-0026",
+        "support-0027",
+        "support-0029",
+        "support-0041",
+        "support-0042",
+        "support-0044",
+        "support-0047",
+        "support-0063",
+        "support-0075",
+        "support-0110",
+        "support-0142",
+        "support-0144",
+        "support-0156",
+        "support-0187",
+        "support-0230"
+      ],
+      "suggested_scenarios": [
+        "support-0192",
+        "support-0200",
+        "support-0223"
+      ]
+    },
+    {
+      "batch": "uniform-3",
+      "method": "uniform random",
+      "seed": 13,
+      "requested": 15,
+      "scenarios": [
+        "support-0005",
+        "support-0011",
+        "support-0038",
+        "support-0059",
+        "support-0060",
+        "support-0065",
+        "support-0079",
+        "support-0091",
+        "support-0097",
+        "support-0099",
+        "support-0107",
+        "support-0121",
+        "support-0122",
+        "support-0178",
+        "support-0228"
+      ],
+      "eligible_at_draw": 147,
+      "excluded_as_previously_read": [
+        "support-0001",
+        "support-0019",
+        "support-0022",
+        "support-0026",
+        "support-0027",
+        "support-0029",
+        "support-0041",
+        "support-0042",
+        "support-0044",
+        "support-0047",
+        "support-0063",
+        "support-0075",
+        "support-0110",
+        "support-0142",
+        "support-0144",
+        "support-0156",
+        "support-0187",
+        "support-0230"
+      ],
+      "part_b_batch": 4
+    },
+    {
+      "batch": "hw5-enrich-1",
+      "method": "next_to_label enrich",
+      "mode": "unsupported_claim",
+      "homework": "hw5",
+      "candidate_traces": 40,
+      "skipped_already_read": [
+        "support-0029",
+        "support-0041",
+        "support-0047",
+        "support-0075",
+        "support-0230"
+      ],
+      "scenarios": [
+        "support-0004",
+        "support-0010",
+        "support-0014",
+        "support-0031",
+        "support-0037",
+        "support-0039",
+        "support-0040",
+        "support-0043",
+        "support-0046",
+        "support-0048",
+        "support-0049",
+        "support-0051",
+        "support-0052",
+        "support-0054",
+        "support-0055",
+        "support-0062",
+        "support-0078",
+        "support-0088",
+        "support-0089",
+        "support-0119",
+        "support-0129",
+        "support-0132",
+        "support-0143",
+        "support-0159",
+        "support-0164",
+        "support-0175",
+        "support-0183",
+        "support-0189",
+        "support-0197",
+        "support-0199",
+        "support-0203",
+        "support-0218",
+        "support-0222",
+        "support-0225",
+        "support-0249"
+      ],
+      "counts_toward_batch": false
+    },
+    {
+      "batch": "hw5-enrich-2",
+      "method": "next_to_label enrich",
+      "mode": "unsupported_claim",
+      "homework": "hw5",
+      "trace_source": "traces/support_traces.json",
+      "candidate_traces": 20,
+      "skipped_already_read": [
+        "support-0041",
+        "support-0047",
+        "support-0075",
+        "support-0230"
+      ],
+      "skipped_close_variant": {
+        "support-0001": "support-0004",
+        "support-0003": "support-0004"
+      },
+      "scenarios": [
+        "support-0053",
+        "support-0082",
+        "support-0128",
+        "support-0138",
+        "support-0142",
+        "support-0148",
+        "support-0171",
+        "support-0187",
+        "support-0191",
+        "support-0208",
+        "support-0226",
+        "support-0235",
+        "support-0239",
+        "support-0244"
+      ],
+      "counts_toward_batch": false
+    }
+  ],
+  "traces": {
+    "fa29dc7896bc950ba302b03c9022d322": {
+      "scenario_id": "support-0007",
+      "session_id": "0b2252ee2b8f432c9d1304c65d10d63c",
+      "batch": "uniform-1",
+      "selection": "uniform random",
+      "reason": "uniform random over scenarios not previously read, seed 4"
+    },
+    "0d7df8907de88e750ac49a1ae63c9b52": {
+      "scenario_id": "support-0020",
+      "session_id": "9bd87019194b4ba0b605bcfe2bdeeca4",
+      "batch": "uniform-1",
+      "selection": "uniform random",
+      "reason": "uniform random over scenarios not previously read, seed 4"
+    },
+    "173cb0ba96dcdea1e80b1ebbbd7417a8": {
+      "scenario_id": "support-0020",
+      "session_id": "9bd87019194b4ba0b605bcfe2bdeeca4",
+      "batch": "uniform-1",
+      "selection": "uniform random",
+      "reason": "uniform random over scenarios not previously read, seed 4"
+    },
+    "89c5493649b531f92c32672441c85a00": {
+      "scenario_id": "support-0030",
+      "session_id": "03e1f225ef8249518b11e6d6855c6d2c",
+      "batch": "uniform-1",
+      "selection": "uniform random",
+      "reason": "uniform random over scenarios not previously read, seed 4"
+    },
+    "912a4987d43d3bc276c51480faf9985b": {
+      "scenario_id": "support-0030",
+      "session_id": "03e1f225ef8249518b11e6d6855c6d2c",
+      "batch": "uniform-1",
+      "selection": "uniform random",
+      "reason": "uniform random over scenarios not previously read, seed 4"
+    },
+    "879b1a01ae73b3a03b91d3905550f1a1": {
+      "scenario_id": "support-0033",
+      "session_id": "4e6de7edb20c436c8c6d0d78c3976595",
+      "batch": "uniform-1",
+      "selection": "uniform random",
+      "reason": "uniform random over scenarios not previously read, seed 4"
+    },
+    "9bbfd2395f48fe348586562d580fec6f": {
+      "scenario_id": "support-0050",
+      "session_id": "568692720b724c46b443fb907dc3c3d1",
+      "batch": "uniform-1",
+      "selection": "uniform random",
+      "reason": "uniform random over scenarios not previously read, seed 4"
+    },
+    "35d7c339201f691f383fa729d29fd708": {
+      "scenario_id": "support-0072",
+      "session_id": "b0d72ea7c4884554aad5e9a7bad87d91",
+      "batch": "uniform-1",
+      "selection": "uniform random",
+      "reason": "uniform random over scenarios not previously read, seed 4"
+    },
+    "ce8fe0dd05e4a09a5cd0b2806dda0db7": {
+      "scenario_id": "support-0072",
+      "session_id": "b0d72ea7c4884554aad5e9a7bad87d91",
+      "batch": "uniform-1",
+      "selection": "uniform random",
+      "reason": "uniform random over scenarios not previously read, seed 4"
+    },
+    "16646cd3eea041ffa84faf9b4a84e4d3": {
+      "scenario_id": "support-0090",
+      "session_id": "2fdef463f4684d279637ead830e3a89c",
+      "batch": "uniform-1",
+      "selection": "uniform random",
+      "reason": "uniform random over scenarios not previously read, seed 4"
+    },
+    "67d63cd06373ed0d44432c26e25fe2f8": {
+      "scenario_id": "support-0115",
+      "session_id": "16141ac209274fde950ae8a23233b69a",
+      "batch": "uniform-1",
+      "selection": "uniform random",
+      "reason": "uniform random over scenarios not previously read, seed 4"
+    },
+    "7e540f4746498123dde0a6497590424f": {
+      "scenario_id": "support-0136",
+      "session_id": "e679b32b05a54506be5bf4a437a0ca5f",
+      "batch": "uniform-1",
+      "selection": "uniform random",
+      "reason": "uniform random over scenarios not previously read, seed 4"
+    },
+    "6c6162d9e28b831b9eb12046704fbfda": {
+      "scenario_id": "support-0202",
+      "session_id": "ae8bf7a38c884e33a618d33e9eaa70cd",
+      "batch": "uniform-1",
+      "selection": "uniform random",
+      "reason": "uniform random over scenarios not previously read, seed 4"
+    },
+    "c96ae47d81de6a0d853dbfe078ead743": {
+      "scenario_id": "support-0084",
+      "session_id": "08d666bb06114c13a74380fc532a63f6",
+      "batch": "uniform-2",
+      "selection": "uniform random",
+      "reason": "uniform random over scenarios not previously read, seed 5"
+    },
+    "0ec46bdac132fd9de510938055ea6cb0": {
+      "scenario_id": "support-0112",
+      "session_id": "6f6c7108ef6a4a0baa39788f504205aa",
+      "batch": "uniform-2",
+      "selection": "uniform random",
+      "reason": "uniform random over scenarios not previously read, seed 5"
+    },
+    "94dbaba949271c196f34fbfee658e1b6": {
+      "scenario_id": "support-0185",
+      "session_id": "e3702f2d3444479582ed06df295e5d23",
+      "batch": "uniform-2",
+      "selection": "uniform random",
+      "reason": "uniform random over scenarios not previously read, seed 5"
+    },
+    "30b58b491bcedfbda5c629e9b5c226a7": {
+      "scenario_id": "support-0217",
+      "session_id": "19695f36826649cda76290db51aa016b",
+      "batch": "uniform-2",
+      "selection": "uniform random",
+      "reason": "uniform random over scenarios not previously read, seed 5"
+    },
+    "8278f0e9077adbc3c1c60b1adc72db3a": {
+      "scenario_id": "support-0232",
+      "session_id": "1a1c0a2b28a04a92a1f23a02b154a47d",
+      "batch": "uniform-2",
+      "selection": "uniform random",
+      "reason": "uniform random over scenarios not previously read, seed 5"
+    },
+    "a55b5f68478e685960b1c85326daddcf": {
+      "scenario_id": "support-0113",
+      "session_id": "0ae1833d748942cfb3fd45317bdc89c6",
+      "batch": "cluster-1",
+      "selection": "cluster representative",
+      "reason": "cluster 0 representative (nearest eligible of 39 to the centroid), k-means k=15 seed 7"
+    },
+    "525718318f4d3fd31d7b62dc7fdd7af8": {
+      "scenario_id": "support-0179",
+      "session_id": "90ee61394b914c2ca4fd8d2b34156593",
+      "batch": "cluster-1",
+      "selection": "cluster representative",
+      "reason": "cluster 13 representative (nearest eligible of 31 to the centroid), k-means k=15 seed 7"
+    },
+    "f4fcb8d1bdb78a7de6c80038d028949c": {
+      "scenario_id": "support-0109",
+      "session_id": "2a17684dffc5433b987bd28d87b90d27",
+      "batch": "cluster-1",
+      "selection": "cluster representative",
+      "reason": "cluster 2 representative (nearest eligible of 28 to the centroid), k-means k=15 seed 7"
+    },
+    "da7edb187489352334f6a0f9e408e3cb": {
+      "scenario_id": "support-0210",
+      "session_id": "e364ae53210c473081f14033ad4000da",
+      "batch": "cluster-1",
+      "selection": "cluster representative",
+      "reason": "cluster 3 representative (nearest eligible of 26 to the centroid), k-means k=15 seed 7"
+    },
+    "4c714f2ea4e286ba239d8a08a9db8a21": {
+      "scenario_id": "support-0224",
+      "session_id": "29afbb0fadf042e591a8c723efe57024",
+      "batch": "cluster-1",
+      "selection": "cluster representative",
+      "reason": "cluster 5 representative (nearest eligible of 22 to the centroid), k-means k=15 seed 7"
+    },
+    "f3b691460d0139f73c0728ff4c8ce3a5": {
+      "scenario_id": "support-0196",
+      "session_id": "b61d3da796294b398a4f913965505728",
+      "batch": "cluster-1",
+      "selection": "cluster representative",
+      "reason": "cluster 8 representative (nearest eligible of 22 to the centroid), k-means k=15 seed 7"
+    },
+    "d313f1380a5df605e671bc85ed5a0c6f": {
+      "scenario_id": "support-0158",
+      "session_id": "9c116498ea424dafaf19f699d354c2c9",
+      "batch": "cluster-1",
+      "selection": "cluster representative",
+      "reason": "cluster 7 representative (nearest eligible of 18 to the centroid), k-means k=15 seed 7"
+    },
+    "a0ed4161e3256a341f7e0e6c9988f8a3": {
+      "scenario_id": "support-0172",
+      "session_id": "c0ce53ea70b84c988eac8efff001b021",
+      "batch": "cluster-1",
+      "selection": "cluster representative",
+      "reason": "cluster 12 representative (nearest eligible of 17 to the centroid), k-means k=15 seed 7"
+    },
+    "bb00c79cba7117719b5ee6dd9d6b4063": {
+      "scenario_id": "support-0168",
+      "session_id": "aa1c2c1d953b4119b911f9388c6082ea",
+      "batch": "cluster-1",
+      "selection": "cluster representative",
+      "reason": "cluster 4 representative (nearest eligible of 16 to the centroid), k-means k=15 seed 7"
+    },
+    "7b6f3ce3d89bc054fc872be316e5034b": {
+      "scenario_id": "support-0009",
+      "session_id": "a0f26a197b7d4ea4a183e533e4dc08fa",
+      "batch": "cluster-1",
+      "selection": "cluster representative",
+      "reason": "cluster 10 representative (nearest eligible of 11 to the centroid), k-means k=15 seed 7"
+    },
+    "0a0ed15299d6a7841343879b9cceff62": {
+      "scenario_id": "support-0009",
+      "session_id": "a0f26a197b7d4ea4a183e533e4dc08fa",
+      "batch": "cluster-1",
+      "selection": "cluster representative",
+      "reason": "cluster 10 representative (nearest eligible of 11 to the centroid), k-means k=15 seed 7"
+    },
+    "4bbe437e79e90532334f1db54e133c82": {
+      "scenario_id": "support-0170",
+      "session_id": "6c590c5eb03744e89509775c3419b5dc",
+      "batch": "cluster-1",
+      "selection": "cluster representative",
+      "reason": "cluster 1 representative (nearest eligible of 5 to the centroid), k-means k=15 seed 7"
+    },
+    "778a07c0d4768a5c73960047ba02fb31": {
+      "scenario_id": "support-0131",
+      "session_id": "3a9b0f47da7947b78603ad7eb6c3cfe7",
+      "batch": "cluster-1",
+      "selection": "cluster representative",
+      "reason": "cluster 14 representative (nearest eligible of 5 to the centroid), k-means k=15 seed 7"
+    },
+    "50f89c78831c993f7fde0e91f475c797": {
+      "scenario_id": "support-0056",
+      "session_id": "37b3a274bfa24e50b1abbbd25ed0eb28",
+      "batch": "cluster-1",
+      "selection": "cluster representative",
+      "reason": "cluster 9 representative (nearest eligible of 4 to the centroid), k-means k=15 seed 7"
+    },
+    "5ef4d069f6dbfa7443a1f1f9927b6a13": {
+      "scenario_id": "support-0207",
+      "session_id": "688d064281f04ca38abbb9aa644e3b6e",
+      "batch": "cluster-1",
+      "selection": "cluster representative",
+      "reason": "cluster 11 representative (nearest eligible of 3 to the centroid), k-means k=15 seed 7"
+    },
+    "915b60c83256e4951d967a211a2f6b1e": {
+      "scenario_id": "support-0162",
+      "session_id": "55fd1ed59af24b4292ad9112a8937530",
+      "batch": "cluster-1",
+      "selection": "cluster representative",
+      "reason": "cluster 6 representative (nearest eligible of 3 to the centroid), k-means k=15 seed 7"
+    },
+    "dd7c7f4e84cc9c14224ffb3af0cd4606": {
+      "scenario_id": "support-0015",
+      "session_id": "c4e89a5625104755a067bc33ce2ce86e",
+      "batch": "role-1",
+      "selection": "stratified random by user role",
+      "reason": "user_role=shopper, 10 per role, seed 7; dimension chosen before reading outcomes"
+    },
+    "060a77dc6fc2f90c735523265aa4c07f": {
+      "scenario_id": "support-0015",
+      "session_id": "c4e89a5625104755a067bc33ce2ce86e",
+      "batch": "role-1",
+      "selection": "stratified random by user role",
+      "reason": "user_role=shopper, 10 per role, seed 7; dimension chosen before reading outcomes"
+    },
+    "181958e7c7530fb3c6399201bf9e284f": {
+      "scenario_id": "support-0021",
+      "session_id": "a9a4dee082534789b2f84a4fb980a466",
+      "batch": "role-1",
+      "selection": "stratified random by user role",
+      "reason": "user_role=shopper, 10 per role, seed 7; dimension chosen before reading outcomes"
+    },
+    "816343ff560dd630114b2d37f0238221": {
+      "scenario_id": "support-0032",
+      "session_id": "0981bbb8ca51468085ba80cff30c2159",
+      "batch": "role-1",
+      "selection": "stratified random by user role",
+      "reason": "user_role=shopper, 10 per role, seed 7; dimension chosen before reading outcomes"
+    },
+    "fe782b3788665a3982a1fcdccd762b7f": {
+      "scenario_id": "support-0045",
+      "session_id": "181bf60c43ea4642b95a3c6637d5d4bd",
+      "batch": "role-1",
+      "selection": "stratified random by user role",
+      "reason": "user_role=shopper, 10 per role, seed 7; dimension chosen before reading outcomes"
+    },
+    "72cbdcae530644a13f91f17598f95be9": {
+      "scenario_id": "support-0081",
+      "session_id": "4327d8711c1343c9bb76a629273e41a2",
+      "batch": "role-1",
+      "selection": "stratified random by user role",
+      "reason": "user_role=shopper, 10 per role, seed 7; dimension chosen before reading outcomes"
+    },
+    "04f721d845613c4e46b50d9b69dcf6fb": {
+      "scenario_id": "support-0087",
+      "session_id": "a51a757a26384ba2b28aceb3ae4e85ab",
+      "batch": "role-1",
+      "selection": "stratified random by user role",
+      "reason": "user_role=shopper, 10 per role, seed 7; dimension chosen before reading outcomes"
+    },
+    "a449d2a323a37da4f7af4c40440a0195": {
+      "scenario_id": "support-0092",
+      "session_id": "dc5ca24e42f14db1a650b8b83f46d2d5",
+      "batch": "role-1",
+      "selection": "stratified random by user role",
+      "reason": "user_role=shopper, 10 per role, seed 7; dimension chosen before reading outcomes"
+    },
+    "a53f7f5bc207429a80aab06d5343ba28": {
+      "scenario_id": "support-0114",
+      "session_id": "0fe6347da75e4199946f228dd456ca00",
+      "batch": "role-1",
+      "selection": "stratified random by user role",
+      "reason": "user_role=shopper, 10 per role, seed 7; dimension chosen before reading outcomes"
+    },
+    "b75df6ba85593bc68998eabe8fa0bb01": {
+      "scenario_id": "support-0130",
+      "session_id": "33ef4558f7ab428ba9f14b9d6e3f377f",
+      "batch": "role-1",
+      "selection": "stratified random by user role",
+      "reason": "user_role=shopper, 10 per role, seed 7; dimension chosen before reading outcomes"
+    },
+    "8eb4b5941450f3e8c87a1312243f5e7d": {
+      "scenario_id": "support-0157",
+      "session_id": "794f85f62fd443f898af9aa1940aaeb6",
+      "batch": "role-1",
+      "selection": "stratified random by user role",
+      "reason": "user_role=shopper, 10 per role, seed 7; dimension chosen before reading outcomes"
+    },
+    "2ec6897390a520161554ae8c21f2b8fa": {
+      "scenario_id": "support-0013",
+      "session_id": "63120e51789c4e9ba1d97b3793e3e69e",
+      "batch": "role-1",
+      "selection": "stratified random by user role",
+      "reason": "user_role=merchant, 10 per role, seed 7; dimension chosen before reading outcomes"
+    },
+    "a81c0b280bb7af0b4462d04a58cbb12e": {
+      "scenario_id": "support-0018",
+      "session_id": "476aa95595d944f29e12e185d57689a2",
+      "batch": "role-1",
+      "selection": "stratified random by user role",
+      "reason": "user_role=merchant, 10 per role, seed 7; dimension chosen before reading outcomes"
+    },
+    "0123389ea17af857efcc2b3dfa22c22c": {
+      "scenario_id": "support-0023",
+      "session_id": "f8104a0abbda456d8b1dfa698200a157",
+      "batch": "role-1",
+      "selection": "stratified random by user role",
+      "reason": "user_role=merchant, 10 per role, seed 7; dimension chosen before reading outcomes"
+    },
+    "e55a08b558c6e5c8ae2a8d47dd3ba4e1": {
+      "scenario_id": "support-0028",
+      "session_id": "1c7f056f26c24246a9939e4196ee47c5",
+      "batch": "role-1",
+      "selection": "stratified random by user role",
+      "reason": "user_role=merchant, 10 per role, seed 7; dimension chosen before reading outcomes"
+    },
+    "7664869fc1997d9c6b0070a2dbab3f8b": {
+      "scenario_id": "support-0163",
+      "session_id": "4cf16a04321144c9a4edfb31bb50d87c",
+      "batch": "role-1",
+      "selection": "stratified random by user role",
+      "reason": "user_role=merchant, 10 per role, seed 7; dimension chosen before reading outcomes"
+    },
+    "e8f95d9c6d852b1eb9deb3c6a4824778": {
+      "scenario_id": "support-0165",
+      "session_id": "83f03c2cbd714e488353b73816b5b8db",
+      "batch": "role-1",
+      "selection": "stratified random by user role",
+      "reason": "user_role=merchant, 10 per role, seed 7; dimension chosen before reading outcomes"
+    },
+    "ba7a3cbd98c97fd0f6000b3897f71236": {
+      "scenario_id": "support-0180",
+      "session_id": "e09a23317657426082c3f7da680c3820",
+      "batch": "role-1",
+      "selection": "stratified random by user role",
+      "reason": "user_role=merchant, 10 per role, seed 7; dimension chosen before reading outcomes"
+    },
+    "ec57491d17738b195125e50733738972": {
+      "scenario_id": "support-0181",
+      "session_id": "2bde6a27e6c1430ab40bfa5883931a46",
+      "batch": "role-1",
+      "selection": "stratified random by user role",
+      "reason": "user_role=merchant, 10 per role, seed 7; dimension chosen before reading outcomes"
+    },
+    "b0766b06ab9124e7ede6cb6d10eff41f": {
+      "scenario_id": "support-0188",
+      "session_id": "5e489805676842e289386b2a7f8e8d24",
+      "batch": "role-1",
+      "selection": "stratified random by user role",
+      "reason": "user_role=merchant, 10 per role, seed 7; dimension chosen before reading outcomes"
+    },
+    "dd1cd5b6580f109eab9a506bca6f7507": {
+      "scenario_id": "support-0193",
+      "session_id": "a24adcf0cb054ae6b3949dcee4b81ca2",
+      "batch": "role-1",
+      "selection": "stratified random by user role",
+      "reason": "user_role=merchant, 10 per role, seed 7; dimension chosen before reading outcomes"
+    },
+    "85887500a381070890f0f6425bd5e4da": {
+      "scenario_id": "support-0036",
+      "session_id": "b0f26ca9a24240a3a319e1808f77ae3f",
+      "batch": "role-1",
+      "selection": "stratified random by user role",
+      "reason": "user_role=support, 10 per role, seed 7; dimension chosen before reading outcomes"
+    },
+    "94072b95d646f809807042805121abc1": {
+      "scenario_id": "support-0067",
+      "session_id": "756cb16ec76f4b88a92f4b37ac715bb9",
+      "batch": "role-1",
+      "selection": "stratified random by user role",
+      "reason": "user_role=support, 10 per role, seed 7; dimension chosen before reading outcomes"
+    },
+    "bb9717c0433f20d3bdc3eb39c8aab896": {
+      "scenario_id": "support-0206",
+      "session_id": "965f04f947cd433891d4a9841bbca783",
+      "batch": "role-1",
+      "selection": "stratified random by user role",
+      "reason": "user_role=support, 10 per role, seed 7; dimension chosen before reading outcomes"
+    },
+    "51ce3c91d7363d1c198414f85aab4dd5": {
+      "scenario_id": "support-0215",
+      "session_id": "4ac970fd680a4f0e9650717504bfaa92",
+      "batch": "role-1",
+      "selection": "stratified random by user role",
+      "reason": "user_role=support, 10 per role, seed 7; dimension chosen before reading outcomes"
+    },
+    "bee3b25cffb71092fead0ebffe4e641f": {
+      "scenario_id": "support-0231",
+      "session_id": "c398af9e7dc74a29882b25dae4584402",
+      "batch": "role-1",
+      "selection": "stratified random by user role",
+      "reason": "user_role=support, 10 per role, seed 7; dimension chosen before reading outcomes"
+    },
+    "c1e4737a5487c7e5c2ad8ac9a0ceb76b": {
+      "scenario_id": "support-0240",
+      "session_id": "9caaae361dcf495f84ea21d3d502d936",
+      "batch": "role-1",
+      "selection": "stratified random by user role",
+      "reason": "user_role=support, 10 per role, seed 7; dimension chosen before reading outcomes"
+    },
+    "71828ef00fa574e9de6d70b53739994c": {
+      "scenario_id": "support-0241",
+      "session_id": "256054d4d1754f989e7f861054adcdd3",
+      "batch": "role-1",
+      "selection": "stratified random by user role",
+      "reason": "user_role=support, 10 per role, seed 7; dimension chosen before reading outcomes"
+    },
+    "c755f0bdc7d2fe77d02be97cad0c1c81": {
+      "scenario_id": "support-0242",
+      "session_id": "951f4fdb8e69495093fe287b6c6ce5a9",
+      "batch": "role-1",
+      "selection": "stratified random by user role",
+      "reason": "user_role=support, 10 per role, seed 7; dimension chosen before reading outcomes"
+    },
+    "48795abd3f949b0f8f250615aeeed4ee": {
+      "scenario_id": "support-0246",
+      "session_id": "72d8c7cdab814f009672785be7fae3bd",
+      "batch": "role-1",
+      "selection": "stratified random by user role",
+      "reason": "user_role=support, 10 per role, seed 7; dimension chosen before reading outcomes"
+    },
+    "f264a1bae22470ca8e64bbce8f7e5a28": {
+      "scenario_id": "support-0246",
+      "session_id": "72d8c7cdab814f009672785be7fae3bd",
+      "batch": "role-1",
+      "selection": "stratified random by user role",
+      "reason": "user_role=support, 10 per role, seed 7; dimension chosen before reading outcomes"
+    },
+    "3ffb327fb79ed550081a009fa44dbb9e": {
+      "scenario_id": "support-0247",
+      "session_id": "bf8dd4208d664567ace72934f09c5a43",
+      "batch": "role-1",
+      "selection": "stratified random by user role",
+      "reason": "user_role=support, 10 per role, seed 7; dimension chosen before reading outcomes"
+    },
+    "961eb4d374253cad59550812e46b357e": {
+      "scenario_id": "support-0123",
+      "session_id": "9ee4021c9d2b436cacbdd01bf99a44a1",
+      "batch": "depth-1",
+      "selection": "depth search",
+      "reason": "policy_claim_without_opening round 1"
+    },
+    "e4a40eee6111d9c28012e9997bdf202e": {
+      "scenario_id": "support-0139",
+      "session_id": "83764be89e504ab9b8fb78c5cdccccfd",
+      "batch": "depth-1",
+      "selection": "depth search",
+      "reason": "policy_claim_without_opening round 1"
+    },
+    "dfe28fa6650144e328c8881acbbf732a": {
+      "scenario_id": "support-0161",
+      "session_id": "c31a972da66146cb90ef2951391e8f19",
+      "batch": "depth-1",
+      "selection": "depth search",
+      "reason": "policy_claim_without_opening round 1"
+    },
+    "ca2dd90bad7051d51fb7ece53dd4cb57": {
+      "scenario_id": "support-0161",
+      "session_id": "c31a972da66146cb90ef2951391e8f19",
+      "batch": "depth-1",
+      "selection": "depth search",
+      "reason": "policy_claim_without_opening round 1"
+    },
+    "44f851f3ce4a56444c8cdf0707aeaa7d": {
+      "scenario_id": "support-0177",
+      "session_id": "3fc48414f7eb42de8a741b36f39f8a0a",
+      "batch": "depth-1",
+      "selection": "depth search",
+      "reason": "policy_claim_without_opening round 1"
+    },
+    "adeeece73dc206c5178f2a4ee0dad834": {
+      "scenario_id": "support-0221",
+      "session_id": "95f3d53635164c149565978b3316e812",
+      "batch": "depth-1",
+      "selection": "depth search",
+      "reason": "policy_claim_without_opening round 1"
+    },
+    "6be3e7c3b1a1ef30937ec1b55b7cb48a": {
+      "scenario_id": "support-0248",
+      "session_id": "8bf0ea4c094e4689acd3e5e901ec273b",
+      "batch": "depth-1",
+      "selection": "depth search",
+      "reason": "policy_claim_without_opening round 1"
+    },
+    "404756290c062dd515aa331171d0d4af": {
+      "scenario_id": "support-0070",
+      "session_id": "86f077d5a29a448285ca14c66120cbef",
+      "batch": "depth-1",
+      "selection": "depth search",
+      "reason": "policy_claim_without_opening round 1"
+    },
+    "20ca8de92b5c48d2155f42a3af955871": {
+      "scenario_id": "support-0070",
+      "session_id": "86f077d5a29a448285ca14c66120cbef",
+      "batch": "depth-1",
+      "selection": "depth search",
+      "reason": "policy_claim_without_opening round 1"
+    },
+    "e9ab991a746ad470676d7d302174e1e5": {
+      "scenario_id": "support-0070",
+      "session_id": "86f077d5a29a448285ca14c66120cbef",
+      "batch": "depth-1",
+      "selection": "depth search",
+      "reason": "policy_claim_without_opening round 1"
+    },
+    "4681ac00f9938b91657363368bf397c5": {
+      "scenario_id": "support-0167",
+      "session_id": "ec99f72a5a6349d38cadb62781559c00",
+      "batch": "depth-1",
+      "selection": "depth search",
+      "reason": "policy_claim_without_opening round 1"
+    },
+    "9d527046ed7e15486ded225213dea630": {
+      "scenario_id": "support-0205",
+      "session_id": "4a526e8561d14f238da6ce347f296ec3",
+      "batch": "depth-1",
+      "selection": "depth search",
+      "reason": "policy_claim_without_opening round 1"
+    },
+    "366a9d1f7c556dcc8029f7856749c03e": {
+      "scenario_id": "support-0212",
+      "session_id": "447e9c40dbd1400aad9a78af826cefff",
+      "batch": "depth-1",
+      "selection": "depth search",
+      "reason": "policy_claim_without_opening round 1"
+    },
+    "6940d6ecc2fe344882185168c298325f": {
+      "scenario_id": "support-0212",
+      "session_id": "447e9c40dbd1400aad9a78af826cefff",
+      "batch": "depth-1",
+      "selection": "depth search",
+      "reason": "policy_claim_without_opening round 1"
+    },
+    "5e43e18e2c630fd34eb9360d1a7bd681": {
+      "scenario_id": "support-0213",
+      "session_id": "2c5893ed9c204cd4a7eb205ea305443f",
+      "batch": "depth-1",
+      "selection": "depth search",
+      "reason": "policy_claim_without_opening round 1"
+    },
+    "d1e3b1d1587742400f4bdf9ab859a6c1": {
+      "scenario_id": "support-0237",
+      "session_id": "46a1f03a4ec04aa19aa287b233866e82",
+      "batch": "depth-1",
+      "selection": "depth search",
+      "reason": "policy_claim_without_opening round 1"
+    },
+    "f302f0eb9403f6f2c7fd52bae192336b": {
+      "scenario_id": "support-0083",
+      "session_id": "1bf757807da643b78086c89c367099be",
+      "batch": "depth-2",
+      "selection": "depth search",
+      "reason": "missed_mandatory_escalation round 1"
+    },
+    "7c373e28ff18d9af53a4bdd919894b7e": {
+      "scenario_id": "support-0093",
+      "session_id": "d2adb69b33ff448f981dbb517e325fa3",
+      "batch": "depth-2",
+      "selection": "depth search",
+      "reason": "missed_mandatory_escalation round 1"
+    },
+    "76191cd1abc6d8348c6fdb4a449981a9": {
+      "scenario_id": "support-0093",
+      "session_id": "d2adb69b33ff448f981dbb517e325fa3",
+      "batch": "depth-2",
+      "selection": "depth search",
+      "reason": "missed_mandatory_escalation round 1"
+    },
+    "3bea72e1aad6557c55664243d6baf136": {
+      "scenario_id": "support-0103",
+      "session_id": "b2a2e798e549461b82c0c16276884170",
+      "batch": "depth-2",
+      "selection": "depth search",
+      "reason": "missed_mandatory_escalation round 1"
+    },
+    "06054bb1aeca8d8e33fd5973d8d0f9db": {
+      "scenario_id": "support-0133",
+      "session_id": "1ea0e1b7df3c4d73840c525eb1435e5a",
+      "batch": "depth-2",
+      "selection": "depth search",
+      "reason": "missed_mandatory_escalation round 1"
+    },
+    "48770c9fbd4740e172d22203920ee5ba": {
+      "scenario_id": "support-0095",
+      "session_id": "5b7151c5c6bd490b87006d507fed757a",
+      "batch": "depth-3",
+      "selection": "depth search",
+      "reason": "answered_out_of_scope_question round 1"
+    },
+    "0fd9632cb0ff60d742d411017cae95ed": {
+      "scenario_id": "support-0145",
+      "session_id": "0cd37fb6efe245999b630e9a9cc895d9",
+      "batch": "depth-3",
+      "selection": "depth search",
+      "reason": "answered_out_of_scope_question round 1"
+    },
+    "2377828e00a5b1b8fb355218321549d0": {
+      "scenario_id": "support-0214",
+      "session_id": "5cb802dd844a46e281561794165b0c9c",
+      "batch": "depth-3",
+      "selection": "depth search",
+      "reason": "answered_out_of_scope_question round 1"
+    },
+    "7b2dbf1b5844654cc3f3f184a6ab8183": {
+      "scenario_id": "support-0250",
+      "session_id": "f760f81fee7248c891b8528729b84e1c",
+      "batch": "depth-3",
+      "selection": "depth search",
+      "reason": "answered_out_of_scope_question round 1"
+    },
+    "5beb2ebaa9796c3efaf68c93c4f12538": {
+      "scenario_id": "support-0243",
+      "session_id": "9013123c57954a07a5924b2458339e8a",
+      "batch": "depth-4",
+      "selection": "depth search",
+      "reason": "skipped_order_search round 1"
+    },
+    "e01c4f8349876f7169b84b71300c6a8c": {
+      "scenario_id": "support-0195",
+      "session_id": "18c459702fff444ab7c3ef95fbbf7c98",
+      "batch": "depth-4",
+      "selection": "depth search",
+      "reason": "skipped_order_search round 1"
+    },
+    "1a5cc0e91df2b64588539644a563edbf": {
+      "scenario_id": "support-0195",
+      "session_id": "18c459702fff444ab7c3ef95fbbf7c98",
+      "batch": "depth-4",
+      "selection": "depth search",
+      "reason": "skipped_order_search round 1"
+    },
+    "100067ce1a35bb0c614f2d43edc89f1d": {
+      "scenario_id": "support-0223",
+      "session_id": "c303337f9e8b4475856b7653beeb749f",
+      "batch": "depth-5",
+      "selection": "depth search",
+      "reason": "answered_out_of_scope_question round 2"
+    },
+    "6ab4ea6aa05a203534eb519d1f000345": {
+      "scenario_id": "support-0192",
+      "session_id": "9e3605de09694724ba6ca9b098a5ade1",
+      "batch": "depth-5",
+      "selection": "depth search",
+      "reason": "answered_out_of_scope_question round 2"
+    },
+    "e7fcd2b6255056684d36c18aef9e6970": {
+      "scenario_id": "support-0200",
+      "session_id": "e8c474878b664a45bf77c712a3f96a39",
+      "batch": "depth-5",
+      "selection": "depth search",
+      "reason": "answered_out_of_scope_question round 2"
+    },
+    "5c28598c5ef779facbf6f12c9317f4ce": {
+      "scenario_id": "support-0005",
+      "session_id": "2060593bf5b24fc283312ee3b112fc7a",
+      "batch": "uniform-3",
+      "selection": "uniform random",
+      "reason": "uniform random over scenarios not previously read, seed 13"
+    },
+    "f0dc71debd38fe21f8266fb20570e6f7": {
+      "scenario_id": "support-0005",
+      "session_id": "2060593bf5b24fc283312ee3b112fc7a",
+      "batch": "uniform-3",
+      "selection": "uniform random",
+      "reason": "uniform random over scenarios not previously read, seed 13"
+    },
+    "7de704e3003f3ebc21364dc965f20d51": {
+      "scenario_id": "support-0011",
+      "session_id": "c60885b35f7b4d7ab17947d31c335c0d",
+      "batch": "uniform-3",
+      "selection": "uniform random",
+      "reason": "uniform random over scenarios not previously read, seed 13"
+    },
+    "0341d06602dfcb18f950d3330a48f252": {
+      "scenario_id": "support-0038",
+      "session_id": "21a5a1650209462dbf65d37a2c183c1f",
+      "batch": "uniform-3",
+      "selection": "uniform random",
+      "reason": "uniform random over scenarios not previously read, seed 13"
+    },
+    "2bb06279dacc4ab039f4fd3e0b84c02e": {
+      "scenario_id": "support-0059",
+      "session_id": "657a32e9085444838e17af88a8b1059f",
+      "batch": "uniform-3",
+      "selection": "uniform random",
+      "reason": "uniform random over scenarios not previously read, seed 13"
+    },
+    "43643c931bc970fdb2274f4dae789484": {
+      "scenario_id": "support-0060",
+      "session_id": "c7ab5abb15214fa785d876665e14ffc3",
+      "batch": "uniform-3",
+      "selection": "uniform random",
+      "reason": "uniform random over scenarios not previously read, seed 13"
+    },
+    "ed743e559cf61244b191aa72cc6e8fc1": {
+      "scenario_id": "support-0065",
+      "session_id": "6df8bb2e6a2440f6bea644ef3887e6d7",
+      "batch": "uniform-3",
+      "selection": "uniform random",
+      "reason": "uniform random over scenarios not previously read, seed 13"
+    },
+    "aa38c7e0a501c9acf56fc961f149f15e": {
+      "scenario_id": "support-0079",
+      "session_id": "9ff68f60ecb840f8807a635052c1d31e",
+      "batch": "uniform-3",
+      "selection": "uniform random",
+      "reason": "uniform random over scenarios not previously read, seed 13"
+    },
+    "ca041f7f45eafa0a5718ab3d898c4961": {
+      "scenario_id": "support-0091",
+      "session_id": "55fc8a17dd7c46aaa926e5917ba1aa94",
+      "batch": "uniform-3",
+      "selection": "uniform random",
+      "reason": "uniform random over scenarios not previously read, seed 13"
+    },
+    "1ada5cc3498e138acb6d1501c8b7df77": {
+      "scenario_id": "support-0097",
+      "session_id": "b8f9da55af564b189277184e212a4192",
+      "batch": "uniform-3",
+      "selection": "uniform random",
+      "reason": "uniform random over scenarios not previously read, seed 13"
+    },
+    "d7d936bac038656a77d263d4aa6d8b43": {
+      "scenario_id": "support-0099",
+      "session_id": "92a461fba2014a8794eb2f99ed71da5f",
+      "batch": "uniform-3",
+      "selection": "uniform random",
+      "reason": "uniform random over scenarios not previously read, seed 13"
+    },
+    "6e06909b6ae57c840d285d5b6fe48ea8": {
+      "scenario_id": "support-0107",
+      "session_id": "327334a28b544d11973a24afc2147000",
+      "batch": "uniform-3",
+      "selection": "uniform random",
+      "reason": "uniform random over scenarios not previously read, seed 13"
+    },
+    "fa545fe36c9b1f109925060bbff81e4d": {
+      "scenario_id": "support-0121",
+      "session_id": "9d678095c79a4e4885c5f83496ae271e",
+      "batch": "uniform-3",
+      "selection": "uniform random",
+      "reason": "uniform random over scenarios not previously read, seed 13"
+    },
+    "1c113127d5be1c55ab31aeaf0f0af3cf": {
+      "scenario_id": "support-0122",
+      "session_id": "fb2f37da414247728896fdb9a6328c9d",
+      "batch": "uniform-3",
+      "selection": "uniform random",
+      "reason": "uniform random over scenarios not previously read, seed 13"
+    },
+    "353eb768d5d7a3a67bfefcc5235b98ef": {
+      "scenario_id": "support-0178",
+      "session_id": "9a7c973fdc23418e9758903bf6c5ce42",
+      "batch": "uniform-3",
+      "selection": "uniform random",
+      "reason": "uniform random over scenarios not previously read, seed 13"
+    },
+    "9397ea983ec04cfc46f26b1b41a3ac00": {
+      "scenario_id": "support-0178",
+      "session_id": "9a7c973fdc23418e9758903bf6c5ce42",
+      "batch": "uniform-3",
+      "selection": "uniform random",
+      "reason": "uniform random over scenarios not previously read, seed 13"
+    },
+    "06dd96de1f1c469f3e12f71f2bc5d81c": {
+      "scenario_id": "support-0228",
+      "session_id": "558cdfa4c3f8405eb19509c99c384fa7",
+      "batch": "uniform-3",
+      "selection": "uniform random",
+      "reason": "uniform random over scenarios not previously read, seed 13"
+    },
+    "aa3ac831838fbd39dd71218acb62dfc1": {
+      "scenario_id": "support-0189",
+      "session_id": "58d3a10c3071487f8e7f4462301dd40b",
+      "batch": "hw5-enrich-1",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "7fba1ccd61cb2a07c1bea31bfe427212": {
+      "scenario_id": "support-0048",
+      "session_id": "59d8bd6f9b3d4c49a921b7d6a6363f49",
+      "batch": "hw5-enrich-1",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "daed619b9cdca236d6acf1a6662f0dd7": {
+      "scenario_id": "support-0037",
+      "session_id": "f4880967d0ca4a1a93a8f92f84b015a3",
+      "batch": "hw5-enrich-1",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "a62716a836a111c61767190f5990a6b6": {
+      "scenario_id": "support-0039",
+      "session_id": "46702150c2ab4c6c8ed93a0a6b3f4f4c",
+      "batch": "hw5-enrich-1",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "2435c6805a811f223eaa944e7e731560": {
+      "scenario_id": "support-0164",
+      "session_id": "58fa7c6904474eb39ccba8f84efd06f1",
+      "batch": "hw5-enrich-1",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "a8a38742edf04df96215de056a847500": {
+      "scenario_id": "support-0089",
+      "session_id": "02fe2b4d11994497968b683b0de6035a",
+      "batch": "hw5-enrich-1",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "d2eedf82fc3e2245978adaafcdda7a82": {
+      "scenario_id": "support-0043",
+      "session_id": "f07a0d137a4740a8accff1d90d898dbd",
+      "batch": "hw5-enrich-1",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "f0deca7d42810d0e5f6020c13a3b43e9": {
+      "scenario_id": "support-0014",
+      "session_id": "e3c087a5408046b7bd1ccda66a8f64b3",
+      "batch": "hw5-enrich-1",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "360caf573701837dd8591e5606997783": {
+      "scenario_id": "support-0222",
+      "session_id": "f858aa7cb887469584a5731169459dec",
+      "batch": "hw5-enrich-1",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "81548ac16ff3beccfa9974da3cf34828": {
+      "scenario_id": "support-0249",
+      "session_id": "5bf245ccf6d04257bb3b5f9caa2ad255",
+      "batch": "hw5-enrich-1",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "3c4f89c39aaa4ceaeae96bdba374dbb7": {
+      "scenario_id": "support-0062",
+      "session_id": "e1ce09c14c204f528ebb4a05ce2d1471",
+      "batch": "hw5-enrich-1",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "0bb3e5551b7fa7296fce4296b698a2f3": {
+      "scenario_id": "support-0062",
+      "session_id": "e1ce09c14c204f528ebb4a05ce2d1471",
+      "batch": "hw5-enrich-1",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "a9638d4a08aabf7c9c6348ec22ba50a0": {
+      "scenario_id": "support-0218",
+      "session_id": "9cd4ec7f3aeb4853a8f22df26edce9ca",
+      "batch": "hw5-enrich-1",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "d27f739ad6ce489ff1be8cc2cf8f33af": {
+      "scenario_id": "support-0031",
+      "session_id": "95c1048db32241e4b94091ac20fb7515",
+      "batch": "hw5-enrich-1",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "2e30a7f24ce8439c57c504fcffce2529": {
+      "scenario_id": "support-0119",
+      "session_id": "f257dd7fee164b87820c6ba8884a710f",
+      "batch": "hw5-enrich-1",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "3c3d3f7f623de979932b72995f4c9cc3": {
+      "scenario_id": "support-0199",
+      "session_id": "d6fbaf12187a4dc8a174d609b357d661",
+      "batch": "hw5-enrich-1",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "3690482bf9c41c773c49bf9ef14dd3c2": {
+      "scenario_id": "support-0088",
+      "session_id": "3945ec850ab14552a5ef795783a5e1ce",
+      "batch": "hw5-enrich-1",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "790e50f651d38819997bc9997c17128a": {
+      "scenario_id": "support-0049",
+      "session_id": "45f0c55ef47b4915b33c414165ecec58",
+      "batch": "hw5-enrich-1",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "bcb4a0ca548495e9ea35fb9dde097782": {
+      "scenario_id": "support-0129",
+      "session_id": "967d1868258947b38a5c984913f7d83f",
+      "batch": "hw5-enrich-1",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "275bc4cebc1d7dbadb4b05d5ca1a6371": {
+      "scenario_id": "support-0197",
+      "session_id": "ea83726c8e1e428ea58e8d17fe740171",
+      "batch": "hw5-enrich-1",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "bf317af91ff35c6aff3b58fd66e399f8": {
+      "scenario_id": "support-0225",
+      "session_id": "cafa99dbeea845bf90fa73aa6c872f59",
+      "batch": "hw5-enrich-1",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "4a5c8736e9dfddd3234a4c9ef22dde82": {
+      "scenario_id": "support-0175",
+      "session_id": "6c9a0e6228104ffcb4e9415ea01797c1",
+      "batch": "hw5-enrich-1",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "ee52930e5b33176d022054502bdfa15d": {
+      "scenario_id": "support-0159",
+      "session_id": "a837f9a4e3374f27b6683163552562fb",
+      "batch": "hw5-enrich-1",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "582ff6de7932be39d2ce33f5696631e4": {
+      "scenario_id": "support-0051",
+      "session_id": "12af8c7e6e0b49aea0255ffb9908c2ce",
+      "batch": "hw5-enrich-1",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "3c69f51a42d633d76221cb7a8eada719": {
+      "scenario_id": "support-0052",
+      "session_id": "0a1d9bcf672b44df8b3fc275c846d921",
+      "batch": "hw5-enrich-1",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "c4bffb8c0c28c386678a0818099fab17": {
+      "scenario_id": "support-0078",
+      "session_id": "cd75fe9c9a7241df91567e87c641aeb7",
+      "batch": "hw5-enrich-1",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "8425821db1d75652f01882990fc5fafc": {
+      "scenario_id": "support-0132",
+      "session_id": "c22c8d5e376f4e5482fb6c337f048c79",
+      "batch": "hw5-enrich-1",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "0b7fef37f6bf8beab273348ac77b4a04": {
+      "scenario_id": "support-0054",
+      "session_id": "aaae31ec30fc47b9bdd4092ec3be440f",
+      "batch": "hw5-enrich-1",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "3ece27b02a4923560fa8d4370b447148": {
+      "scenario_id": "support-0040",
+      "session_id": "c4eb7ef5989f4a229d7f38cee81696c7",
+      "batch": "hw5-enrich-1",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "94e246045faa1a24211698807b880143": {
+      "scenario_id": "support-0004",
+      "session_id": "88d0ba1f864340bba070f2a5a0905242",
+      "batch": "hw5-enrich-1",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "c93631f0b2a79de918106737cd3ab1ca": {
+      "scenario_id": "support-0046",
+      "session_id": "bc11621f79ac42cbb0998fcc8e048a96",
+      "batch": "hw5-enrich-1",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "5116ae19486139a12abe48b76e9fb908": {
+      "scenario_id": "support-0046",
+      "session_id": "bc11621f79ac42cbb0998fcc8e048a96",
+      "batch": "hw5-enrich-1",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "da8e48ab417c635230ae8206059ca4a0": {
+      "scenario_id": "support-0203",
+      "session_id": "67d0fb7eee9242b2a494e7db669f0d79",
+      "batch": "hw5-enrich-1",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "e3adc13412f75ea118e7cb75bfa07ed5": {
+      "scenario_id": "support-0055",
+      "session_id": "78c901d9877b459fbffc428af8f5cbcd",
+      "batch": "hw5-enrich-1",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "9af6bae6c5b9b895e808307d5cba8d04": {
+      "scenario_id": "support-0055",
+      "session_id": "78c901d9877b459fbffc428af8f5cbcd",
+      "batch": "hw5-enrich-1",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "7074fa684f2df3df22c6cc2f4f2359bc": {
+      "scenario_id": "support-0183",
+      "session_id": "b0e08c0090104909b1fa4c92c2a75e8e",
+      "batch": "hw5-enrich-1",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "ced6f971a980d3ab8eb5abed527e10a7": {
+      "scenario_id": "support-0010",
+      "session_id": "99584a4e443f49fa924547d4192ce057",
+      "batch": "hw5-enrich-1",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "fcc9ef446a3786071ccce38a8a27d286": {
+      "scenario_id": "support-0143",
+      "session_id": "32a61fef09494314bac361069c7585a9",
+      "batch": "hw5-enrich-1",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "6c3c6ceb84501a61ff18378a91f51cea": {
+      "scenario_id": "support-0191",
+      "session_id": "4485663b291d4abbb156ca4baeeee46f",
+      "batch": "hw5-enrich-2",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "e50bb2a21e9ac9e31da4ca2f9b97a89d": {
+      "scenario_id": "support-0053",
+      "session_id": "70c9b6ca6c4748bf8758d6e10c6473be",
+      "batch": "hw5-enrich-2",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "cf103a7ff0c6578d56a4ebb9070aa458": {
+      "scenario_id": "support-0226",
+      "session_id": "6e527dee756b4ea1a41ddc28bf6e4b37",
+      "batch": "hw5-enrich-2",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "b8eabb6a322a0130bda2731671be2b9e": {
+      "scenario_id": "support-0171",
+      "session_id": "6dd57575204e4a51a728913f0951e087",
+      "batch": "hw5-enrich-2",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "b047f47db4e20fe77379ec549dfab305": {
+      "scenario_id": "support-0148",
+      "session_id": "11f20eece7654a12b56ba279af2cfb41",
+      "batch": "hw5-enrich-2",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "75bc470f1a747e9f7e4f2324a0c2dd57": {
+      "scenario_id": "support-0138",
+      "session_id": "82e787b8699f4ddcb6760286361d10b0",
+      "batch": "hw5-enrich-2",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "5ed86196019321567c2ed498f9daba4c": {
+      "scenario_id": "support-0082",
+      "session_id": "12a4deacdfb748b9ab541da74695fccc",
+      "batch": "hw5-enrich-2",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "45c863a3e412e06fba2bb629cadcd394": {
+      "scenario_id": "support-0187",
+      "session_id": "19284fc411fe4b1294e5849c62f4b9a5",
+      "batch": "hw5-enrich-2",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "9103d916bb406889d93f7fc62a21d52c": {
+      "scenario_id": "support-0239",
+      "session_id": "e853ada0cfd44ff3b541c67303bacfa4",
+      "batch": "hw5-enrich-2",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "40ba847814b0a02f3d0b3c35d7aa6e0c": {
+      "scenario_id": "support-0244",
+      "session_id": "be41bf6687114643bb24669bababf52f",
+      "batch": "hw5-enrich-2",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "47b1a011a659facbce8ba6a39f419f3b": {
+      "scenario_id": "support-0235",
+      "session_id": "3dff4998b7dd471dabe0e05c5ec0c336",
+      "batch": "hw5-enrich-2",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "ed22b8d6bc16f4b6c304cceb84ec966e": {
+      "scenario_id": "support-0128",
+      "session_id": "109e3b10b595452f9443c2939a7ea6ce",
+      "batch": "hw5-enrich-2",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "fd1bebb2170b09283d6f4ac652c0d952": {
+      "scenario_id": "support-0208",
+      "session_id": "cc8ae9ac742d4e4d9dbb16eb8f5e6481",
+      "batch": "hw5-enrich-2",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    },
+    "fe2a36b15dc38a1fc748c80cd2519cd2": {
+      "scenario_id": "support-0142",
+      "session_id": "17d610f9a6c04d29bb311dddb8dec5a7",
+      "batch": "hw5-enrich-2",
+      "selection": "next_to_label enrich",
+      "reason": "hw5 unsupported_claim label collection"
+    }
+  }
+}

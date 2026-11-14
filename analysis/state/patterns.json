@@ -1,1 +1,511 @@
-{"modes": []}
+{
+  "modes": [
+    {
+      "name": "policy_claim_without_opening",
+      "status": "confirmed",
+      "definition": "The reply states or cites a policy rule whose document the conversation never opened with get_policy; a search snippet does not count as opened.",
+      "boundary": "vs unsupported_claim: here a policy document exists and was not read; unsupported_claim asserts something no document or tool supports. A claim supported by a document the agent opened is not this mode, even if another document states it more fully: 'may override' (cw-returns) supports 'the store's window applies' (support-0167, 0092). Applies even when the search snippet shows the whole policy: snippets are the first 300 characters with no truncation marker, so the agent cannot tell a complete snippet from a cut one (support-0177, support-0161; rule chosen 2026-09-27 over judging only what reached the user).",
+      "requirement_source": "RESP-1, plus a specification revision recorded in the review summary (SPEC.md unchanged): open a policy with get_policy before citing it; a snippet does not count.",
+      "evaluator_type": "code",
+      "example_trace_ids": [
+        "a55b5f68478e685960b1c85326daddcf",
+        "961eb4d374253cad59550812e46b357e",
+        "e4a40eee6111d9c28012e9997bdf202e",
+        "ca2dd90bad7051d51fb7ece53dd4cb57",
+        "44f851f3ce4a56444c8cdf0707aeaa7d",
+        "ec57491d17738b195125e50733738972",
+        "6940d6ecc2fe344882185168c298325f",
+        "30b58b491bcedfbda5c629e9b5c226a7",
+        "adeeece73dc206c5178f2a4ee0dad834",
+        "6be3e7c3b1a1ef30937ec1b55b7cb48a"
+      ],
+      "close_negative_trace_ids": [
+        "f4fcb8d1bdb78a7de6c80038d028949c",
+        "525718318f4d3fd31d7b62dc7fdd7af8",
+        "816343ff560dd630114b2d37f0238221",
+        "85887500a381070890f0f6425bd5e4da",
+        "7664869fc1997d9c6b0070a2dbab3f8b",
+        "e8f95d9c6d852b1eb9deb3c6a4824778",
+        "4681ac00f9938b91657363368bf397c5",
+        "a449d2a323a37da4f7af4c40440a0195",
+        "0ec46bdac132fd9de510938055ea6cb0",
+        "0341d06602dfcb18f950d3330a48f252",
+        "06dd96de1f1c469f3e12f71f2bc5d81c"
+      ],
+      "created_from": [
+        "0ec46bdac132fd9de510938055ea6cb0",
+        "30b58b491bcedfbda5c629e9b5c226a7",
+        "961eb4d374253cad59550812e46b357e",
+        "ca2dd90bad7051d51fb7ece53dd4cb57",
+        "e4a40eee6111d9c28012e9997bdf202e",
+        "ec57491d17738b195125e50733738972"
+      ],
+      "source_annotation_ids": [
+        "428aa10be941",
+        "62f3b8c7c18c",
+        "41570c2031d6",
+        "e39695b81f67",
+        "7a7779ba3368",
+        "2e2078bb0e00",
+        "e1d1aa3de928",
+        "a37879e25bec",
+        "99e5e6d2712c",
+        "cc352f9353a4"
+      ],
+      "scenarios": {
+        "positive": [
+          "support-0113",
+          "support-0123",
+          "support-0139",
+          "support-0161",
+          "support-0177",
+          "support-0181",
+          "support-0212",
+          "support-0217",
+          "support-0221",
+          "support-0248"
+        ],
+        "close_negative": [
+          "support-0109",
+          "support-0179",
+          "support-0032",
+          "support-0036",
+          "support-0163",
+          "support-0165",
+          "support-0167",
+          "support-0092",
+          "support-0112",
+          "support-0038",
+          "support-0228"
+        ]
+      },
+      "count": 10,
+      "confirmed_at_review": "4 positives (0112, 0217, 0092, 0181) and 6 close negatives from batches 1-2; confirmed to run the Part D depth search"
+    },
+    {
+      "name": "unnecessary_escalation",
+      "status": "candidate",
+      "definition": "The agent escalates a case that the policy and order record already resolve, or offers an exception path no policy describes.",
+      "boundary": "vs missed_mandatory_escalation: opposite direction; escalating a genuine policy gap (0158) or an inconsistent record (0009) is warranted. ESC-3 reading (decided at review, support-0193): escalation is required for actions/decisions the agent cannot resolve; for information missing from the record, stating the gap (RESP-3) is enough and escalation is allowed, not required.",
+      "requirement_source": "ESC-3, cw-escalations",
+      "evaluator_type": "llm_judge",
+      "example_trace_ids": [
+        "e4a40eee6111d9c28012e9997bdf202e",
+        "da7edb187489352334f6a0f9e408e3cb",
+        "71828ef00fa574e9de6d70b53739994c",
+        "f264a1bae22470ca8e64bbce8f7e5a28",
+        "a0ed4161e3256a341f7e0e6c9988f8a3",
+        "7de704e3003f3ebc21364dc965f20d51",
+        "43643c931bc970fdb2274f4dae789484",
+        "d7d936bac038656a77d263d4aa6d8b43"
+      ],
+      "close_negative_trace_ids": [
+        "0a0ed15299d6a7841343879b9cceff62",
+        "7b6f3ce3d89bc054fc872be316e5034b",
+        "d313f1380a5df605e671bc85ed5a0c6f",
+        "2ec6897390a520161554ae8c21f2b8fa",
+        "181958e7c7530fb3c6399201bf9e284f",
+        "0123389ea17af857efcc2b3dfa22c22c",
+        "bb9717c0433f20d3bdc3eb39c8aab896",
+        "bee3b25cffb71092fead0ebffe4e641f",
+        "2bb06279dacc4ab039f4fd3e0b84c02e",
+        "aa38c7e0a501c9acf56fc961f149f15e",
+        "6e06909b6ae57c840d285d5b6fe48ea8"
+      ],
+      "created_from": [
+        "71828ef00fa574e9de6d70b53739994c",
+        "a0ed4161e3256a341f7e0e6c9988f8a3",
+        "da7edb187489352334f6a0f9e408e3cb",
+        "e4a40eee6111d9c28012e9997bdf202e",
+        "f264a1bae22470ca8e64bbce8f7e5a28"
+      ],
+      "source_annotation_ids": [
+        "3d5a9a5e0c5b",
+        "728c079ee3ea",
+        "eb5af37bc361",
+        "ed330823c030",
+        "ef5b5b60d2fe",
+        "5a8d310d344c",
+        "829e9a02e138",
+        "9d2eb6ad455c"
+      ],
+      "scenarios": {
+        "positive": [
+          "support-0139",
+          "support-0210",
+          "support-0241",
+          "support-0246",
+          "support-0172",
+          "support-0011",
+          "support-0060",
+          "support-0099"
+        ],
+        "close_negative": [
+          "support-0009",
+          "support-0158",
+          "support-0013",
+          "support-0021",
+          "support-0023",
+          "support-0206",
+          "support-0231",
+          "support-0059",
+          "support-0079",
+          "support-0107"
+        ]
+      },
+      "count": 8
+    },
+    {
+      "name": "missed_mandatory_escalation",
+      "status": "candidate",
+      "definition": "A case SPEC always sends to a human (ESC-1 to ESC-3, e.g. a dispute) ends without an escalate_to_human call.",
+      "boundary": "vs unnecessary_escalation: opposite direction. ESC-3 reading (decided at review, support-0193): escalation is required for actions/decisions the agent cannot resolve; for information missing from the record, stating the gap (RESP-3) is enough and escalation is allowed, not required.",
+      "requirement_source": "ESC-3, cw-disputes",
+      "evaluator_type": "llm_judge",
+      "example_trace_ids": [
+        "a55b5f68478e685960b1c85326daddcf",
+        "3bea72e1aad6557c55664243d6baf136",
+        "06054bb1aeca8d8e33fd5973d8d0f9db",
+        "f302f0eb9403f6f2c7fd52bae192336b",
+        "7c373e28ff18d9af53a4bdd919894b7e",
+        "961eb4d374253cad59550812e46b357e",
+        "76191cd1abc6d8348c6fdb4a449981a9"
+      ],
+      "close_negative_trace_ids": [
+        "50f89c78831c993f7fde0e91f475c797",
+        "0a0ed15299d6a7841343879b9cceff62",
+        "7b6f3ce3d89bc054fc872be316e5034b",
+        "a53f7f5bc207429a80aab06d5343ba28",
+        "bee3b25cffb71092fead0ebffe4e641f",
+        "dd1cd5b6580f109eab9a506bca6f7507",
+        "c1e4737a5487c7e5c2ad8ac9a0ceb76b"
+      ],
+      "created_from": [
+        "a55b5f68478e685960b1c85326daddcf"
+      ],
+      "source_annotation_ids": [
+        "428aa10be941",
+        "89a89526b830",
+        "a68e748120ed",
+        "e43c2353945a",
+        "20b1d405d27f",
+        "e204543b3c31",
+        "5060bd1b09a8"
+      ],
+      "scenarios": {
+        "positive": [
+          "support-0113",
+          "support-0103",
+          "support-0133",
+          "support-0083",
+          "support-0093",
+          "support-0123"
+        ],
+        "close_negative": [
+          "support-0056",
+          "support-0009",
+          "support-0114",
+          "support-0231",
+          "support-0193",
+          "support-0240"
+        ]
+      },
+      "count": 6
+    },
+    {
+      "name": "unsupported_claim",
+      "status": "candidate",
+      "definition": "The reply states something specific (about Cartwheel, the order, the agent's abilities, or what a human or the escalation will do) that no tool output, opened policy, user message or the agent's own instructions supports.",
+      "boundary": "Fail: the reply states something specific (about Cartwheel, the order, the agent's abilities, or what a human or the escalation will do) that no tool output, opened policy, user message or the agent's own instructions (its system prompt, e.g. 'account changes always go to a human') supports. Unsupported specificity is enough; proof that it is false is not needed. This includes:\n- a concrete step or control assumed inside an instruction;\n- a false claim about what the agent can search or look up;\n- a stated date or deadline no source supports;\n- a statement that depends on today's date (e.g. 'you are still within the return window', 'the cutoff has passed', '(today)'), because no source gives the agent today's date; the user's own timing ('today', 'about a week ago') does not establish it. Event dates (ordered, shipped, delivered, a computed last day) come from the record;\n- an exception, warranty or review path that no source describes, even when hedged ('might approve an exception');\n- a promise of what a human or the escalation will do (a capability, an outcome or a timing) that no source gives ('a human will fix the payment settings', 'can verify the live listing before you check out');\n- a reading of a policy term the policy leaves undefined, stated as the policy's rule or as fact ('weekends do not extend the window', 'it must be received by'); the RESP-6 last day given in the user's own terms (ship-by, postmark, submit-by) is not such a reading;\n- a conclusion from a record field that adds what the record does not hold: a reason, an amount, a requirement or a destination ('no return label needed' from status refunded).\nPass:\n- hedged or generic advice that asserts nothing checkable;\n- a plain instruction, request or question to the user ('please send the receipt date', 'keep the item in its condition');\n- facts taken from tool output, including ticket numbers and response times, and a direct consequence of a field ('not refund-eligible, so I can't refund it');\n- the ticket's purpose stated as the user's own question ('a human will look at the price issue'), and 'a human will follow up' (system prompt);\n- saying an opened policy does not define or cover a point, with an interpretation flagged as such ('the policy does not say; in normal usage ...').\nOther mode: a claim that rests on the search snippet of a policy the agent never opened is policy_claim_without_opening.\nHistory of these rules: analysis/report/hw5-unsupported_claim-boundary-review.md.",
+      "requirement_source": "RESP-3",
+      "evaluator_type": "llm_judge",
+      "example_trace_ids": [
+        "e55a08b558c6e5c8ae2a8d47dd3ba4e1",
+        "04f721d845613c4e46b50d9b69dcf6fb",
+        "ba7a3cbd98c97fd0f6000b3897f71236",
+        "f3b691460d0139f73c0728ff4c8ce3a5",
+        "c755f0bdc7d2fe77d02be97cad0c1c81",
+        "1c113127d5be1c55ab31aeaf0f0af3cf"
+      ],
+      "close_negative_trace_ids": [
+        "50f89c78831c993f7fde0e91f475c797",
+        "d313f1380a5df605e671bc85ed5a0c6f",
+        "a449d2a323a37da4f7af4c40440a0195",
+        "bb9717c0433f20d3bdc3eb39c8aab896",
+        "353eb768d5d7a3a67bfefcc5235b98ef",
+        "9397ea983ec04cfc46f26b1b41a3ac00"
+      ],
+      "created_from": [
+        "04f721d845613c4e46b50d9b69dcf6fb",
+        "5ef4d069f6dbfa7443a1f1f9927b6a13",
+        "ba7a3cbd98c97fd0f6000b3897f71236",
+        "c755f0bdc7d2fe77d02be97cad0c1c81",
+        "e55a08b558c6e5c8ae2a8d47dd3ba4e1",
+        "f3b691460d0139f73c0728ff4c8ce3a5"
+      ],
+      "source_annotation_ids": [
+        "433948b976ec",
+        "a11ffde03f5d",
+        "82828a849291",
+        "7eccab228d22",
+        "ee83c5a843af",
+        "27cd162d117c"
+      ],
+      "scenarios": {
+        "positive": [
+          "support-0028",
+          "support-0087",
+          "support-0180",
+          "support-0196",
+          "support-0242",
+          "support-0122"
+        ],
+        "close_negative": [
+          "support-0056",
+          "support-0158",
+          "support-0092",
+          "support-0206",
+          "support-0178"
+        ]
+      },
+      "count": 6
+    },
+    {
+      "name": "reply_contradicts_retrieved_data",
+      "status": "dropped",
+      "definition": "The reply states a value that contradicts a tool result earlier in the same conversation, or that contradicts what a policy the agent opened implies for the retrieved record.",
+      "boundary": "vs unsupported_claim: the evidence was retrieved and the reply contradicts it. Revised 2026-09-28 at the blind axial pass on support-0213 (\"already complete\" for $281.25 while the opened cw-refunds says refunds above $100 are queued); earlier definition covered tool results only.",
+      "requirement_source": "RESP-3 (nearest; no requirement names contradiction -- candidate SPEC revision)",
+      "evaluator_type": "llm_judge",
+      "example_trace_ids": [],
+      "close_negative_trace_ids": [
+        "0a0ed15299d6a7841343879b9cceff62",
+        "7b6f3ce3d89bc054fc872be316e5034b"
+      ],
+      "created_from": [
+        "915b60c83256e4951d967a211a2f6b1e"
+      ],
+      "source_annotation_ids": [],
+      "scenarios": {
+        "positive": [],
+        "close_negative": [
+          "support-0009"
+        ]
+      },
+      "count": 0,
+      "dropped_reason": "2026-10-05: 0 independent positives after its only positive (support-0213) moved to acted_on_inconsistent_record; 0213's root cause is a record that breaks SPEC TOOL-7, not a reply contradicting retrieved data."
+    },
+    {
+      "name": "acted_on_inconsistent_record",
+      "status": "candidate",
+      "definition": "The agent relies on an order-record field that contradicts another field of the same record or a policy the agent has in context (opened or seen in a search snippet), without stating the inconsistency.",
+      "boundary": "vs unsupported_claim: here a retrieved record field supports the claim, but the record itself is wrong; unsupported_claim has no supporting source at all. Revised 2026-10-05: widened from mutually inconsistent fields to fields that break the platform contract, after the refund-status defect (seed marks 418 of 579 refunded orders 'refunded' while the refund is queued) surfaced in support-0213, 0113, 0123. Fix: the tool validates the record and flags defects. Narrowed 2026-10-06 (option B): judged by what the agent saw. get_order returns no refund rows and the system prompt gives no threshold value, so 'refunded' with a queued refund is invisible unless the agent had the $100 rule in context (0213 opened cw-refunds, 0123 saw its snippet). The seed defect itself (seed/generate.py sets status refunded with a queued refund; agent.py marks refunded only on auto-approval) is a data finding for review_summary.md, not this mode. 0083, 0093, 0103, 0113, 0133: same defect, rule not in context -> close negatives.",
+      "requirement_source": "RESP-3",
+      "evaluator_type": "llm_judge",
+      "example_trace_ids": [
+        "fa29dc7896bc950ba302b03c9022d322",
+        "5e43e18e2c630fd34eb9360d1a7bd681",
+        "961eb4d374253cad59550812e46b357e"
+      ],
+      "close_negative_trace_ids": [
+        "0a0ed15299d6a7841343879b9cceff62",
+        "7b6f3ce3d89bc054fc872be316e5034b",
+        "f302f0eb9403f6f2c7fd52bae192336b",
+        "7c373e28ff18d9af53a4bdd919894b7e",
+        "3bea72e1aad6557c55664243d6baf136",
+        "a55b5f68478e685960b1c85326daddcf",
+        "06054bb1aeca8d8e33fd5973d8d0f9db",
+        "5c28598c5ef779facbf6f12c9317f4ce"
+      ],
+      "created_from": [
+        "fa29dc7896bc950ba302b03c9022d322"
+      ],
+      "source_annotation_ids": [
+        "legacy-674ca62b08ed",
+        "8a28c6bf2b8d",
+        "d4da4b49d2d3"
+      ],
+      "scenarios": {
+        "positive": [
+          "support-0007",
+          "support-0213",
+          "support-0123"
+        ],
+        "close_negative": [
+          "support-0009",
+          "support-0083",
+          "support-0093",
+          "support-0103",
+          "support-0113",
+          "support-0133",
+          "support-0005"
+        ]
+      },
+      "count": 3
+    },
+    {
+      "name": "return_deadline_miscalculated",
+      "status": "dropped",
+      "definition": "The reply states a last return day that differs from delivery date + window days (inclusive), using the store's window when its policy page sets one.",
+      "boundary": "vs policy_claim_without_opening: the rule was read; the arithmetic is wrong. Framing stricter than RESP-6 (e.g. 'mailed/postmarked by') is not a failure when it does not change the customer's eligibility (support-0015, past window).",
+      "requirement_source": "RESP-6",
+      "evaluator_type": "code",
+      "example_trace_ids": [
+        "35d7c339201f691f383fa729d29fd708",
+        "ce8fe0dd05e4a09a5cd0b2806dda0db7"
+      ],
+      "close_negative_trace_ids": [
+        "d313f1380a5df605e671bc85ed5a0c6f",
+        "525718318f4d3fd31d7b62dc7fdd7af8",
+        "060a77dc6fc2f90c735523265aa4c07f",
+        "dd7c7f4e84cc9c14224ffb3af0cd4606",
+        "85887500a381070890f0f6425bd5e4da",
+        "7664869fc1997d9c6b0070a2dbab3f8b"
+      ],
+      "created_from": [
+        "35d7c339201f691f383fa729d29fd708"
+      ],
+      "source_annotation_ids": [
+        "7d98901d890d",
+        "c31362de487c"
+      ],
+      "scenarios": {
+        "positive": [
+          "support-0072"
+        ],
+        "close_negative": [
+          "support-0158",
+          "support-0179",
+          "support-0015",
+          "support-0036",
+          "support-0163"
+        ]
+      },
+      "count": 1,
+      "dropped_reason": "2026-10-31: 1 positive in the reviewed sample (support-0072), below the 3 required; dropped to freeze the final taxonomy at 6 modes instead of running a depth search. Not a pool-wide count."
+    },
+    {
+      "name": "answered_out_of_scope_question",
+      "status": "candidate",
+      "definition": "For a request SCOPE-2 requires the agent to refuse, the reply holds more than a refusal and a redirect (task content, steps, or an offer to do the task).",
+      "boundary": "A refusal that redirects to another party is the close negative (0115, 0168). Revised 2026-10-06: the first definition ('answers ... instead of declining') fit only 0232; 0095, 0145, 0214, 0250 refused first, then helped.",
+      "requirement_source": "SCOPE-2",
+      "evaluator_type": "llm_judge",
+      "example_trace_ids": [
+        "8278f0e9077adbc3c1c60b1adc72db3a",
+        "48770c9fbd4740e172d22203920ee5ba",
+        "2377828e00a5b1b8fb355218321549d0",
+        "7b2dbf1b5844654cc3f3f184a6ab8183",
+        "0fd9632cb0ff60d742d411017cae95ed"
+      ],
+      "close_negative_trace_ids": [
+        "67d63cd06373ed0d44432c26e25fe2f8",
+        "bb00c79cba7117719b5ee6dd9d6b4063",
+        "6ab4ea6aa05a203534eb519d1f000345",
+        "e7fcd2b6255056684d36c18aef9e6970",
+        "100067ce1a35bb0c614f2d43edc89f1d"
+      ],
+      "created_from": [
+        "8278f0e9077adbc3c1c60b1adc72db3a"
+      ],
+      "source_annotation_ids": [
+        "0d518d1614d1",
+        "04500e6b05a8",
+        "5aabe6a87b95",
+        "4348302f68d6",
+        "9c54e0fedb61"
+      ],
+      "scenarios": {
+        "positive": [
+          "support-0232",
+          "support-0095",
+          "support-0214",
+          "support-0250",
+          "support-0145"
+        ],
+        "close_negative": [
+          "support-0115",
+          "support-0168",
+          "support-0192",
+          "support-0200",
+          "support-0223"
+        ]
+      },
+      "count": 5
+    },
+    {
+      "name": "treated_capped_results_as_complete",
+      "status": "dropped",
+      "definition": "A list tool returned exactly its cap and the reply presents the results as the full set or picks a match outside the user's stated criteria.",
+      "boundary": "vs skipped_order_search: the search ran; its truncation was ignored.",
+      "requirement_source": "TOOL-6 contract (nearest; no response requirement -- candidate SPEC revision)",
+      "evaluator_type": "code",
+      "example_trace_ids": [
+        "915b60c83256e4951d967a211a2f6b1e"
+      ],
+      "close_negative_trace_ids": [
+        "4bbe437e79e90532334f1db54e133c82",
+        "94072b95d646f809807042805121abc1",
+        "48795abd3f949b0f8f250615aeeed4ee",
+        "f264a1bae22470ca8e64bbce8f7e5a28"
+      ],
+      "created_from": [
+        "915b60c83256e4951d967a211a2f6b1e"
+      ],
+      "source_annotation_ids": [
+        "5312126b071c"
+      ],
+      "scenarios": {
+        "positive": [
+          "support-0162"
+        ],
+        "close_negative": [
+          "support-0170",
+          "support-0067",
+          "support-0246"
+        ]
+      },
+      "count": 1,
+      "dropped_reason": "2026-10-31: 1 positive in the reviewed sample (support-0162), below the 3 required; dropped to freeze the final taxonomy at 6 modes instead of running a depth search. Not a pool-wide count."
+    },
+    {
+      "name": "skipped_order_search",
+      "status": "dropped",
+      "definition": "The user describes an order by product and the agent answers without calling find_order although its role may.",
+      "boundary": "vs treated_capped_results_as_complete: no search ran at all.",
+      "requirement_source": "TOOL-6 contract, AUTH-1 (nearest -- candidate SPEC revision)",
+      "evaluator_type": "code",
+      "example_trace_ids": [
+        "5ef4d069f6dbfa7443a1f1f9927b6a13",
+        "5beb2ebaa9796c3efaf68c93c4f12538"
+      ],
+      "close_negative_trace_ids": [
+        "778a07c0d4768a5c73960047ba02fb31",
+        "4bbe437e79e90532334f1db54e133c82",
+        "8eb4b5941450f3e8c87a1312243f5e7d",
+        "e01c4f8349876f7169b84b71300c6a8c"
+      ],
+      "created_from": [
+        "5ef4d069f6dbfa7443a1f1f9927b6a13"
+      ],
+      "source_annotation_ids": [
+        "a2244d81d664",
+        "b95e645298ec"
+      ],
+      "scenarios": {
+        "positive": [
+          "support-0207",
+          "support-0243"
+        ],
+        "close_negative": [
+          "support-0131",
+          "support-0170",
+          "support-0157",
+          "support-0195"
+        ]
+      },
+      "count": 2,
+      "dropped_reason": "2026-10-05: 2 positives in the whole 250-scenario pool (support-0207, support-0243; 0195 is a close negative), below the 3 required. Support sessions skipped find_order in 2 of 7 find_order scenarios vs 0 of 19 for shoppers and merchants; consistent with the find_order docstring 'Search your orders' misleading support staff (unverified, n=7)."
+    }
+  ]
+}

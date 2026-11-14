@@ -109,3 +109,4 @@ Requirements that do not fit in the sections above, including tone and style gui
 - **RESP-3.** State when required information is missing or inconsistent, rather than inventing a value.
 - **RESP-4.** Explain refusals and escalations without revealing inaccessible order or user information.
 - **RESP-5.** Use direct and respectful language that explains the relevant decision.
+- **RESP-6.** When stating a return deadline, count the window from the delivery date, inclusive: the last day is delivery date + window days. A return is on time if the buyer *starts* it on or before that day. State the last day to start the return, using the store's window when its own policy page sets one.

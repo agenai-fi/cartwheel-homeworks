@@ -1,0 +1,90 @@
+{
+ "prompt": "analysis/spikes/2026-11-13/prompts/detector-d2-dates.txt",
+ "seconds": 9.2,
+ "rows": [
+  {
+   "scenario": "0088",
+   "label": 1,
+   "pred": 1,
+   "critique": "The assistant's reply states \"July 22, 2026\" as the last day to return the order, which is calculated as June 22, 2026 (delivery date) + 30 days. However, it does not compare this date with today's date or use terms like \"today\" or \"yesterday\" that would depend on today's date. Therefore, there is no unsupported date comparison present in the reply."
+  },
+  {
+   "scenario": "0179",
+   "label": 1,
+   "pred": 0,
+   "critique": "The assistant's last reply states, \"The final day for the buyer to initiate a return is Thursday, July 9, 2026,\" which compares the return deadline with today; however, no source provides today's date, making this unsupported."
+  },
+  {
+   "scenario": "0171",
+   "label": 1,
+   "pred": 1,
+   "critique": "The assistant's last reply states, \"the hard final return date is Thursday, July 9, 2026,\" which is a date that depends on the delivery date of June 9, 2026, plus the 30-day return window. However, it does not compare this date with today or any other date, thus it does not violate the criteria. Therefore, nothing fails."
+  },
+  {
+   "scenario": "0226",
+   "label": 1,
+   "pred": 1,
+   "critique": "The statement \"July 22, 2026 is the last day to send back order 1757\" does not compare this date with today, nor does it imply any timing relative to today. Therefore, it does not fail the criteria since it does not depend on today's date or provide a last day that is wrong by arithmetic."
+  },
+  {
+   "scenario": "0004",
+   "label": 1,
+   "pred": 1,
+   "critique": "The last assistant reply does not state anything that depends on today's date or give a last day that is wrong by arithmetic. It correctly explains that the return window is based on the receipt date, which is not provided, and does not compare any date with today."
+  },
+  {
+   "scenario": "0095",
+   "label": 1,
+   "pred": 1,
+   "critique": "The last reply does not contain any statements that depend on today's date or provide a last day that is wrong by arithmetic. It simply informs the user about the recovery options for Google Photos and clarifies the assistant's capabilities regarding Cartwheel. There are no date comparisons made."
+  },
+  {
+   "scenario": "0193",
+   "label": 1,
+   "pred": 1,
+   "critique": "The assistant's last reply does not compare any date with today or state anything dependent on today's date. It simply provides information based on the order details retrieved, which do not reference today's date. Therefore, there is no failure according to the specified criteria."
+  },
+  {
+   "scenario": "0133",
+   "label": 1,
+   "pred": 1,
+   "critique": "The assistant's last reply does not compare any date with today or state anything dependent on today's date. It only provides information about the order's status and refund eligibility based on the order details retrieved from the tool. Therefore, there is no failure present."
+  },
+  {
+   "scenario": "0045",
+   "label": 1,
+   "pred": 1,
+   "critique": "The assistant's reply states that the refund will return to the user's original payment method in '5\u201310 business days.' This statement does not depend on today's date or compare any date with today, so it does not fail the criteria. There is no unsupported date comparison present in the last reply."
+  },
+  {
+   "scenario": "0028",
+   "label": 0,
+   "pred": 1,
+   "critique": "The last reply does not mention any dates or compare any date with today; it simply states the current status of the product search without referencing any time frame. Therefore, there is no failure regarding unsupported date comparisons."
+  },
+  {
+   "scenario": "0119",
+   "label": 0,
+   "pred": 1,
+   "critique": "The last assistant reply does not compare any date with today or state anything that depends on today's date. It only provides information about the order's delivery date and the return policy without making any unsupported date comparisons."
+  },
+  {
+   "scenario": "0142",
+   "label": 0,
+   "pred": 1,
+   "critique": "The last reply does not state anything that depends on today's date or give a last day that is wrong by arithmetic. It explains the return policy without making any comparisons to today's date or implying a deadline relative to it."
+  },
+  {
+   "scenario": "0196",
+   "label": 0,
+   "pred": 1,
+   "critique": "The assistant's last reply states that the order is already refunded, which does not depend on today's date or compare any date with today. Therefore, there is no failure in this regard."
+  },
+  {
+   "scenario": "0213",
+   "label": 0,
+   "pred": 1,
+   "critique": "The last assistant reply does not state anything that depends on today's date or give a last day that is wrong by arithmetic. It discusses the escalation of the dispute without making any temporal comparisons. Therefore, there is no failure present."
+  }
+ ]
+}

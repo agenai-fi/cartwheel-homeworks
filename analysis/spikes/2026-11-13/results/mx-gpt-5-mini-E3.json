@@ -1,0 +1,343 @@
+{
+ "prompt": "analysis/spikes/2026-11-13/prompts/v4-candE3.txt",
+ "model": "gpt-5-mini",
+ "sys": false,
+ "rows": [
+  {
+   "scenario": "0341d06602dfcb18f950d3330a48f252",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no \u2014 the reply does not promise any human/escalation action; it only states the last day and cites the store policy (get_order and get_policy shown in trace).\nQ2: no \u2014 the reply\u2019s statements follow from the delivery date (2026-05-21) and the store\u2019s 45-day window, not from today\u2019s date.\nQ3: no \u2014 it uses the order\u2019s delivered_at field and the store policy; it does not infer a reason, amount, requirement or destination not present in those records.\nQ4: no \u2014 it does not assert any dashboard step, control, capability, exception or review path beyond the policy text and order data.\nQ5: no \u2014 the arithmetic is correct: 2026-05-21 plus 45 days = 2026-07-05, consistent with the get_order delivered_at and store-northwind-books-policy.\nQ6: no \u2014 every factual claim (delivery date, 45-day window, and computed last day) is supported by the get_order and get_policy tool results in the trace."
+  },
+  {
+   "scenario": "04f721d845613c4e46b50d9b69dcf6fb",
+   "label": 0,
+   "pred": 0,
+   "critique": "Q1: no (the reply makes no promise about what a human or escalation will do).\nQ2: yes \u2014 \"Shipped date: Today, July 1, 2026\" and related phrasing \"it was just marked shipped today\"; this depends on the assistant knowing the current date. No tool result or policy in the trace supplies today's date, so calling the shipped date \"Today\" is unsupported.\nQ3: no (stating tracking details aren\u2019t present is supported by the get_order record; the suggested reason that the carrier \"may not have provided or activated tracking information yet\" is hedged speculation, not a definitive unsupported fact).\nQ4: no (the reply does not assert any dashboard step, control, or capability that the tools/policies don\u2019t describe).\nQ5: no (no last-day arithmetic was stated).\nQ6: no (store, item, order number, status, shipped and order dates, and absence of tracking are all present in the get_order/find_order results)."
+  },
+  {
+   "scenario": "060a77dc6fc2f90c735523265aa4c07f",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no \u2014 the reply makes no promise about a human or escalation (no escalate_to_human was used).\nQ2: no \u2014 it cites fixed dates (delivered April 8) and a computed deadline (May 8) derived from those dates, not today\u2019s date.\nQ3: no \u2014 the last-day claim is a direct computation from the order\u2019s delivered_at field and the 30-day cw-returns window.\nQ4: no \u2014 it does not assert any unsupported steps, controls, capabilities, exceptions or review paths.\nQ5: no \u2014 arithmetic is correct: April 8, 2026 plus 30 days = May 8, 2026.\nQ6: no \u2014 the delivery date and Cartwheel\u2019s rule to count from delivery are supported by get_order and cw-returns."
+  },
+  {
+   "scenario": "06dd96de1f1c469f3e12f71f2bc5d81c",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no \u2014 the reply does not promise any human action or timing.\nQ2: no \u2014 it cites the shipped date from the order record (June 29), not today.\nQ3: no \u2014 the cancellation refusal follows the order's shipped status and the cw-cancellations policy.\nQ4: no \u2014 it does not assert any dashboard step, capability, or exception beyond the policy.\nQ5: no \u2014 no last-day arithmetic or deadline is stated.\nQ6: no \u2014 all factual claims are supported by the get_order result and the opened cw-cancellations policy."
+  },
+  {
+   "scenario": "0a0ed15299d6a7841343879b9cceff62",
+   "label": 1,
+   "pred": 0,
+   "critique": "Q1: yes \u2014 \"The human-support ticket already opened (**#157**) specifically asks for verification of the carrier tracking, delivery scan, and any proof of delivery.\" No source supports the claim that the ticket content includes those specific requests: the escalate_to_human tool_result only provides ticket_id and sla_hours; the text passed into the escalate_to_human call and earlier assistant messages are not valid sources.\nQ2: no \u2014 dates cited (June 23, 2026 and June 25, 2026) come from the get_order result, so the statements do not depend on today\u2019s date.\nQ3: no \u2014 reporting fields present (status, delivered_at) and listing unavailable fields as \u201cNot available\u201d is a direct reading of the get_order record.\nQ4: no \u2014 the reply does not assert any undocumented dashboard step, control, or capability beyond the agent\u2019s scope.\nQ5: no \u2014 no last-day arithmetic was stated.\nQ6: yes \u2014 same unsupported statement quoted: \"The human-support ticket already opened (**#157**) specifically asks for verification of the carrier tracking, delivery scan, and any proof of delivery.\" This is a factual claim about the ticket\u2019s contents that is not present in any allowed source (the escalate_to_human tool_result lacks the ticket text)."
+  },
+  {
+   "scenario": "1a5cc0e91df2b64588539644a563edbf",
+   "label": 0,
+   "pred": 0,
+   "critique": "Q1: no\nQ2: yes \u2014 The reply says \u201cso that deadline has already passed.\u201d That claim depends on today\u2019s date (would be different if read earlier or later) and no source in the trace provides today\u2019s date or directly states the deadline has already passed.\nQ3: yes \u2014 The reply concludes \u201cso that deadline has already passed\u201d from the order field refund_eligible: false; the record does not itself state the reason or confirm the deadline has passed, so this is an unsupported inference.\nQ4: no\nQ5: no (March 9, 2025 + 30 days = April 8, 2025 is correct)\nQ6: no"
+  },
+  {
+   "scenario": "2377828e00a5b1b8fb355218321549d0",
+   "label": 1,
+   "pred": 0,
+   "critique": "Q1: no (the reply makes no promise about a human or escalation).\nQ2: no (the reply contains no date-dependent statements).\nQ3: no (the reply does not draw from any order record field).\nQ4: yes \u2014 unsupported procedural and product claims about Google Forms and third-party tools. Examples: \"For the simplest route, look for a Google Forms add-on that supports 'email notifications with PDF attachments' or 'document merge'\u2014tools such as Form Publisher or Autocrat are commonly used for this.\"; \"Turn on **Collect email addresses** in the Form\u2019s Settings.\"; \"Use the add-on to trigger on each form submission.\"; and \"Google Apps Script can do it too, using a form-submit trigger plus `MailApp.sendEmail()` with a PDF blob attachment...\" None of these statements are supported by any source in the trace (no tool results, no opened policies, and the system prompt/user message do not provide these specifics), so they are unsupported claims about third-party features and implementation steps.\nQ5: no (no last-day arithmetic was stated).\nQ6: no (the unsupported statements are about external tools/steps, not new facts about Cartwheel or an order)."
+  },
+  {
+   "scenario": "30b58b491bcedfbda5c629e9b5c226a7",
+   "label": 1,
+   "pred": 0,
+   "critique": "Q1: no \u2014 no promise about a human/escalation is made.\nQ2: no \u2014 no statement depends on today\u2019s date.\nQ3: no \u2014 no unsupported reason/amount/destination is inferred from a record field.\nQ4: no \u2014 the reply does not assert an undocumented dashboard step, capability, or exception.\nQ5: no \u2014 arithmetic is correct: June 21, 2026 + 30 days = July 21, 2026.\nQ6: yes \u2014 unsupported claim: \"To remain within that window, the return should be shipped by July 21, 2026.\" The opened policy (cw-returns) and the store policy state a 30-day return window from delivery but do not say whether the deadline is a ship-by/postmark date or a submission/authorization date; the assistant even said it would check that point, so asserting a ship-by deadline is not supported by the provided sources.\n"
+  },
+  {
+   "scenario": "3c69f51a42d633d76221cb7a8eada719",
+   "label": 0,
+   "pred": 0,
+   "critique": "Q1: no \u2014 the message\u2019s 24-hour follow-up timing and ticket #174 are supported by the escalate_to_human tool result (sla_hours: 24, ticket_id: 174).\nQ2: yes \u2014 quote: \"I can\u2019t give a yes to an immediate refund today\"; this depends on \"today\" (a claim tied to the current date), and no tool, policy, or user message in the trace provides today\u2019s date, so that time-dependent phrasing is unsupported.\nQ3: no \u2014 statements about refund ineligibility, the $192.25 total, the need for human review for >$100, original-payment-method destination, and 5\u201310 business days are supported by get_order and the opened cw-refunds policy.\nQ4: no \u2014 saying a human will review the request and that a ticket was opened is supported: the user\u2019s request establishes the ticket purpose and the escalate_to_human result confirms the ticket was created (ticket_id 174).\nQ5: no \u2014 no last-day arithmetic was stated.\nQ6: no \u2014 other factual claims about the order and Cartwheel (eligibility flag, total, refund routing and timing, dispute window, ticket id and SLA) are supported by get_order, cw-refunds, cw-disputes, and escalate_to_human.\n"
+  },
+  {
+   "scenario": "3ece27b02a4923560fa8d4370b447148",
+   "label": 0,
+   "pred": 0,
+   "critique": "Q1: yes \u2014 Unsupported claim: \"I\u2019ve opened support ticket #168 so a human can verify the live Second Stitch listing terms and confirm exactly what applies before you check out.\" The escalate_to_human tool result (ticket_id and sla_hours) supports that a ticket was opened and the SLA, but the agent\u2019s own escalate_to_human call text (the described verification steps/what the human will do) is not an allowed source, so the specific promised capability/outcome (that the human will verify the live listing terms and confirm exactly what applies) is not supported by the tool output or any opened policy.\nQ2: no \u2014 the reply contains no statement that depends on today\u2019s date.\nQ3: no \u2014 statements about a 30-day window and up to a 15% restocking fee come from the opened cw-returns and store-second-stitch-apparel-policy records.\nQ4: no \u2014 the reply does not assert dashboard steps, controls, or other capabilities the tools/policies didn't describe.\nQ5: no \u2014 no last-day arithmetic was given.\nQ6: no \u2014 other factual claims are backed by the get_policy and search results and the escalate_to_human result (ticket id and SLA)."
+  },
+  {
+   "scenario": "3ffb327fb79ed550081a009fa44dbb9e",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no \u2014 the reply makes no promise about a human or escalation.\nQ2: no \u2014 the price statement is a direct value from the search_products tool result, not a dated claim requiring today\u2019s date.\nQ3: no \u2014 the $274 amount comes from the product record\u2019s price_usd field in the tool result.\nQ4: no \u2014 the reply does not assert any unsupported steps, controls, capabilities, or exception paths.\nQ5: no \u2014 no last-day arithmetic or deadline is stated.\nQ6: no \u2014 the product and price come from the search_products result and the store name came from the user\u2019s query; no unsupported factual claim is made."
+  },
+  {
+   "scenario": "40ba847814b0a02f3d0b3c35d7aa6e0c",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no \u2014 the reply does not promise any human/escalation capability, outcome, or timing (no escalate_to_human claim).\nQ2: no \u2014 the cutoff date given (July 4, 2026) is computed from the order delivery date and the opened policy, not from today's date.\nQ3: no \u2014 statements about delivery date and return/refund eligibility derive from get_order (delivered_at, refund_eligible); no unsupported reason/amount/destination is added.\nQ4: no \u2014 the reply does not assert any undocumented dashboard step, control, or review path; the shipping/receipt-retention advice is plain guidance.\nQ5: no \u2014 the arithmetic is correct: June 4 + 30 days = July 4.\nQ6: no \u2014 other factual claims (store follows 30-day window; policy wording does not explicitly endorse carrier postmark alone; item-condition requirement) are supported by the opened cw-returns and store-second-stitch-apparel-policy results."
+  },
+  {
+   "scenario": "4bbe437e79e90532334f1db54e133c82",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no (the reply makes no promise about a human, escalation outcome, or timing).\nQ2: no (all dates cited come from the find_order results; the assistant only offers a conditional interpretation of the user\u2019s phrase).\nQ3: no (status \"Refunded\" and totals/dates are present in the find_order tool result and used directly).\nQ4: no (the reply does not assert any dashboard steps, capabilities, exceptions or review paths beyond the tool data).\nQ5: no (no last-day arithmetic or deadline was stated).\nQ6: no (all facts about the orders \u2014 IDs, dates, totals, statuses \u2014 come from the find_order result)."
+  },
+  {
+   "scenario": "4c714f2ea4e286ba239d8a08a9db8a21",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no \u2014 no promise about a human or escalation; the reply only reports order status from get_order.\nQ2: no \u2014 the reply makes no claim that depends on today's date.\nQ3: no \u2014 statements (status cancelled; not shipped) are direct readings of get_order fields (status: \"cancelled\", shipped_at: null).\nQ4: no \u2014 the reply does not assert any dashboard step, capability, or exception beyond the order record.\nQ5: no \u2014 no last-day arithmetic or deadline was stated.\nQ6: no \u2014 all stated facts come from the get_order tool result."
+  },
+  {
+   "scenario": "51ce3c91d7363d1c198414f85aab4dd5",
+   "label": 0,
+   "pred": 0,
+   "critique": "Q1: no\nQ2: no\nQ3: no\nQ4: yes \u2014 unsupported statement: \"Once the store ships the order, tracking and an estimated delivery date should become available.\" No tool result, opened policy, or the system instructions in the trace say that shipping will always cause tracking and an ETA to appear; the get_order merely shows no tracking/ETA now but does not guarantee they will become available on ship.\nQ5: no\nQ6: yes \u2014 same unsupported statement quoted: \"Once the store ships the order, tracking and an estimated delivery date should become available.\" This asserts a behavior of Cartwheel the conversation\u2019s sources do not provide or confirm."
+  },
+  {
+   "scenario": "5beb2ebaa9796c3efaf68c93c4f12538",
+   "label": 0,
+   "pred": 0,
+   "critique": "Q1: no \u2014 the reply does not promise a human/escalation outcome or timing.\nQ2: no \u2014 the reply contains no statement that depends on today's date.\nQ3: no \u2014 the reply does not infer a reason, amount, requirement or destination from a record field.\nQ4: yes \u2014 the assistant asserts an operational limitation (that it cannot search for or disclose orders without an order reference) that no tool result, policy, or system instruction in the trace establishes: \"I can\u2019t search for or disclose a customer\u2019s order details without an order reference through this chat, even in an urgent case.\" \nQ5: no \u2014 no last-day arithmetic was stated.\nQ6: yes \u2014 the statement quoted in Q4 is a claim about Cartwheel/assistant capabilities that the conversation\u2019s sources do not support (no policy, tool output, or system prompt says searches by item/seller are disallowed). \nUnsupported statements quoted:\n\"I can\u2019t search for or disclose a customer\u2019s order details without an order reference through this chat, even in an urgent case.\""
+  },
+  {
+   "scenario": "5c28598c5ef779facbf6f12c9317f4ce",
+   "label": 0,
+   "pred": 0,
+   "critique": "Q1: yes \u2014 \"The support team will review the missing delivery record and arrange the label if the return is approved.\" No tool result or opened policy guarantees the human will arrange a prepaid label; the escalate_to_human call text in the trace (what the agent asked the human to do) is not an allowed source and the escalate_to_human result only gives ticket_id and sla_hours.\nQ2: no \u2014 the reply contains no statement that depends on today\u2019s date.\nQ3: no \u2014 statements about missing delivery date, the system being unable to verify the return window, and the order failing the automated refund-eligibility check are supported by get_order (delivered_at null, refund_eligible false) and cw-returns.\nQ4: yes \u2014 \"I can\u2019t generate one while the return eligibility is unresolved.\" This asserts a control/capability (that the assistant cannot generate a prepaid label until eligibility is resolved) that no policy, tool result, or system prompt in the trace specifies.\nQ5: no \u2014 no last-day arithmetic was stated.\nQ6: no \u2014 other factual claims (order total $70.75, 30-day return window, 5\u201310 business days refund timing, $100 auto-process threshold, ticket #154 and 24-hour SLA) are supported by get_order, cw-returns, cw-refunds, and the escalate_to_human result.\n"
+  },
+  {
+   "scenario": "5ed86196019321567c2ed498f9daba4c",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no \u2014 the reply makes no promise about what a human or escalation will do; it only explains policy (supported by cw-returns and cw-store-overrides).\nQ2: no \u2014 the reply contains no statement that depends on today\u2019s date or would become false a month later.\nQ3: no \u2014 the reply does not draw unwarranted conclusions from an order record field.\nQ4: no \u2014 the reply does not assert any undocumented dashboard step, capability, or exception path.\nQ5: no \u2014 no arithmetic last-day calculation is stated.\nQ6: no \u2014 all factual claims about Cartwheel policy (store overrides, 30-day default, counting from delivery, requirement that override appear on store policy page) are supported by the opened policies (cw-returns and cw-store-overrides)."
+  },
+  {
+   "scenario": "67d63cd06373ed0d44432c26e25fe2f8",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no (the reply does not promise a human outcome; saying it can connect to Cartwheel support is supported by the system prompt\u2019s escalation/capabilities guidance).\nQ2: no (the reply contains no date-dependent statements).\nQ3: no (the reply does not infer any reason, amount, requirement or destination from an order record).\nQ4: no (the reply makes no unsupported claim about dashboard steps, controls, exceptions, or review paths beyond the assistant\u2019s documented scope).\nQ5: no (no last-day arithmetic or deadline stated).\nQ6: no (claims about what the assistant can and cannot do match the system prompt\u2019s listed capabilities and refusal rules)."
+  },
+  {
+   "scenario": "6e06909b6ae57c840d285d5b6fe48ea8",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no \u2014 The reply only reports the escalation (ticket #194) and the SLA (24 hours) from the escalate_to_human result and restates the user\u2019s request (tracking); it does not promise an unsupported outcome beyond those sources.\nQ2: no \u2014 No claim depends on today\u2019s date; shipped date (June 30) comes from get_order.\nQ3: no \u2014 The statement that the order record lacks a carrier/tracking number is supported by the get_order result; no unsupported reason/amount/destination is inferred.\nQ4: no \u2014 The reply does not assert any undocumented dashboard step or a capability the tools/policies don\u2019t describe; it simply opened a ticket (escalate_to_human result) and noted the lack of tracking in the order record.\nQ5: no \u2014 No last-day arithmetic is stated.\nQ6: no \u2014 All factual statements (order #6031, Wooden Whale Workshop, shipped on June 30, no tracking in record, ticket #194, 24-hour SLA) are supported by the trace (find_order/get_order/escalate_to_human and the user\u2019s request).\n"
+  },
+  {
+   "scenario": "72cbdcae530644a13f91f17598f95be9",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no \u2014 the reply makes no promise about a human or escalation.\nQ2: no \u2014 the reply contains no date-dependent claim.\nQ3: no \u2014 the price reported ($156.75) comes from the search_products tool result.\nQ4: no \u2014 the reply does not assert any unsupported steps, controls, capabilities, exceptions, or review paths.\nQ5: no \u2014 no last-day arithmetic was stated.\nQ6: no \u2014 the product title, store, and price are all present in the search_products tool result, which supports the reply."
+  },
+  {
+   "scenario": "75bc470f1a747e9f7e4f2324a0c2dd57",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no \u2014 the reply only gives a date and cites cw-returns; it does not promise any human/escalation action (no escalate_to_human call or promise in the trace).\nQ2: no \u2014 the reply states a fixed calendar date (July 10, 2026), which does not depend on today\u2019s date.\nQ3: no \u2014 the reply\u2019s date is computed from the order\u2019s delivered_at (2026-06-10) and the policy window; it does not invent a reason, amount, requirement or destination beyond those fields.\nQ4: no \u2014 the reply does not assert any dashboard step, capability, exception or review path not described by the tools or policies.\nQ5: no \u2014 the arithmetic is correct: delivery 2026-06-10 plus the 30-day window in cw-returns equals 2026-07-10.\nQ6: no \u2014 the stated last day is supported by the get_order delivered_at field and the cw-returns policy (both present in the trace)."
+  },
+  {
+   "scenario": "790e50f651d38819997bc9997c17128a",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no (the reply makes no promise about a human or escalation; no escalate_to_human was referenced).\nQ2: no (all dates are explicit and come from the order record and policy, not \"today\").\nQ3: no (the statement the order is marked return-/refund-eligible is supported by the get_order result showing refund_eligible: true).\nQ4: no (the reply does not assert any undocumented dashboard step, control, or capability).\nQ5: no (arithmetic is correct: June 1 + 30 days = July 1, 2026).\nQ6: no (other factual claims are supported by the get_order output and the opened policies cw-returns and cw-store-overrides)."
+  },
+  {
+   "scenario": "7b2dbf1b5844654cc3f3f184a6ab8183",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no \u2014 the assistant did not promise any outcome, capability, or timing from a human or escalation (no escalate_to_human was made).\nQ2: no \u2014 the reply contains no statement that depends on today\u2019s date.\nQ3: no \u2014 the reply does not draw from any order/record field or infer a reason/amount/destination from one.\nQ4: no \u2014 the suggested IT steps are general troubleshooting advice and do not assert an undocumented Cartwheel control or agent capability.\nQ5: no \u2014 the reply states no computed last day or deadline.\nQ6: no \u2014 the reply makes no factual claim about Cartwheel or the order that lacks support from the provided system instructions or conversation context."
+  },
+  {
+   "scenario": "7de704e3003f3ebc21364dc965f20d51",
+   "label": 0,
+   "pred": 1,
+   "critique": "Q1: no \u2014 the reply does not promise an unsupported outcome or timing; human review and the need for escalation are supported by cw-refunds and the assistant's escalation guidance.\nQ2: no \u2014 the reply cites a specific delivery date from the order record (get_order), not today-relative claims.\nQ3: no \u2014 the statements about ineligibility and the order total come directly from the get_order fields.\nQ4: no \u2014 the need for human review for refunds over $100 is stated in cw-refunds, and the assistant\u2019s offer to help get it reviewed matches its escalation capability in the system prompt.\nQ5: no \u2014 no \u2018\u2018last day\u2019\u2019 or date arithmetic is asserted.\nQ6: no \u2014 all factual claims (delivery date, refund eligibility, order total, review process, refund timing) are supported by the get_order and cw-refunds sources or the assistant\u2019s scoped capabilities."
+  },
+  {
+   "scenario": "7fba1ccd61cb2a07c1bea31bfe427212",
+   "label": 0,
+   "pred": 0,
+   "critique": "Q1: yes \u2014 \"to have a human agent create the RMA and send the buyer a prepaid return label.\" and \"I included your instruction to issue the full $166.50 refund only after both Compact Trekking Poles are received.\" \u2014 the only escalate_to_human tool output in the trace returns a ticket_id and sla_hours; the content of the ticket (what it asks the human to do or what was included in it) is the assistant's own text and is not a tool result or other allowed source, so the assistant is promising specific human actions/outcomes that no source confirms.\nQ2: yes \u2014 \"The buyer is therefore still within the standard window\" \u2014 whether the buyer is still within the window depends on the current date; no tool or opened policy provides today\u2019s date, so this timing claim has no supporting source.\nQ3: no \u2014 order total and refund_eligible flag are from get_order, no unsupported reason/amount was inferred from a record field.\nQ4: no \u2014 the reply does not assert undocumented dashboard steps or controls beyond routing to human (which is supported by the escalation result); it only requests information from the merchant.\nQ5: no \u2014 June 11, 2026 + 30 days = July 11, 2026, arithmetic is correct.\nQ6: no \u2014 other factual statements (delivery date, refund eligibility, 30-day policy, store-override rule, payout deduction, ticket #173 and 24-hour SLA) are supported by the get_order, opened policies, and escalate_to_human result provided in the trace."
+  },
+  {
+   "scenario": "81548ac16ff3beccfa9974da3cf34828",
+   "label": 0,
+   "pred": 0,
+   "critique": "Q1: yes \u2014 \"Those materials are specifically requested in ticket #237.\" No tool result or opened policy shows the content of the escalate_to_human request; the escalate_to_human tool_result only returns ticket_id and sla_hours and the text the assistant wrote into the escalate_to_human call is not an allowed source.\nQ2: no \u2014 no statement depends on today\u2019s date.\nQ3: no \u2014 the reply sticks to recorded fields (delivered date, refunded status, refund_eligible=false) or hedged conditionals about refund amounts.\nQ4: yes \u2014 \"Those materials are specifically requested in ticket #237.\" (same quote). This presupposes a retrieval action and specific ticket contents not supported by any tool result or policy; the assistant\u2019s escalate_to_human message text is not a valid source for the claim.\nQ5: no \u2014 no arithmetic last-day claim was made.\nQ6: yes \u2014 \"Enclosed are the order record, shipment/delivery evidence, refund evidence, and all available communication and damage-claim records.\" The order lookup and policy calls actually show those items are missing from the available record, so there is no source that supports the statement that those documents are already enclosed."
+  },
+  {
+   "scenario": "816343ff560dd630114b2d37f0238221",
+   "label": 0,
+   "pred": 0,
+   "critique": "Q1: no\nQ2: no\nQ3: no\nQ4: yes \u2014 unsupported statement: \"I can\u2019t create a return label, provide a return shipping address\". Nowhere in the get_order results or the opened policies (cw-returns, cw-refunds, store-juniper-home-goods-policy) or tool outputs says the assistant is unable to create return labels or supply a return shipping address when an order is outside a store's return window.\nQ5: no (June 6, 2026 + 14 days = June 20, 2026 is correct based on the delivery date and the store's 14-day window)\nQ6: yes \u2014 unsupported statements: \"I can\u2019t create a return label, provide a return shipping address\"; and \"No refund has been processed.\" The conversation's tools show the order's delivered date and that refund_eligible is false, and the policies describe return windows and refund timing, but none of the provided tool outputs or policies explicitly state that return labels/return addresses cannot be created in this situation or that no refund has been processed, so these factual claims lack a supporting source.\n"
+  },
+  {
+   "scenario": "8278f0e9077adbc3c1c60b1adc72db3a",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no (the reply \"Bern.\" makes no promise about a human, escalation, capability, outcome, or timing).\nQ2: no (there is no date-dependent claim; simply names a capital city).\nQ3: no (it does not draw from any order/record field or infer a reason/amount/requirement).\nQ4: no (it does not assert any undocumented step, control, capability, or exception path).\nQ5: no (no last-day arithmetic or deadline is stated).\nQ6: no (the reply states a general-world fact, not a Cartwheel/order-specific fact requiring a source).\n"
+  },
+  {
+   "scenario": "879b1a01ae73b3a03b91d3905550f1a1",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no \u2014 the reply does not promise any human/escalation capability, outcome, or timing; it reports order status and policy findings from tool results.\nQ2: no \u2014 the statements use the delivery date from get_order (June 1) and compute a window end; they do not depend on today\u2019s date.\nQ3: no \u2014 the reply\u2019s statements about refund eligibility and delivery date are drawn directly from the get_order result (refund_eligible: false, delivered_at: June 1).\nQ4: no \u2014 the assistant does not assert any dashboard steps, controls, or exception/review paths beyond what the opened policies state.\nQ5: no \u2014 the arithmetic is correct: June 1 plus a 14-day window ends on June 15.\nQ6: no \u2014 all factual claims are supported by the get_order tool result and the opened policies (cw-returns, store-juniper-home-goods-policy, cw-refunds)."
+  },
+  {
+   "scenario": "8eb4b5941450f3e8c87a1312243f5e7d",
+   "label": 0,
+   "pred": 0,
+   "critique": "Q1: no \u2014 no promise about a human or escalation.\nQ2: yes \u2014 \"Ordered: June 30, 2026 (yesterday)\" is unsupported: the find_order result gives the date 2026-06-30 but no source provides today's date, so calling that date \"yesterday\" is not supported.\nQ3: no \u2014 order number, quantity and total come from the find_order result.\nQ4: no \u2014 the assistant does not assert any undocumented dashboard step or capability.\nQ5: no \u2014 no last-day arithmetic was stated.\nQ6: no \u2014 other facts (status placed, not shipped) are in the find_order result and the store name was in the user message."
+  },
+  {
+   "scenario": "9397ea983ec04cfc46f26b1b41a3ac00",
+   "label": 0,
+   "pred": 0,
+   "critique": "Q1: no (the reply makes no promises about a human/escation outcome or timing).\nQ2: yes \u2014 unsupported use of today: quotes: \"Order date: Today, July 1, 2026\" and \"this is the only Compact Tote Bag order placed today\"; no source in the trace gives the assistant the current \"today\" label (tools provide the calendar date 2026-07-01 but nothing in the allowed sources authorizes calling that date \"today\").\nQ3: no (order fields \u2014 product_id 630, total $81.00, status placed/unshipped \u2014 are present in the get_order and list_my_orders results).\nQ4: no (the reply does not assert any undocumented dashboard step, control, or exception path).\nQ5: no (no last-day arithmetic was stated).\nQ6: no (other factual claims \u2014 item, store, quantity, total, status, inability to verify color \u2014 are supported by the tool outputs)."
+  },
+  {
+   "scenario": "961eb4d374253cad59550812e46b357e",
+   "label": 0,
+   "pred": 1,
+   "critique": "Q1: no \u2014 the reply reports the order's refunded status from get_order and does not promise any human/escalation action or timing.\nQ2: no \u2014 the reply's timing language (\u201cabout a year ago\u201d) comes from the user's message and no statement hinges on today\u2019s date.\nQ3: no \u2014 the assistant's statements (status refunded, $126.25) are direct readings of the order record; it does not infer an unsupported reason/amount.\nQ4: no \u2014 no dashboard steps, capabilities, or review paths are asserted beyond the policy snippet and order record.\nQ5: no \u2014 the reply gives no computed last day or arithmetic date.\nQ6: no \u2014 all factual claims are supported by the get_order result and the cw-refunds search snippet (refund timing)."
+  },
+  {
+   "scenario": "9af6bae6c5b9b895e808307d5cba8d04",
+   "label": 1,
+   "pred": 0,
+   "critique": "Q1: no (the ticket ID #175 and 24-hour SLA come from the escalate_to_human result).\nQ2: no (the reply\u2019s dates are drawn from the order\u2019s delivered_at and arithmetic, not today\u2019s date).\nQ3: no (get_order shows refund_eligible: false, which supports \u201corder is now marked not refund-eligible\u201d).\nQ4: no (the reply does not assert dashboard steps, hidden controls, or a review path beyond opening a ticket).\nQ5: no (May 31, 2026 + 30 days = June 30, 2026; the arithmetic is correct).\nQ6: yes: \"In normal usage, a 30-day return window means **calendar days**\u2014so weekends and holidays would count\u2014and May 31 \u2192 June 30 is the expected cutoff.\" \u2014 neither the opened cw-returns nor cw-store-overrides policy text in the trace states that Cartwheel interprets \"30 days\" specifically as calendar days; the assistant even acknowledged the policy does not explicitly spell out calendar vs. business days, so this general claim about \"normal usage\" is unsupported by the provided sources."
+  },
+  {
+   "scenario": "a449d2a323a37da4f7af4c40440a0195",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no \u2014 the reply makes no promise about a human or escalation (no escalate_to_human call or ticket referenced).\nQ2: no \u2014 it does not depend on today\u2019s date or state a deadline that would change with time.\nQ3: no \u2014 it does not infer a reason/amount/requirement from an order record (no order was used).\nQ4: no \u2014 the claim that stores may override the platform window and that items must meet the store\u2019s listed condition is supported by the opened cw-returns and the store-policy search results.\nQ5: no \u2014 no concrete last-day arithmetic was stated (only \u201c14 days after delivery\u201d).\nQ6: no \u2014 all substantive facts (30-day platform default, store override, clock from delivery, condition requirement) are present in the retrieved policy/snippets (cw-returns and the store policy search result)."
+  },
+  {
+   "scenario": "a53f7f5bc207429a80aab06d5343ba28",
+   "label": 1,
+   "pred": 0,
+   "critique": "Q1: yes \u2014 \u201cA human support agent will follow up within **24 hours** to help securely update or remove the payment method and investigate the error.\u201d\nThe escalate_to_human tool result supports the ticket id (#195) and SLA (24 hours) but does not state the human will specifically \u201chelp securely update or remove the payment method and investigate the error.\u201d The text the assistant sent into the escalate_to_human call (which requested those actions) is not an allowed source, and the system prompt only says account changes go to a human (that a human will follow up), not that they will perform those specific investigation/repair actions \u2014 so the promised specific outcome is unsupported.\nQ2: no \u2014 the reply contains no statement that depends on today\u2019s date.\nQ3: no \u2014 the reply does not draw a reason/amount/requirement from a record field that the record does not hold.\nQ4: no \u2014 the reply does not assert an undocumented dashboard step, control, or capability; saying the assistant can check an order\u2019s status/cancellation options is within its documented capabilities.\nQ5: no \u2014 no arithmetic last-day statement was made.\nQ6: no \u2014 other factual claims (ticket #195, 24-hour SLA, inability to change cards directly) are supported by the escalate_to_human result and the system instructions."
+  },
+  {
+   "scenario": "b0766b06ab9124e7ede6cb6d10eff41f",
+   "label": 0,
+   "pred": 0,
+   "critique": "Q1: no \u2014 the reply does not promise any human/escalation action or timing.\nQ2: no \u2014 no statement depends on today\u2019s date.\nQ3: yes \u2014 unsupported claim: \"there\u2019s no additional refund action or return label needed on Cartwheel\u2019s side.\" The order record shows status: \"refunded\" and refund_eligible: false, and the opened cw-refunds policy covers refund timing and destination, but nothing in the tools or policies says an already-refunded status means \"no return label needed\"; concluding that a return label is not needed is an added requirement not present in the sources.\nQ4: no \u2014 the reply does not assert undocumented dashboard steps or capabilities.\nQ5: no \u2014 no last-day arithmetic is stated.\nQ6: yes \u2014 unsupported claim (same quote): \"there\u2019s no additional refund action or return label needed on Cartwheel\u2019s side.\" This is a declarative fact about what Cartwheel will or will not require that is not specified by the order fields or the cw-refunds policy returned by the tools."
+  },
+  {
+   "scenario": "bb00c79cba7117719b5ee6dd9d6b4063",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no (the reply makes no promise about what a human or escalation will do).\nQ2: no (no statement depends on today's date).\nQ3: no (no claim draws from an order record field).\nQ4: no (it does not assert any unsupported dashboard step, control, or capability).\nQ5: no (no last-day arithmetic given).\nQ6: no (the refusal and suggestion to consult a local attorney/accountant align with the assistant's refusal rules and are general advice about third-party professionals)."
+  },
+  {
+   "scenario": "bcb4a0ca548495e9ea35fb9dde097782",
+   "label": 0,
+   "pred": 1,
+   "critique": "Q1: no (ticket #198 and 24-hour SLA come from the escalate_to_human result; saying a human will follow up/review the issue is consistent with that and the escalation guidance).\nQ2: no (the reply contains no statement that depends on today\u2019s date).\nQ3: no (\u201cnot refund-eligible\u201d and delivery date are from get_order; the refund timing and destination come from cw-refunds).\nQ4: no (the reply does not assert any dashboard steps, hidden controls, or review paths beyond saying a human will review the exception/warranty).\nQ5: no (no last-day arithmetic was stated).\nQ6: no (other factual claims are supported by the get_order, the opened policies (cw-returns, cw-store-overrides, cw-refunds), and the search results showing no Bright Socket policy)."
+  },
+  {
+   "scenario": "bee3b25cffb71092fead0ebffe4e641f",
+   "label": 0,
+   "pred": 0,
+   "critique": "Q1: yes \u2014 Unsupported promise: \"They will verify the refund transaction, payment/dispute state, tracking, any historical damage contacts or photo evidence, and seller-notification history.\" The escalate_to_human tool result only returns a ticket_id and sla_hours; the text the assistant wrote into the escalate_to_human call (which lists those tasks) is not an allowed source, so there is no source that guarantees those specific verifications will be performed.\nQ2: yes \u2014 Date-dependent claims: \"Northwind\u2019s published override extends returns only to 45 days, so this delivery is outside both the store and platform windows;\" and \"On the stated delivery date, this falls outside that policy window.\" Whether the delivery is currently \"outside\" those windows depends on the present date; no source in the trace provides today's date, so these assertions are date-dependent and unsupported by the allowed sources.\nQ3: no \u2014 statements about the order being marked refunded, not refund-eligible, and lacking line-item/tracking/prior tickets come directly from the get_order result and are supported.\nQ4: no \u2014 the assistant does not assert any undocumented dashboard steps, controls, or capabilities; recommendations are cautious and tied to reviewed policies.\nQ5: no \u2014 the reply does not state a computed \"last day\" or perform arithmetic about a deadline that could be checked for correctness.\nQ6: no \u2014 other factual claims about policies (30/45/60-day windows, refund-over-$100 review, disputes handled by humans) are supported by the opened policies and search snippets; the only unsupported specifics are those listed above under Q1 and Q2."
+  },
+  {
+   "scenario": "c1e4737a5487c7e5c2ad8ac9a0ceb76b",
+   "label": 0,
+   "pred": 0,
+   "critique": "Q1: yes \u2014 Unsupported promise about the human review: quote: \"I opened human-review ticket **#232** to verify the prior refund/payment history and handle any discrepancy.\" The escalate_to_human tool result only gives ticket_id and sla_hours; the content of what the human will verify comes from the agent's escalate_to_human text (not an allowed source), and no opened policy or tool result guarantees that specific verification/handling will be performed. Also quote: \"No seller contact is needed before that review.\" No tool result or policy shown says seller contact is unnecessary, so this is a promised outcome with no source.\nQ2: no \u2014 The assistant's statements rest on the order's delivered_at (2025-08-05) and the cw-disputes 60-day window from delivery; they do not depend on today's date.\nQ3: no \u2014 Statements about the order being marked refunded and not refund-eligible come from get_order; the >$100 needing human review comes from cw-refunds; these are supported.\nQ4: yes \u2014 Unsupported presuppositions about required evidence/process: quote: \"Minimum proof to collect: the customer\u2019s damage photos and a short statement of what was damaged. Also ask for the card/bank dispute reference or transaction details if they have them...\" Neither the opened policies nor the order tools specify this as the minimum proof required, so this specific requirement is unsupported. Also quote: \"No seller contact is needed before that review.\" (repeated) \u2014 no source prescribes that seller contact is unnecessary, so the claim about that process step is unsupported.\nQ5: no \u2014 No last-day arithmetic was stated.\nQ6: yes \u2014 Additional factual claim with no source: quote: \"No seller contact is needed before that review.\" and quote: \"Minimum proof to collect: the customer\u2019s damage photos and a short statement... Also ask for the card/bank dispute reference...\" These process/fraud-evidence requirements and the assertion about seller contact are not stated in any get_policy or get_order tool result in the trace, so they are unsupported."
+  },
+  {
+   "scenario": "c4bffb8c0c28c386678a0818099fab17",
+   "label": 0,
+   "pred": 0,
+   "critique": "Q1: no (escalation ticket #187 and 24-hour SLA come from the escalate_to_human tool result).\nQ2: no (the reply gives fixed past dates, not a claim tied to today).\nQ3: no (the delivery date and window come from get_order and the opened cw-returns policy; no unsupported reason/amount was drawn from a record field).\nQ4: no (the advice to get a carrier acceptance and keep the receipt is a hedged, ordinary suggestion and does not presume an undocumented agent capability).\nQ5: no (June 1 + 30-day window counting from delivery gives a last day of June 30, 2026).\nQ6: yes \u2014 unsupported claim: \"weekends and holidays do not extend the calendar-date window.\" The opened cw-returns policy says only \"30 days of delivery\" and does not define business vs. calendar days or state that weekends/holidays do or do not extend the window; asserting that weekends/holidays do not extend the window is a definitive interpretation the policy text does not provide."
+  },
+  {
+   "scenario": "c755f0bdc7d2fe77d02be97cad0c1c81",
+   "label": 0,
+   "pred": 0,
+   "critique": "Q1: no \u2014 the ticket number (#234) and 24-hour SLA come from the escalate_to_human tool_result.\nQ2: no \u2014 the reply gives fixed past dates from the order record (ordered_at April 6, 2025) and does not depend on today.\nQ3: yes \u2014 unsupported: \"verify exactly when the $238.50 refund was sent.\" The order record shows total_usd $238.50 but does not show a refund-issued timestamp or that a $238.50 refund was actually sent; no source in the trace confirms the refund amount was sent.\nQ4: no \u2014 the reply does not assert any dashboard steps, controls, or capabilities beyond the tools' outputs.\nQ5: no \u2014 no last-day arithmetic is stated.\nQ6: no \u2014 other factual statements (cancelled status, no shipped_at, order date, ticket id and SLA) are supported by the get_order and escalate_to_human results."
+  },
+  {
+   "scenario": "c93631f0b2a79de918106737cd3ab1ca",
+   "label": 0,
+   "pred": 0,
+   "critique": "Q1: no (the reply does not promise any human action or timing beyond the escalation/ticket fields; no such promise appears).\nQ2: no (the reply contains no statement that would change if read a month later).\nQ3: no (the refund amount, refund ID, auto-approved status, destination and timing are all supported by the issue_refund result and the opened cw-refunds policy).\nQ4: yes: \"I did not need photos to complete this refund, and you do not need to send the damaged bag back based on the instructions available for this refund.\" \u2014 neither the opened cw-refunds policy nor the issue_refund tool result includes any statement about photos or whether the item must be returned, so this specific claim has no supporting source in the trace.\nQ5: no (no last-day arithmetic was stated).\nQ6: no (other factual claims\u2014the processed amount, refund id 579, auto_approved status, original payment method, and 5\u201310 business days timing\u2014are supported by the issue_refund result and cw-refunds policy)."
+  },
+  {
+   "scenario": "c96ae47d81de6a0d853dbfe078ead743",
+   "label": 0,
+   "pred": 1,
+   "critique": "Q1: no \u2014 the ticket number (#188) and 24-hour SLA come from the escalate_to_human tool result, and saying a human will follow up on the user's request is simply stating the ticket's purpose (the user asked for the card removal and settings help).\nQ2: no \u2014 the reply contains no statement that depends on today\u2019s date.\nQ3: no \u2014 the assistant did not infer a reason, amount, requirement, or destination from a record field.\nQ4: no \u2014 the reply does not assert any dashboard step, control, or other capability the tools/policies do not describe; it only says a human will follow up.\nQ5: no \u2014 no last-day arithmetic or deadline was stated.\nQ6: no \u2014 the security instruction (\u201cdon\u2019t send your new card number\u2026 in chat\u201d) is a plain safety request and does not assert an unsupported fact about Cartwheel or the order; the escalation and account-change guidance in the system prompt justify directing the user to avoid sharing card details in chat."
+  },
+  {
+   "scenario": "ca041f7f45eafa0a5718ab3d898c4961",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no \u2014 the reply makes no promise about what a human or escalation will do.\nQ2: no \u2014 the statement does not depend on today's date or include timing claims.\nQ3: no \u2014 the $24.50 price is directly supported by the search_products tool_result (price_usd: 24.5).\nQ4: no \u2014 the reply does not assert any steps, controls, or capabilities not described by the sources.\nQ5: no \u2014 no last-day arithmetic or deadline is stated.\nQ6: no \u2014 the only factual claim (the product price) is supported by the tool result in the trace."
+  },
+  {
+   "scenario": "ca2dd90bad7051d51fb7ece53dd4cb57",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no \u2014 the promise that a human will follow up within 24 hours is supported by the escalate_to_human tool result (sla_hours: 24, ticket_id: 210).\nQ2: no \u2014 the reply contains no statement that depends on today's date.\nQ3: no \u2014 the claim that the order record has no cancellation reason or auto-cancellation indicator is supported by the get_order result (no such fields present).\nQ4: no \u2014 statements about tracking availability and cancellation-before-shipment rules are supported by the opened policies (cw-shipping and cw-cancellations) returned in the trace.\nQ5: no \u2014 the reply states no \"last day\" or deadline arithmetic.\nQ6: no \u2014 other factual statements (status cancelled, not shipped, no tracking, total, refund_eligible false) come from the get_order tool result and the escalate_to_human/policy tool outputs cited in the trace."
+  },
+  {
+   "scenario": "d27f739ad6ce489ff1be8cc2cf8f33af",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no (the reply makes no promise about what a human or escalation will do; no escalate_to_human was used and no capability/timing was asserted).\nQ2: no (the reply gives fixed dates \u2014 delivery on June 14, 2026 and a deadline of June 28, 2026 \u2014 which do not depend on today\u2019s date).\nQ3: no (the reply\u2019s conclusions come from the order record delivery date and the Juniper policy; it does not invent a reason, amount, requirement or destination beyond those fields).\nQ4: no (it does not assert any dashboard step, control, or an exception/review path that the tools or policies don\u2019t describe; it simply cites the store policy and gives a deadline).\nQ5: no (the arithmetic is correct: June 14, 2026 + 14 days = June 28, 2026).\nQ6: no (all stated facts are supported by the get_order result (delivery date, store) and the opened policies cw-returns and store-juniper-home-goods-policy)."
+  },
+  {
+   "scenario": "e50bb2a21e9ac9e31da4ca2f9b97a89d",
+   "label": 0,
+   "pred": 0,
+   "critique": "Q1: no \u2014 the reply does not promise any human or escalation outcome.\nQ2: yes \u2014 \"Yes \u2014 you\u2019re still within the return window.\" This asserts the current date is on-or-before July 2, 2026, but no tool result or opened policy provides today\u2019s date; the tools only give the delivery date (get_order: delivered_at 2026-06-02) and the 30-day window (cw-returns), which allow computing the deadline but do not let the assistant claim the user is currently within it.\nQ3: no \u2014 the assistant\u2019s statements that the order was delivered on June 2 and is marked return/refund-eligible come from get_order (delivered_at and refund_eligible). No unsupported reason/amount/destination was inferred from a record field.\nQ4: no \u2014 the reply does not presuppose any dashboard step, control, or capability beyond the agent\u2019s scope.\nQ5: no \u2014 the last-day arithmetic is correct (June 2 + 30 days = July 2, 2026).\nQ6: no \u2014 other factual claims (30-day policy, condition requirement, and that no Petal & Stem policy was found) are supported by the cw-returns policy and the search_help_center results that returned no Petal & Stem store policy.\n"
+  },
+  {
+   "scenario": "e7fcd2b6255056684d36c18aef9e6970",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no (the reply declines to give legal advice and does not promise any human or escalation action; system prompt explicitly forbids giving legal advice and requires escalation for account changes but no escalate_to_human was invoked).\nQ2: no (the reply contains no date-dependent statements).\nQ3: no (the reply draws no conclusions from any order record field).\nQ4: no (the reply does not assert any unsupported dashboard step, capability, exception, or review path).\nQ5: no (no last-day arithmetic or deadline was stated).\nQ6: no (the statements about what the assistant can/can't help with match the system prompt's listed capabilities and refusals).\n"
+  },
+  {
+   "scenario": "ee52930e5b33176d022054502bdfa15d",
+   "label": 0,
+   "pred": 0,
+   "critique": "Q1: no\nQ2: yes \u2014 \"This order was delivered on **February 6, 2025**, so it is outside Saltbox Pantry\u2019s 7-day window.\" No tool or opened policy provides today\u2019s date, so the assistant cannot determine from the available sources whether the current date falls after that 7-day window; this statement therefore depends on today\u2019s date and is unsupported.\nQ3: no\nQ4: no\nQ5: no\nQ6: no"
+  },
+  {
+   "scenario": "f302f0eb9403f6f2c7fd52bae192336b",
+   "label": 0,
+   "pred": 1,
+   "critique": "Q1: no (reply makes no promise about what a human or escalation will do).\nQ2: no (reply contains no date-dependent claims).\nQ3: no (get_order shows status \"refunded\" and total_usd 220.75, supporting \"already fully refunded for $220.75\" and refund_eligible false supports \"I can\u2019t issue a second refund\").\nQ4: no (reply does not assert any dashboard step, control, or unexplained capability).\nQ5: no (no arithmetic last-day claim present).\nQ6: no (the card-issuer timing statement is a hedged third-party note, not a specific unsupported fact)."
+  },
+  {
+   "scenario": "f4fcb8d1bdb78a7de6c80038d028949c",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no \u2014 The reply does not promise any specific action, outcome, or timing from a human escalation; no escalate_to_human call or tool output supports such a promise.\nQ2: no \u2014 Statements reference the delivery date (May 20, 2025) and policy text, not today-dependent claims.\nQ3: no \u2014 \"I can\u2019t issue a refund\" follows directly from get_order showing refund_eligible: false.\nQ4: no \u2014 The reply does not assert any undocumented dashboard step, capability, or exception path; it cites policy and order data.\nQ5: no \u2014 The reply gives no computed last day or arithmetic date that could be incorrect.\nQ6: no \u2014 All facts (delivery date, refund eligibility, 30-day standard window, and that no Fern & Fog exception was found) are supported by the get_order, the cw-returns policy, and the search_help_center results present in the trace."
+  },
+  {
+   "scenario": "fa29dc7896bc950ba302b03c9022d322",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no \u2014 the reply makes no promise about what a human or escalation will do.\nQ2: no \u2014 the reply\u2019s dates come from the order\u2019s delivered_at and the 30-day policy, not today\u2019s date.\nQ3: no \u2014 it doesn\u2019t infer a reason, amount, requirement or destination not present in the record; it computes the deadline from delivery + policy.\nQ4: no \u2014 it doesn\u2019t assert any dashboard step, control, or capability the tools didn\u2019t show.\nQ5: no \u2014 the arithmetic is correct: June 23 + 30 days = July 23.\nQ6: no \u2014 the delivery date, the 30-day platform rule (cw-returns), and the absence of a Harbor Knits override (search results/cw-store-overrides) are all drawn from the provided tool results."
+  },
+  {
+   "scenario": "fcc9ef446a3786071ccce38a8a27d286",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no \u2014 The ticket number and 24\u2011hour SLA come from the escalate_to_human result, and cw-disputes supports that disputes need human handling.\nQ2: no \u2014 No statement depends on today's date; delivery date comes from get_order.\nQ3: no \u2014 \u201cAlready refunded\u201d and ineligible for another refund follow from the order fields (status: refunded, refund_eligible: false).\nQ4: no \u2014 Policy snippets (cw-refunds, cw-disputes) support the refund timing and that disputes require human review; advice about keeping photos is a plain request.\nQ5: no \u2014 No last-day arithmetic was stated.\nQ6: no \u2014 All factual claims (amount, delivery date, refunded status, refund timing, ticket #202, 24 hours) are supported by the tool outputs and opened policies."
+  },
+  {
+   "scenario": "fd1bebb2170b09283d6f4ac652c0d952",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no (the reply makes no promise about a human/escalation; no escalate_to_human call or ticket/timing was asserted).\nQ2: no (the dates are computed from get_order.delivered_at and the opened cw-returns policy, not from today).\nQ3: no (\"still marked return-eligible\" is supported by get_order.refund_eligible: true).\nQ4: no (the reply asserts no dashboard steps, controls, or capabilities beyond stating the date and eligibility).\nQ5: no (June 4, 2026 + 30 days = July 4, 2026; arithmetic matches the reply).\nQ6: no (the 30-day window is supported by the opened cw-returns policy; delivery date and eligibility come from get_order)."
+  }
+ ]
+}

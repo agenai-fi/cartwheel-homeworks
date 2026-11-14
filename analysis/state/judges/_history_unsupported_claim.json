@@ -1,0 +1,28 @@
+{
+  "versions": [
+    {
+      "judge_id": "unsupported_claim-v0",
+      "prompt_hash": "d6000af2741c"
+    },
+    {
+      "judge_id": "unsupported_claim-v1",
+      "prompt_hash": "6a3f48c7120c"
+    },
+    {
+      "judge_id": "unsupported_claim-v2",
+      "prompt_hash": "408fa2c1541f"
+    },
+    {
+      "judge_id": "unsupported_claim-v3",
+      "prompt_hash": "673fec17badc"
+    },
+    {
+      "judge_id": "unsupported_claim-v4",
+      "prompt_hash": "0d4d2919a669"
+    },
+    {
+      "judge_id": "unsupported_claim-v5",
+      "prompt_hash": "00e80676fe77"
+    }
+  ]
+}

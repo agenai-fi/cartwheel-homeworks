@@ -90,13 +90,16 @@ def _standardize(vectors: list[list[float]]) -> list[list[float]]:
 
 def _kmeans(
     vectors: list[list[float]], k: int, seed: int = 7, iters: int = 25
-) -> list[int]:
-    """Tiny deterministic k-means; returns a cluster index per vector."""
+) -> tuple[list[int], list[list[float]]]:
+    """Tiny deterministic k-means; returns a cluster index per vector and the
+    centroids. Seeds from distinct vectors: the features are small integers, so
+    duplicate seeds would give identical centroids and empty clusters."""
     if not vectors:
-        return []
-    k = min(k, len(vectors))
+        return [], []
+    distinct = sorted({tuple(v) for v in vectors})
+    k = min(k, len(distinct))
     rng = random.Random(seed)
-    centroids = [vectors[i][:] for i in rng.sample(range(len(vectors)), k)]
+    centroids = [list(v) for v in rng.sample(distinct, k)]
     assign = [0] * len(vectors)
     for _ in range(iters):
         changed = False
@@ -118,7 +121,21 @@ def _kmeans(
                 ]
         if not changed:
             break
-    return assign
+    return assign, centroids
+
+
+def _nearest_first(
+    vectors: list[list[float]], assign: list[int], centroids: list[list[float]]
+) -> dict[int, list[int]]:
+    """Cluster index -> member indices, closest to the centroid first."""
+    by_cluster: dict[int, list[int]] = {}
+    for i, c in enumerate(assign):
+        by_cluster.setdefault(c, []).append(i)
+    for c, members in by_cluster.items():
+        members.sort(
+            key=lambda i: sum((a - b) ** 2 for a, b in zip(vectors[i], centroids[c]))
+        )
+    return by_cluster
 
 
 # ---------------------------------------------------------------------------
@@ -162,7 +179,7 @@ def _diversity_picks(
     n_clusters = min(max(1, n_rep // 2), len(pool))
 
     vectors = _standardize([_feature_vector(t) for t in pool])
-    assign = _kmeans(vectors, k=n_clusters, seed=seed)
+    assign, centroids = _kmeans(vectors, k=n_clusters, seed=seed)
 
     rng = random.Random(seed)
     picks: list[dict[str, str]] = []
@@ -170,9 +187,7 @@ def _diversity_picks(
 
     # Representatives: for each cluster, take the members closest to the
     # centroid first, spreading picks evenly across clusters.
-    by_cluster: dict[int, list[int]] = {}
-    for i, c in enumerate(assign):
-        by_cluster.setdefault(c, []).append(i)
+    by_cluster = _nearest_first(vectors, assign, centroids)
     clusters = sorted(by_cluster)
     ci = 0
     while len([p for p in picks]) < n_rep and clusters:
@@ -200,6 +215,34 @@ def _diversity_picks(
         chosen_ids.add(t["id"])
 
     return picks[:k]
+
+
+def representatives(
+    traces: list[dict[str, Any]], k: int, exclude_ids: set[str], seed: int = 7
+) -> list[dict[str, Any]]:
+    """One pick per cluster: the eligible member nearest its centroid.
+
+    Clusters the whole store, not just the unread part, so the clusters
+    describe the store; exclusion only decides which member represents each.
+    A cluster whose members are all excluded yields no pick, and says so.
+    """
+    vectors = _standardize([_feature_vector(t) for t in traces])
+    assign, centroids = _kmeans(vectors, k=k, seed=seed)
+    by_cluster = _nearest_first(vectors, assign, centroids)
+    picks = []
+    for c in sorted(by_cluster, key=lambda c: -len(by_cluster[c])):
+        members = by_cluster[c]
+        eligible = [i for i in members if traces[i]["id"] not in exclude_ids]
+        picks.append(
+            {
+                "trace_id": traces[eligible[0]]["id"] if eligible else None,
+                "cluster": c,
+                "cluster_size": len(members),
+                "reason": f"cluster {c} representative (nearest eligible of "
+                f"{len(members)} to the centroid)",
+            }
+        )
+    return picks
 
 
 def _outlier_picks(pool: list[dict[str, Any]], k: int) -> list[dict[str, str]]:

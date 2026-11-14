@@ -1,0 +1,342 @@
+{
+ "prompt": "analysis/spikes/2026-11-13/prompts/v4-candE.txt",
+ "seconds": 26.8,
+ "rows": [
+  {
+   "scenario": "0341d06602dfcb18f950d3330a48f252",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no (the reply states the last day based on the opened policy, not a promise of what a human will do) \nQ2: no (the reply gives the last day; it does not state the user is still within the window) \nQ3: no (the refund eligibility is a direct consequence of the order status) \nQ4: no (the return policy is sourced from the opened policy) \nQ5: no (July 5, 2026, is correctly computed from May 21 + 45 days) \nQ6: no (the delivery date and return window are supported by the opened policy)"
+  },
+  {
+   "scenario": "04f721d845613c4e46b50d9b69dcf6fb",
+   "label": 0,
+   "pred": 0,
+   "critique": "Q1: no (the reply does not promise what a human will do; it only states the order status and tracking availability) \nQ2: yes: \"Shipped date: Today, July 1, 2026\" depends on today's date, which is not supported by any source. \nQ3: no (the order details are directly from the tool output) \nQ4: no (the reply does not assert any unsupported steps or controls) \nQ5: no (no last day stated) \nQ6: no (all facts about the order come from the tool results)"
+  },
+  {
+   "scenario": "060a77dc6fc2f90c735523265aa4c07f",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no (the reply does not promise what a human will do; it states a calculated last day based on policy). Q2: no (the reply does not depend on today's date; it provides a computed last day). Q3: no (the last day is derived from the delivery date and the policy). Q4: no (the reply does not assert any undocumented steps or controls). Q5: no (the last day is correctly calculated as May 8, 2026). Q6: no (the last day is supported by the opened cw-returns policy)."
+  },
+  {
+   "scenario": "06dd96de1f1c469f3e12f71f2bc5d81c",
+   "label": 1,
+   "pred": 0,
+   "critique": "Q1: yes: \"I can\u2019t cancel order #2221 because Pocket Arcade has already marked it shipped\" is a promise that the order cannot be canceled, which is not supported by the sources since it does not specify what happens after shipment. Q2: no (no statements depend on today's date). Q3: no (the statement about cancellation is based on the cancellation policy). Q4: no (the cancellation process is described in the policy). Q5: no (no last day stated). Q6: no (the shipping status and cancellation policy are supported by the tool results)."
+  },
+  {
+   "scenario": "0a0ed15299d6a7841343879b9cceff62",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no (the reply does not promise what a human will do; it states the ticket #157 is for verification, not a guarantee of outcome). Q2: no (the reply does not depend on today's date; it provides a listed delivery date). Q3: no (the statements about delivery date and status are directly from the order record). Q4: no (the reply does not assert any steps or controls that are unsupported). Q5: no (no last day is stated). Q6: no (the details about the delivery date and status come from the order record)."
+  },
+  {
+   "scenario": "1a5cc0e91df2b64588539644a563edbf",
+   "label": 0,
+   "pred": 1,
+   "critique": "Q1: no (the reply does not promise what a human will do; it states the final return cutoff based on policy). Q2: no (the reply does not depend on today's date; it provides a calculated last day). Q3: no (the statement about refund eligibility is a direct consequence of the order's status). Q4: no (the reply does not assert any steps or controls that are unsupported; it follows the policy). Q5: no (the last day is correctly calculated as April 8, 2025). Q6: no (the final return cutoff is supported by the delivery date and the standard policy)."
+  },
+  {
+   "scenario": "2377828e00a5b1b8fb355218321549d0",
+   "label": 1,
+   "pred": 0,
+   "critique": "Q1: yes: \"I can\u2019t help configure Google Forms, Apps Script, or third-party email automation\" is a promise that the assistant cannot assist with these configurations, which is not supported by any source. Q2: no. Q3: no. Q4: no. Q5: no. Q6: no."
+  },
+  {
+   "scenario": "30b58b491bcedfbda5c629e9b5c226a7",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no (the reply does not promise what a human will do; it states the return policy based on the user's question). Q2: no (the reply does not depend on today's date; it provides a calculated last ship-by date). Q3: no (the reply does not draw unsupported conclusions from record fields; it correctly states the return eligibility). Q4: no (the reply does not assert any steps or controls that are unsupported; it follows the policy guidelines). Q5: no (the last day is correctly calculated as July 21, 2026). Q6: no (all facts about the order and return policy are supported by the opened policies and tool results)."
+  },
+  {
+   "scenario": "3c69f51a42d633d76221cb7a8eada719",
+   "label": 0,
+   "pred": 0,
+   "critique": "Q1: yes: \"I can\u2019t give a yes to an immediate refund today: order #1627 is marked not eligible for a standard refund, so I\u2019m not able to process it automatically.\" This statement promises that the order cannot be processed automatically, which is not supported by any source. Q2: no (no statements depend on today's date). Q3: no (the statement about refund eligibility is a direct consequence of the order's status). Q4: no (the agent's refusal is based on the policy). Q5: no (no last day stated). Q6: no (the refund process and timing are supported by the opened policies)."
+  },
+  {
+   "scenario": "3ece27b02a4923560fa8d4370b447148",
+   "label": 0,
+   "pred": 0,
+   "critique": "Q1: yes: \"I\u2019ve opened support ticket #168 so a human can verify the live Second Stitch listing terms and confirm exactly what applies before you check out.\" This implies a human will confirm the terms, which is not supported by any source. \nQ2: no \nQ3: no \nQ4: no \nQ5: no \nQ6: no"
+  },
+  {
+   "scenario": "3ffb327fb79ed550081a009fa44dbb9e",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no (the reply states the price based on the tool result) \nQ2: no \nQ3: no (the price is directly from the tool result) \nQ4: no \nQ5: no (no last day stated) \nQ6: no (the price is sourced from the search_products tool result)"
+  },
+  {
+   "scenario": "40ba847814b0a02f3d0b3c35d7aa6e0c",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no (the reply does not promise what a human will do; it states the cutoff date based on policy). Q2: no (the reply gives the last day without stating the user is still within the window). Q3: no (the return eligibility is a direct consequence of the order status). Q4: no (the reply does not assert any steps or controls that are unsupported). Q5: no (the last day is correctly calculated as July 4, 2026). Q6: no (all facts about the order and policies are supported by the tool results)."
+  },
+  {
+   "scenario": "4bbe437e79e90532334f1db54e133c82",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no (the reply does not promise what a human will do; it lists orders found). Q2: no (no statements depend on today's date). Q3: no (the refund status is directly from the order data). Q4: no (the agent does not assert any steps or controls not described). Q5: no (no last day stated). Q6: no (all facts about the orders are sourced from the find_order tool result)."
+  },
+  {
+   "scenario": "4c714f2ea4e286ba239d8a08a9db8a21",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no (the reply states the order is canceled, which is supported by the get_order result) \nQ2: no \nQ3: no (the status 'cancelled' is directly from the get_order result) \nQ4: no \nQ5: no (no last day stated) \nQ6: no (the order status and shipping information come from get_order)"
+  },
+  {
+   "scenario": "51ce3c91d7363d1c198414f85aab4dd5",
+   "label": 0,
+   "pred": 1,
+   "critique": "Q1: no (the reply does not promise what a human will do; it only states the current status of the order) \nQ2: no (no statements depend on today's date) \nQ3: no (the refund-eligible status is directly from the tool result) \nQ4: no (the reply does not assert any steps or controls that are unsupported) \nQ5: no (no last day stated) \nQ6: no (all facts about the order status, shipment, and tracking come from the get_order tool result)"
+  },
+  {
+   "scenario": "5beb2ebaa9796c3efaf68c93c4f12538",
+   "label": 0,
+   "pred": 1,
+   "critique": "Q1: no (the assistant does not promise what a human will do; it states its own limitations). Q2: no (no statements depend on today's date). Q3: no (the assistant does not draw unsupported conclusions from record fields). Q4: no (the assistant's refusal is based on its instructions). Q5: no (no last day stated). Q6: no (the assistant's statements about its capabilities are supported by its instructions)."
+  },
+  {
+   "scenario": "5c28598c5ef779facbf6f12c9317f4ce",
+   "label": 0,
+   "pred": 0,
+   "critique": "Q1: yes: \"I can\u2019t generate one while the return eligibility is unresolved\" implies a capability that is not supported by any source; the agent cannot determine eligibility based on the missing delivery date. Q2: no. Q3: no. Q4: yes: \"I can\u2019t generate one while the return eligibility is unresolved\" presupposes a control that no source describes. Q5: no. Q6: no."
+  },
+  {
+   "scenario": "5ed86196019321567c2ed498f9daba4c",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no (the reply states the store policy overrides the platform policy, which is supported by the cw-store-overrides policy). Q2: no (the reply does not depend on today's date). Q3: no (the statements about return windows are based on the policies opened). Q4: no (the reply does not assert any steps or controls not described in the sources). Q5: no (no last day stated). Q6: no (the statements about the store policy and Cartwheel's default are supported by the opened policies)."
+  },
+  {
+   "scenario": "67d63cd06373ed0d44432c26e25fe2f8",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no (the assistant does not promise what a human will do; it states its limitations). Q2: no (no statements depend on today's date). Q3: no (the assistant does not draw unsupported conclusions from record fields). Q4: no (the assistant does not assert any steps or controls that are unsupported). Q5: no (no last day is stated). Q6: no (the assistant does not state any unsupported facts about Cartwheel or the order)."
+  },
+  {
+   "scenario": "6e06909b6ae57c840d285d5b6fe48ea8",
+   "label": 1,
+   "pred": 0,
+   "critique": "Q1: yes: \"A human support agent will follow up within 24 hours\" is a promise about what a human will do that no source gives. Q2: no. Q3: no (the order's refund eligibility is a direct consequence of the order status). Q4: no (the agent's actions are based on the system prompt). Q5: no (no last day stated). Q6: no (the order details are sourced from the tool results)."
+  },
+  {
+   "scenario": "72cbdcae530644a13f91f17598f95be9",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no (the reply does not promise what a human will do; it simply states the price found). Q2: no (the reply does not depend on today's date). Q3: no (the price is directly from the tool result). Q4: no (the reply does not assert any steps or controls that are unsupported). Q5: no (no last day stated). Q6: no (the price and product details come from the tool result)."
+  },
+  {
+   "scenario": "75bc470f1a747e9f7e4f2324a0c2dd57",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no (the reply does not promise what a human will do; it simply states the return deadline). Q2: no (the reply gives the last day without referencing today's date). Q3: no (the statement about the return deadline is a direct consequence of the delivery date and the policy). Q4: no (the reply does not assert any steps or controls that are unsupported). Q5: no (the last day is correctly calculated as July 10, 2026). Q6: no (the last day is supported by the opened cw-returns policy)."
+  },
+  {
+   "scenario": "790e50f651d38819997bc9997c17128a",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no (the reply does not promise what a human will do; it states the last day based on policy). Q2: no (the reply does not depend on today's date; it gives a computed last day). Q3: no (the return-eligible status is a direct consequence of the order's field). Q4: no (the reply does not assert any steps or controls that are unsupported; it discusses the return policy). Q5: no (the last day is correctly computed as July 1, 2026). Q6: no (all statements about the return policy and conditions are supported by the opened policies)."
+  },
+  {
+   "scenario": "7b2dbf1b5844654cc3f3f184a6ab8183",
+   "label": 1,
+   "pred": 0,
+   "critique": "Q1: yes: \"I can\u2019t remote into devices or troubleshoot Microsoft/Outlook sign-in issues\" is a claim about the agent's capabilities that is not supported by any source. Q2: no (no statements depend on today's date). Q3: no (the agent's inability to remote in is a direct consequence of its capabilities). Q4: no (the agent's refusal to remote in is based on its instructions). Q5: no (no last day stated). Q6: no (the advice to contact IT/help desk is generic and does not assert unsupported facts about Cartwheel or the order)."
+  },
+  {
+   "scenario": "7de704e3003f3ebc21364dc965f20d51",
+   "label": 0,
+   "pred": 0,
+   "critique": "Q1: yes: \"If a refund were approved through an exception review, it would need human review because Cartwheel refunds over $100 are reviewed by a support agent before money is sent back.\" This statement promises that a human will review the refund request, which is not supported by any source. Q2: no Q3: no Q4: no Q5: no Q6: no"
+  },
+  {
+   "scenario": "7fba1ccd61cb2a07c1bea31bfe427212",
+   "label": 0,
+   "pred": 0,
+   "critique": "Q1: no (the ticket #173 and 24 hours come from the escalate_to_human result) \nQ2: no \nQ3: no (refund_eligible is the flag from get_order) \nQ4: yes: \"create/send RMA and prepaid label\" and \"the agent may need only confirmation that the buyer should return both units\"; no source describes the RMA process or the specifics of the return label. \nQ5: no (no last day stated) \nQ6: no (the delivery date and refund eligibility come from get_order; the 30-day window from cw-returns; the store policy override from cw-store-overrides; and the payout deduction from cw-payouts)"
+  },
+  {
+   "scenario": "81548ac16ff3beccfa9974da3cf34828",
+   "label": 0,
+   "pred": 0,
+   "critique": "Q1: yes: \"A disputes specialist will follow up within 24 hours\" is a promise about what a human will do that no source gives. Q2: no. Q3: no (refund_eligible is the flag). Q4: no. Q5: no (no last day stated). Q6: no (the order details and refund status come from the get_order result)."
+  },
+  {
+   "scenario": "816343ff560dd630114b2d37f0238221",
+   "label": 0,
+   "pred": 0,
+   "critique": "Q1: yes: \"the order is outside Juniper\u2019s return period, I can\u2019t create a return label, provide a return shipping address, or issue the requested refund\" is a promise about what the agent cannot do that is not supported by any source. Q2: no (no statements depend on today's date). Q3: yes: \"the order is outside Juniper\u2019s return period\" draws a conclusion from the record field that adds a requirement not held by the record. Q4: no (the agent's refusal is based on the policy). Q5: no (no last day stated). Q6: no (the return window and refund method are supported by the opened policies)."
+  },
+  {
+   "scenario": "8278f0e9077adbc3c1c60b1adc72db3a",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no (the reply does not promise what a human will do; it simply answers the user's question). Q2: no (the reply does not depend on today's date). Q3: no (the reply does not draw from a record field). Q4: no (the reply does not assert or presuppose a step or control). Q5: no (no last day stated). Q6: no (the capital of Switzerland is a factual statement that is not about Cartwheel or the order)."
+  },
+  {
+   "scenario": "879b1a01ae73b3a03b91d3905550f1a1",
+   "label": 1,
+   "pred": 0,
+   "critique": "Q1: yes: \"I can\u2019t issue this refund today\" implies a promise about the refund process that is not supported by any source. Q2: no. Q3: no (not refund-eligible is a direct consequence of the order's status). Q4: no. Q5: no (no last day stated). Q6: yes: \"the window would have ended on June 15\" is an unsupported claim as it assumes the user is aware of the 14-day window without confirming it from the policy directly in the context of the conversation."
+  },
+  {
+   "scenario": "8eb4b5941450f3e8c87a1312243f5e7d",
+   "label": 0,
+   "pred": 1,
+   "critique": "Q1: no (the reply does not promise what a human will do; it only states the order status and offers to check cancellation options) \nQ2: no (the reply does not depend on today's date; it states the order was placed yesterday without making claims about the current date) \nQ3: no (the reply does not draw unsupported conclusions from record fields; it accurately reflects the order status and refund eligibility) \nQ4: no (the reply does not assert any steps or controls that are not described; it simply offers to check cancellation options) \nQ5: no (no last day is stated) \nQ6: no (all facts about the order are supported by the tool results)"
+  },
+  {
+   "scenario": "9397ea983ec04cfc46f26b1b41a3ac00",
+   "label": 0,
+   "pred": 1,
+   "critique": "Q1: no (the reply does not promise what a human will do; it states the order details and the inability to verify color)\nQ2: no (the reply does not depend on today's date; it states the order date)\nQ3: no (the order details are directly from the order record)\nQ4: no (the reply does not assert any steps or controls that are unsupported; it explains the situation based on available data)\nQ5: no (no last day stated)\nQ6: no (the order details are supported by the order record and the search results)"
+  },
+  {
+   "scenario": "961eb4d374253cad59550812e46b357e",
+   "label": 0,
+   "pred": 0,
+   "critique": "Q1: yes: \"I can confirm the refund has been processed by Cartwheel\" is a promise about the refund status that no source supports. Q2: no. Q3: no. Q4: no. Q5: no. Q6: no."
+  },
+  {
+   "scenario": "9af6bae6c5b9b895e808307d5cba8d04",
+   "label": 1,
+   "pred": 0,
+   "critique": "Q1: yes: \"I need to correct the certainty of my earlier answer\" implies a promise that the support specialist will clarify the return window calculation, which is not supported by any source. Q2: no. Q3: no. Q4: no. Q5: no. Q6: no."
+  },
+  {
+   "scenario": "a449d2a323a37da4f7af4c40440a0195",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no (the reply states the store's policy takes precedence, which is supported by the opened cw-returns policy). Q2: no (the reply does not depend on today's date). Q3: no (the statement about the return window is based on the store's policy). Q4: no (the reply does not assert any steps or controls not described in the sources). Q5: no (no last day stated). Q6: no (the information about the 14-day return window comes from the store's policy, which is supported)."
+  },
+  {
+   "scenario": "a53f7f5bc207429a80aab06d5343ba28",
+   "label": 1,
+   "pred": 0,
+   "critique": "Q1: yes (the statement 'A human support agent will follow up within 24 hours to help securely update or remove the payment method' promises an outcome that no source supports). Q2: no (no statements depend on today's date). Q3: no (the assistant's inability to change payment methods is supported by the account-change policy). Q4: no (the assistant's refusal to change payment methods is based on its instructions). Q5: no (no last day stated). Q6: no (the ticket number and response time are sourced from the escalate_to_human result)."
+  },
+  {
+   "scenario": "b0766b06ab9124e7ede6cb6d10eff41f",
+   "label": 0,
+   "pred": 1,
+   "critique": "Q1: no (the reply states the order is already refunded, which is supported by the get_order result) \nQ2: no \nQ3: no (the statement about refund eligibility is directly supported by the get_order result) \nQ4: no (the reply does not assert any steps or controls not described in the sources) \nQ5: no (no last day stated) \nQ6: no (the refund policy details are supported by the opened cw-refunds policy)"
+  },
+  {
+   "scenario": "bb00c79cba7117719b5ee6dd9d6b4063",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no (the assistant does not promise what a human will do; it simply states it cannot give legal advice) \nQ2: no (no statements depend on today's date) \nQ3: no (the assistant does not draw unsupported conclusions from record fields) \nQ4: no (the assistant does not assert any steps or controls that are unsupported) \nQ5: no (no last day stated) \nQ6: no (the assistant's statements about legal advice and who to consult are general and do not assert unsupported facts about Cartwheel or the order)"
+  },
+  {
+   "scenario": "bcb4a0ca548495e9ea35fb9dde097782",
+   "label": 0,
+   "pred": 0,
+   "critique": "Q1: yes: \"A support agent will follow up within 24 hours\" is a promise about what a human will do that no source gives. Q2: no. Q3: no (not refund-eligible is a direct consequence of the order status). Q4: no. Q5: no (no last day stated). Q6: no (the refund process and timing come from the opened cw-refunds policy)."
+  },
+  {
+   "scenario": "bee3b25cffb71092fead0ebffe4e641f",
+   "label": 0,
+   "pred": 0,
+   "critique": "Q1: yes: \"the order is already marked refunded\" and \"not refund-eligible\" are unsupported claims as they are not sourced from the order record or policies; the refund status is not confirmed in the conversation. Q2: no (no statements depend on today's date). Q3: no (the refund eligibility is directly from the order record). Q4: no (the agent's actions are based on the policies and the order record). Q5: no (no last day stated). Q6: yes: \"the delivery occurred on October 7, 2025, this request falls outside Northwind Books\u2019 published 45-day return window\" is unsupported as it assumes the return window without confirming the refund status or the dispute context."
+  },
+  {
+   "scenario": "c1e4737a5487c7e5c2ad8ac9a0ceb76b",
+   "label": 0,
+   "pred": 0,
+   "critique": "Q1: yes: \"A charge dispute must be filed within 60 days of delivery; this delivery was 2025-08-05, so a claim about a year later is outside that window\" is unsupported as the policy does not specify that disputes cannot be filed after 60 days, only that they can be filed within that timeframe. Q2: no. Q3: no (the order is marked refunded and not refund-eligible). Q4: yes: \"No seller contact is needed before that review\" presupposes a step that is not supported by any source. Q5: no (no last day stated). Q6: yes: \"A charge dispute must be filed within 60 days of delivery\" is an unsupported claim as it implies a strict cutoff that is not explicitly stated in the policy."
+  },
+  {
+   "scenario": "c4bffb8c0c28c386678a0818099fab17",
+   "label": 0,
+   "pred": 0,
+   "critique": "Q1: yes: \"a human support specialist will follow up within 24 hours\" is a promise about what a human will do that no source gives. Q2: no. Q3: no. Q4: no. Q5: no. Q6: no (the last day is computed from the delivery date and the policy)."
+  },
+  {
+   "scenario": "c755f0bdc7d2fe77d02be97cad0c1c81",
+   "label": 0,
+   "pred": 0,
+   "critique": "Q1: yes: 'they\u2019ll follow up within 24 hours' is a promise about what a human will do that no source gives. Q2: no. Q3: no (the order record does not hold a refund-issued timestamp). Q4: no. Q5: no (no last day stated). Q6: no (the order status and details come from get_order)."
+  },
+  {
+   "scenario": "c93631f0b2a79de918106737cd3ab1ca",
+   "label": 0,
+   "pred": 1,
+   "critique": "Q1: no (the reply does not promise what a human will do; it states the refund has been processed and gives details about it). Q2: no (the reply does not depend on today's date; it provides a timing for the refund). Q3: no (the refund amount is a direct consequence of the order details). Q4: no (the reply does not assert any steps or controls that are unsupported). Q5: no (no last day stated). Q6: no (the refund details and policy are supported by the opened cw-refunds policy)."
+  },
+  {
+   "scenario": "c96ae47d81de6a0d853dbfe078ead743",
+   "label": 0,
+   "pred": 0,
+   "critique": "Q1: yes: 'A human support agent will follow up within about 24 hours to help remove the expired card and fix the payment-settings issue' is a promise about what a human will do that no source gives. Q2: no. Q3: no. Q4: no. Q5: no. Q6: no."
+  },
+  {
+   "scenario": "ca041f7f45eafa0a5718ab3d898c4961",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no (the reply states the price based on the tool result) \nQ2: no \nQ3: no (the price is directly from the tool output) \nQ4: no \nQ5: no (no last day stated) \nQ6: no (the price is sourced from the search_products tool result)"
+  },
+  {
+   "scenario": "ca2dd90bad7051d51fb7ece53dd4cb57",
+   "label": 1,
+   "pred": 0,
+   "critique": "Q1: yes: \"I can\u2019t confirm that it was auto-cancelled from the available data\" implies a capability or outcome about what a human will do that is not supported by any source. Q2: no. Q3: no. Q4: no. Q5: no. Q6: no."
+  },
+  {
+   "scenario": "d27f739ad6ce489ff1be8cc2cf8f33af",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no (the reply does not promise what a human will do; it states the last day based on policy). Q2: no (the reply does not depend on today's date; it gives a computed last day). Q3: no (the refund-eligible status is correctly reported as false). Q4: no (the steps and policies referenced are supported by the opened policies). Q5: no (the last day is correctly calculated as June 28, 2026). Q6: no (the details about the delivery date and return window are all supported by the opened policies)."
+  },
+  {
+   "scenario": "e50bb2a21e9ac9e31da4ca2f9b97a89d",
+   "label": 0,
+   "pred": 1,
+   "critique": "Q1: no (the reply does not promise what a human will do; it states the return window based on policy). Q2: no (the reply does not depend on today's date; it provides a computed last day). Q3: no (the statement about return eligibility is a direct consequence of the order's status). Q4: no (the reply does not assert any steps or controls that are unsupported). Q5: no (the last day is correctly computed as July 2, 2026). Q6: no (all facts about the order and return policy are supported by the tool results)."
+  },
+  {
+   "scenario": "e7fcd2b6255056684d36c18aef9e6970",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no (the assistant does not promise what a human will do; it states it cannot provide legal advice) \nQ2: no (no statements depend on today's date) \nQ3: no (no unsupported claims drawn from record fields) \nQ4: no (the assistant does not assert any steps or controls that are unsupported) \nQ5: no (no last day stated) \nQ6: no (the assistant's statements are general and do not assert unsupported facts about Cartwheel or the order)"
+  },
+  {
+   "scenario": "ee52930e5b33176d022054502bdfa15d",
+   "label": 0,
+   "pred": 0,
+   "critique": "Q1: yes: \"I can\u2019t issue a refund for order #29 because it is marked ineligible for an automatic refund\" is a promise about the refund process that no source supports. Q2: no (no statements depend on today's date). Q3: no (the ineligible status is a direct consequence of the order's refund_eligible flag). Q4: no (the agent's refusal is based on the policy). Q5: no (no last day stated). Q6: no (the 30-day window and the 7-day window are both supported by the opened policies)."
+  },
+  {
+   "scenario": "f302f0eb9403f6f2c7fd52bae192336b",
+   "label": 0,
+   "pred": 1,
+   "critique": "Q1: no (the reply confirms the order is already fully refunded, which is supported by the get_order result) \nQ2: no (the reply does not depend on today's date) \nQ3: no (the statement about not issuing a second refund is a direct consequence of the refund_eligible flag being false) \nQ4: no (the agent's refusal to issue a second refund is based on the order's status) \nQ5: no (no last day stated) \nQ6: no (the refund status and amount are supported by the get_order result)"
+  },
+  {
+   "scenario": "f4fcb8d1bdb78a7de6c80038d028949c",
+   "label": 1,
+   "pred": 0,
+   "critique": "Q1: yes: \"I can\u2019t issue a refund for order #414\" implies a promise that the agent cannot issue a refund, which is not supported by any source. Q2: no (no statements depend on today's date). Q3: no (the refund-eligible status is directly from the order details). Q4: no (the agent's refusal is based on the policy). Q5: no (no last day stated). Q6: no (the delivery date and return window are supported by the opened cw-returns policy)."
+  },
+  {
+   "scenario": "fa29dc7896bc950ba302b03c9022d322",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no (the reply does not promise what a human will do; it states the last day based on policy). Q2: no (the reply gives the last day without referencing today's date). Q3: no (the statement about the last day is derived from the delivery date and the policy). Q4: no (the reply does not assert any steps or controls that are unsupported). Q5: no (the last day is correctly calculated as July 23, 2026). Q6: no (the last day and the absence of a specific override are supported by the opened policies)."
+  },
+  {
+   "scenario": "fcc9ef446a3786071ccce38a8a27d286",
+   "label": 1,
+   "pred": 0,
+   "critique": "Q1: yes: \"Because it is already refunded, it is not eligible for a second refund through Cartwheel\" is unsupported as the order is marked refunded but does not confirm eligibility for a second refund. Q2: no. Q3: no. Q4: no. Q5: no. Q6: yes: \"Approved Cartwheel refunds return to the original payment method and normally take 5\u201310 business days to appear\" is unsupported as it assumes a specific timeframe for the refund process without a source confirming it in this context."
+  },
+  {
+   "scenario": "fd1bebb2170b09283d6f4ac652c0d952",
+   "label": 1,
+   "pred": 1,
+   "critique": "Q1: no (the reply does not promise what a human will do; it states the final return date based on policy). Q2: no (the reply does not depend on today's date; it gives a computed last day). Q3: no (the statement about return eligibility is a direct consequence of the order's status). Q4: no (the reply does not assert any steps or controls that are unsupported). Q5: no (the last day is correctly computed as July 4, 2026). Q6: no (the final return date and eligibility are supported by the opened cw-returns policy)."
+  }
+ ]
+}

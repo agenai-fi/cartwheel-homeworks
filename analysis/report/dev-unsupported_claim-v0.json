@@ -1,0 +1,47 @@
+{
+ "judge_id": "unsupported_claim-v0",
+ "split": "dev",
+ "tpr": 0.871,
+ "tnr": 0.2,
+ "tpr_interval": [
+  0.7115,
+  0.9487
+ ],
+ "tnr_interval": [
+  0.0886,
+  0.3913
+ ],
+ "agreement": 0.5714,
+ "tp": 27,
+ "fn": 4,
+ "tn": 5,
+ "fp": 20,
+ "n": 56,
+ "disagreements": [
+  "04f721d845613c4e46b50d9b69dcf6fb",
+  "0a0ed15299d6a7841343879b9cceff62",
+  "3c69f51a42d633d76221cb7a8eada719",
+  "51ce3c91d7363d1c198414f85aab4dd5",
+  "5beb2ebaa9796c3efaf68c93c4f12538",
+  "7b2dbf1b5844654cc3f3f184a6ab8183",
+  "7de704e3003f3ebc21364dc965f20d51",
+  "81548ac16ff3beccfa9974da3cf34828",
+  "816343ff560dd630114b2d37f0238221",
+  "8eb4b5941450f3e8c87a1312243f5e7d",
+  "9397ea983ec04cfc46f26b1b41a3ac00",
+  "961eb4d374253cad59550812e46b357e",
+  "9af6bae6c5b9b895e808307d5cba8d04",
+  "b0766b06ab9124e7ede6cb6d10eff41f",
+  "bcb4a0ca548495e9ea35fb9dde097782",
+  "bee3b25cffb71092fead0ebffe4e641f",
+  "c1e4737a5487c7e5c2ad8ac9a0ceb76b",
+  "c4bffb8c0c28c386678a0818099fab17",
+  "c755f0bdc7d2fe77d02be97cad0c1c81",
+  "c93631f0b2a79de918106737cd3ab1ca",
+  "e50bb2a21e9ac9e31da4ca2f9b97a89d",
+  "ee52930e5b33176d022054502bdfa15d",
+  "f302f0eb9403f6f2c7fd52bae192336b",
+  "fa29dc7896bc950ba302b03c9022d322"
+ ],
+ "note": "Recomputed 2026-11-13 from cached predictions against the labels after the 2026-11-13 re-read. Predictions were made on the pre-fix judge input (Langfuse trace text without the agent system prompt); v4 and later use analysis/state/hw5_trace_inputs.json via scale.judge_rows."
+}

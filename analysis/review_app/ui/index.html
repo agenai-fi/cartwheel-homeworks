@@ -1,0 +1,2382 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Cartwheel review</title>
+<!--
+  Visual encoding follows the error-discovery skill's Phase 2, adapted to the
+  trace structure observed over 11 live traces:
+
+    colour hue   segment author: user / assistant / tool call / tool result
+    container    a tool call and its result share one bordered box
+    spacing      tight within a step, medium between steps, large between turns
+    typography   prose proportional; tool payloads monospace; reasoning italic
+
+  Two decisions that are not the reference's:
+
+  * THE REPLY IS STICKY. All four failure shapes found by hand live between a
+    reply claim and evidence elsewhere on the page, so the reply stays visible
+    while its tool activity scrolls.
+  * THE EVIDENCE RAIL IS ALWAYS OPEN. Ground truth from the database, anomalies
+    flagged, and policy ids retrieved versus cited. Facts only -- never the
+    expected outcome, because an answer key turns open coding into grading.
+-->
+<style>
+  :root{
+    /* Role hues: user blue, assistant slate, tool call amber. Green is not a role: it
+       stays reserved for --ok (saved, no-failure, opened policy) so it never reads as a role. */
+    --user:#2563eb; --assistant:#475569; --call:#b45309; --result:#7c3aed; --ok:#059669;
+    --call-bg:#faf8f5; --call-line:#e7d6b8;
+    --gap-step:8px; --gap-turn:36px;
+    --ink:#1a1a1a; --muted:#6b7280; --line:#e5e7eb; --bg:#fbfbfa; --warn:#b91c1c;
+    /* Layout. The conversation column used to be uncapped, so on a wide screen it
+       stretched to the viewport and the rail sat a screen-width from the text --
+       which reads as "the rail is too far away" but is really an uncapped column.
+       Set data-rail="left" on .cols to move the rail; a flex `order` alone would
+       leave border-inline-start drawing on the far screen edge instead of the
+       seam facing the text. */
+    --body-max:860px; --rail-w:420px; --list-w:320px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font:14px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+       color:var(--ink);background:var(--bg)}
+  header{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line);
+         padding:6px 16px;display:flex;flex-direction:column;gap:6px}
+  /* Row 1: where you are (tabs, progress). Row 2, Review only: which
+     conversation, and how it is displayed. */
+  header .hrow{display:flex;gap:12px;align-items:center;flex-wrap:wrap;min-height:28px}
+  header [hidden]{display:none}   /* beats `header label{display:inline-flex}` below */
+  header .right{margin-left:auto;display:flex;gap:12px;align-items:center}
+  header button,header label{height:28px;display:inline-flex;align-items:center;gap:4px}
+  header .id{font-family:ui-monospace,monospace;font-size:12.5px}
+  header .meta{color:var(--muted);font-size:12.5px}
+  .tabs{display:flex;gap:4px}
+  .tabs button,.nav button{font:inherit;padding:0 10px;border:1px solid var(--line);
+       background:#fff;border-radius:6px;cursor:pointer}
+  .tabs button.on{border-color:var(--ink);font-weight:600}
+  .nav{display:flex;gap:6px;align-items:center}
+  .view{display:none} .view.on{display:block}
+
+  .cols{display:flex;align-items:flex-start;gap:0;
+        max-width:calc(var(--list-w) + var(--body-max) + var(--rail-w));margin:0 auto}
+  .body{flex:1 1 auto;min-width:0;max-width:var(--body-max);padding:16px 20px 240px}
+  .rail{order:2;flex:0 0 var(--rail-w);
+        position:sticky;top:76px;max-height:calc(100vh - 84px);overflow:auto;
+        padding:16px;border-left:1px solid var(--line);background:#fff}
+  /* order must be NEGATIVE: .body declares no order, so it is 0, and order:0 on
+     the rail is a tie broken by document order -- .body comes first, so the rail
+     would not move at all. */
+  .cols[data-rail="left"] .rail{order:-1;border-left:0;border-right:1px solid var(--line)}
+  /* The conversation list: every pool conversation, filtered with counts. */
+  .list{order:-2;flex:0 0 var(--list-w);position:sticky;top:76px;max-height:calc(100vh - 84px);
+        overflow:auto;border-right:1px solid var(--line);background:#fff;font-size:12.5px}
+  .list .filters{position:sticky;top:0;z-index:1;background:#fff;padding:8px;
+                 border-bottom:1px solid var(--line);display:grid;grid-template-columns:auto 1fr;
+                 gap:4px 8px;align-items:center}
+  .list .filters label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.04em}
+  .list .filters .warn,.list .filters .scope{grid-column:1 / -1}
+  .list select{font:inherit;font-size:12px;width:100%;height:26px;padding:0 24px 0 8px;
+               border:1px solid var(--line);border-radius:6px;background:#fff;color:inherit;cursor:pointer;
+               appearance:none;-webkit-appearance:none;
+               background-image:linear-gradient(45deg,transparent 50%,#6b7280 50%),linear-gradient(135deg,#6b7280 50%,transparent 50%);
+               background-position:calc(100% - 13px) 11px,calc(100% - 9px) 11px;background-size:4px 4px;background-repeat:no-repeat}
+  .list select:hover{border-color:#9ca3af}
+  .list select:focus{outline:2px solid #c7d2fe;outline-offset:0;border-color:var(--user)}
+  .list .warn{color:var(--warn);border:1px solid var(--warn);border-radius:6px;padding:4px 6px;font-weight:600}
+  .lrow{display:flex;align-items:center;gap:6px;padding:3px 8px;border-bottom:1px solid var(--line);
+        cursor:pointer;white-space:nowrap;line-height:18px}
+  .lrow:hover{background:#f9fafb}
+  .lrow.cur{background:#eef2ff;box-shadow:inset 3px 0 0 var(--user)}
+  .lrow .role{color:#6b7280}
+  .lrow .modes{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis}
+  .tc{display:inline-block;width:9px;height:9px;border-radius:2px;margin:0 2px 0 0;vertical-align:middle}
+  .tc.u{background:#d1d5db} .tc.p{background:var(--ok)} .tc.f{background:var(--warn)}
+  .pill{flex:0 0 auto;margin-left:auto;border:1px solid var(--line);border-radius:10px;padding:0 6px;font-size:11px}
+  .pill .x{color:var(--warn);font-weight:700}
+  .dia{color:var(--result)}
+  .lrow .chip{font-size:10.5px;margin-left:3px}
+  .lrow .bt{flex:0 0 auto;margin-left:auto;font-size:10.5px;color:#6b7280}
+  .lrow .bt.pool{color:#b45309}
+
+  .turn{margin:0 0 var(--gap-turn)}
+  .turn + .turn{border-top:2px solid var(--line);padding-top:16px}
+  .turn h3{margin:0 0 4px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;
+           color:var(--muted)}
+  .turn .tid{font-family:ui-monospace,monospace;font-size:11.5px;color:var(--muted)}
+  .msg{border-left:3px solid var(--line);padding:6px 10px;margin:var(--gap-step) 0}
+  .msg .who{font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;
+            margin-bottom:2px}
+  .msg.user{border-left-color:var(--user)} .msg.user .who{color:var(--user)}
+  .msg.agent{border-left-color:var(--assistant);font-style:italic}
+  .msg.agent .who{color:var(--assistant);font-style:normal}
+  .step{border:1px solid var(--call-line);border-radius:8px;margin:var(--gap-step) 0;overflow:hidden;background:#fff}
+  .step .fn{font-family:ui-monospace,monospace;font-size:12.5px;font-weight:600;
+            padding:6px 10px 0;background:var(--call-bg);color:var(--call)}
+  .step pre{margin:0;padding:4px 10px 8px;font-family:ui-monospace,monospace;font-size:11.5px;
+            white-space:pre-wrap;word-break:break-word;background:var(--call-bg)}
+  /* One tool box in both views: call header on the call tint, structured output, raw JSON. */
+  :is(.step, #lab .fq-tool) .tool-output{border-top:1px solid var(--call-line)}
+  .step .out{border-top:1px dashed var(--line);color:var(--result)}
+  .step details.out summary{cursor:pointer;padding:6px 10px;font-family:ui-monospace,monospace;font-size:11.5px;
+            white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  /* Not pinned: a sticky reply hid the steps it summarises and forced a nested
+     scroll. It now sits in the turn's flow, in full. */
+  .reply{background:#fff;border-left:3px solid var(--assistant);padding:8px 12px;margin-top:var(--gap-step)}
+  .reply .who{font-size:11px;font-weight:700;color:var(--assistant);letter-spacing:.05em}
+  .reply .txt{white-space:pre-wrap}
+
+  .note{margin:8px 0 0}
+  .note textarea{width:100%;min-height:52px;font:inherit;padding:6px 8px;
+       border:1px solid var(--line);border-radius:6px;resize:vertical}
+  .note .row{display:flex;gap:6px;align-items:center;margin-top:4px}
+  .note .row button{font:inherit;padding:3px 9px;border:1px solid var(--line);
+       background:#fff;border-radius:6px;cursor:pointer}
+  .saved{font-size:12px;color:var(--ok)}
+  .saved.fail{color:var(--warn)}
+  .verdict{font-size:10.5px;font-weight:700;letter-spacing:.05em;margin-right:4px}
+  .saved button{font:inherit;font-size:11px;margin-left:6px;padding:0 5px;
+      border:1px solid var(--line);background:#fff;border-radius:4px;cursor:pointer;
+      color:var(--muted)}
+  .saved button:hover{color:var(--ink)}
+  .saved .wd input{font:inherit;font-size:11.5px;padding:0 5px;margin-left:6px;width:220px;
+      border:1px solid var(--line);border-radius:4px}
+  .saved .wd[hidden]{display:none}
+  .withdrawn{font-size:12px;color:var(--muted)}
+  .anchor{font-size:11.5px;color:var(--muted);font-family:ui-monospace,monospace}
+  /* One required verdict per turn; step notes take no space until opened. */
+  .verdictbox{border:2px solid var(--ink);border-radius:8px;padding:8px 10px;margin-top:10px;background:#fff}
+  .verdictbox .vh{font-size:11px;font-weight:700;letter-spacing:.06em}
+  .badge{font-size:11px;font-weight:700;letter-spacing:.05em;margin-left:8px}
+  .badge.missing{color:var(--warn)} .badge.ok{color:var(--ok)}
+  .addnote{float:right;border:0;background:none;font:inherit;font-size:11px;color:var(--muted);
+           opacity:.35;cursor:pointer;padding:0 2px}
+  .msg:hover .addnote,.step:hover .addnote,.addnote:focus{opacity:1;color:var(--ink)}
+  .stepnote .add[hidden]{display:none}
+  .stepref{font-size:12px;color:var(--warn)}
+  /* The verdict (derived, exclusive), its reasons (entered), then the AI's
+     suggested reason (decided separately). */
+  .verdictbox .vh b{letter-spacing:.04em}
+  .verdictbox .vh .v-failure,.verdictbox .vh .v-missing,.verdictbox .vh .v-conflict{color:var(--warn)}
+  .verdictbox .vh .v-nofailure{color:var(--ok)}
+  .verdictbox .lbl{font-size:10.5px;font-weight:700;letter-spacing:.05em;color:var(--muted);margin-top:6px}
+  .vsec{margin-top:8px;padding-top:6px;border-top:1px dashed var(--line)}
+  .vsec.ai .lbl{color:var(--result)}
+  .linkbtn{border:0;background:none;font:inherit;font-size:12px;color:var(--muted);cursor:pointer;padding:0}
+  .linkbtn:hover{color:var(--ink)}
+
+  /* .ev-rail: the same evidence cards inside the Labels card (railHtml). */
+  :is(.rail, .ev-rail) h4{margin:0 0 6px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;
+           color:var(--muted)}
+  :is(.rail, .ev-rail) .card{border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin:0 0 10px}
+  :is(.rail, .ev-rail) table{width:100%;border-collapse:collapse;font-size:12px}
+  /* `anywhere`, not `break-word`: only `anywhere` lowers a cell's min-content
+     width, so an unbreakable value (a JSON record) wraps instead of widening
+     the table past the rail and pushing every value out of view. */
+  :is(.rail, .ev-rail) td{padding:1px 0;vertical-align:top;overflow-wrap:anywhere}
+  :is(.rail, .ev-rail) td.k{color:var(--muted);padding-right:8px;white-space:nowrap}
+  .flag{display:inline-block;font-size:10.5px;font-weight:700;color:var(--warn);
+        border:1px solid var(--warn);border-radius:4px;padding:0 4px;margin:2px 3px 0 0}
+  :is(.rail, .ev-rail) .gap{color:var(--warn);font-weight:700}
+  :is(.rail, .ev-rail) code{font-family:ui-monospace,monospace;font-size:11.5px}
+  .ev-rail{margin-top:6px}
+  ul.plain{margin:2px 0 0;padding-left:16px}
+  .progress td{padding:2px 12px 2px 0}
+  .empty{color:var(--muted);padding:16px 20px}
+  /* AI suggestions: dashed and tinted so they never read as the reviewer's own
+     notes (hw4.md Part A: "displayed separately from human annotations"). */
+  .sugg{border:1.5px dashed var(--result);border-radius:8px;padding:8px 10px;margin:8px 0;
+        background:#faf5ff;font-size:13px}
+  .sugg .lbl{font-size:10.5px;font-weight:700;letter-spacing:.05em;color:var(--result)}
+  .sugg.done{opacity:.75;padding:4px 10px}
+  .sugg .chg{font-size:11px;margin-left:6px;padding:0 5px}
+  .sugg textarea{width:100%;min-height:40px;font:inherit;padding:4px 6px;margin:4px 0;
+      border:1px solid var(--line);border-radius:6px;resize:vertical}
+  .sugg .def{color:var(--muted);margin:2px 0}
+  .sugg .prov{font-size:11px;color:var(--muted);margin-top:2px}
+  .prov details{display:inline;margin-left:6px}.prov summary{cursor:pointer;display:inline}
+  .slist td{padding:4px 10px 4px 0;vertical-align:top;font-size:13px}
+  .slist tr.row{cursor:pointer}
+  #tax .card{border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin:0 0 10px;background:#fff}
+  .moderow{font-size:11.5px;margin:2px 0 4px 12px;display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+  .moderow .lbl{font-size:10px;font-weight:700;letter-spacing:.05em;color:var(--muted)}
+  .chip{border:1px solid var(--result);color:var(--result);border-radius:10px;padding:0 6px}
+  .chip button,.xbtn{border:0;background:none;cursor:pointer;color:inherit;font:inherit;padding:0 2px}
+  .addmode-btn{font:inherit;font-size:11.5px;padding:0 7px;border:1px solid var(--line);
+               background:#fff;border-radius:10px;cursor:pointer;color:var(--muted)}
+  .addmode-btn:hover{color:var(--ink)}
+  .modepick{margin:2px 0 8px 12px;max-width:calc(100% - 12px);border:1px solid var(--line);
+            border-radius:8px;background:#fff;padding:8px}
+  .modepick .ph{display:flex;align-items:center;font-size:12px;font-weight:600;margin-bottom:6px}
+  .modepick .ph button{margin-left:auto;border:0;background:none;font:inherit;font-size:12px;
+                       font-weight:400;color:var(--muted);cursor:pointer}
+  .modecard{display:block;width:100%;text-align:left;font:inherit;color:var(--ink);background:#fff;
+            border:1px solid var(--line);border-radius:6px;padding:6px 9px;margin:0 0 6px;cursor:pointer}
+  .modecard:hover,.modecard:focus{background:#f5f3ff}
+  .modecard .nm{font-size:13.5px} .modecard .nm b{font-weight:700}
+  .modecard .df{font-size:12.5px;color:var(--muted)}
+  .modecard .ex{font-size:12px;color:#9ca3af;margin-top:2px}
+  .flash{font-size:12px;color:var(--ok)}
+  /* The failure note jumped to by opening a conversation under Status "failing", or pressing g. */
+  @keyframes hl{from{outline-color:var(--warn)}to{outline-color:transparent}}
+  .saved.hl{outline:2px solid transparent;outline-offset:2px;border-radius:4px;animation:hl 1.5s ease-out}
+  #tax h4{margin:16px 0 6px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  #lab .labhead{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:8px}
+  /* Labels is one screen: no page scroll (no bottom padding), each column scrolls inside .fq, whose
+     height fitLab() measures from where it starts, so a wrapping header can never cut a column off.
+     1800px keeps reply lines readable on a wide screen. */
+  #lab.body{max-width:1800px;padding-bottom:0}
+  /* List: as wide as its rows. Card: the decision column holds the most material, so it gets ~30%. */
+  #lab .fq{display:grid;grid-template-columns:fit-content(var(--list-w)) minmax(0,1fr) clamp(340px,30%,560px);gap:12px;
+           align-items:stretch;height:70vh}
+  #lab .fq > *{min-height:0}
+  #lab .fq-tool.pol{border-left:3px solid var(--ok)}
+  #lab .fq-list .lrow.done{color:#6b7280}
+  /* Row marks: F (red) / N (grey) match the keys; ◆ = your live label differs from the AI; • = unsaved draft. */
+  #lab .lrow .mk{font:600 11px ui-monospace,Menlo,monospace;color:#6b7280;min-width:1ch}
+  #lab .lrow .mk.f{color:var(--warn)}
+  #lab .lrow .dia2{color:var(--result);font-size:10.5px;min-width:1ch}
+  #lab .lrow .dot{color:var(--user);font-weight:700;min-width:1ch}
+  /* Header: queue chips, progress toward 30 / 30 by conversation. */
+  #lab .chips{display:inline-flex;gap:4px}
+  #lab .progs{display:inline-flex;gap:10px;align-items:center;font-size:12.5px}
+  #lab .prog{display:inline-flex;gap:4px;align-items:center}
+  #lab .prog .bar{display:inline-block;width:48px;height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden}
+  #lab .prog .bar span{display:block;height:100%;background:#6b7280}
+  #lab .prog.f .bar span{background:var(--warn)}
+  /* Card steps: 1 Decide (the only form), 2 Compare (yours next to the AI's). */
+  #lab .steps{display:flex;gap:6px;font-size:12px;color:#9ca3af}
+  #lab .steps .on{color:var(--ink);font-weight:600}
+  #lab .cmp{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  #lab .pane{border:1px solid var(--line);border-radius:6px;padding:6px 8px;display:grid;gap:4px;align-content:start}
+  #lab .pane .lbl{font-size:10.5px;font-weight:700;letter-spacing:.05em;color:var(--muted)}
+  #lab .pane b.f{color:var(--warn)}
+  #lab .pane .just{white-space:pre-wrap;word-break:break-word;font-size:12.5px;color:#374151}
+  #lab .tag{font-weight:600}
+  #lab .sw{display:inline-block;width:10px;height:10px;border-radius:2px;vertical-align:-1px;margin-right:3px}
+  #lab .sw.you{background:#ddd6fe} #lab .sw.ai{background:#fde68a}
+  #lab details.mini{padding:3px 6px;font-size:11.5px;color:#4b5563}
+  #lab .cited{display:grid;gap:3px}
+  #lab .fq-card .labhead{flex-wrap:wrap}
+  #lab .need{color:#b45309;font-size:12px;min-height:0}
+  #lab .pairhead{font:600 13px ui-monospace,Menlo,monospace;color:#374151}
+  #lab .sameturn{background:#fef3c7;color:#92400e;border-radius:4px;padding:4px 6px;font-size:12px}
+  @media (prefers-reduced-motion:no-preference){
+    @keyframes qflash{from{background:#fde68a}to{background:transparent}}
+    #lab .q.flash{animation:qflash 1.2s ease-out;border-radius:4px}
+  }
+  #lab .hist{display:grid;gap:2px;font-size:12px;color:#4b5563}
+  #lab .need:empty{display:none}
+  /* Verdict is a setting (a two-part switch), not a command; the bar below holds the only actions. */
+  #lab .seg-row{display:flex;gap:8px;align-items:center}
+  #lab .seg{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:#fff}
+  #lab .seg button{border:0;border-radius:0;background:transparent;padding:4px 12px;font:inherit;cursor:pointer;color:var(--ink)}
+  #lab .seg button + button{border-left:1px solid var(--line)}
+  #lab .seg button.on{background:var(--user);color:#fff}
+  #lab .actbar{display:flex;gap:12px;align-items:center;justify-content:flex-end;border-top:1px solid var(--line);padding-top:8px;flex-wrap:wrap}
+  #lab .actbar .status{margin-right:auto;color:#b45309;font-size:12px}
+  #lab .actbar button.link{border:0;background:none;color:var(--user);text-decoration:underline;cursor:pointer;padding:0;font:inherit}
+  #lab .actbar button.save{background:var(--user);color:#fff;border:1px solid var(--user);border-radius:6px;padding:4px 14px;cursor:pointer}
+  #lab .actbar button.save[disabled]{opacity:.45;cursor:default}
+  #lab .fq-card .q{font-size:15px}
+  #lab details.fq-tool summary{cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  /* Grid items default to min-width:auto, so a one-line summary would widen the whole
+     conversation column; let them shrink so the summary ellipsis applies instead. */
+  #lab .fq-conv, #lab .fq-turn, #lab details.fq-tool{min-width:0}
+  #lab .pid-ok{background:#ecfdf5;color:var(--ok);padding:0 2px;border-radius:3px}
+  #lab .pid-no{background:#fef2f2;color:var(--warn);padding:0 2px;border-radius:3px;font-weight:600}
+  #lab .labhead button.on{background:var(--user);color:#fff;border-color:var(--user)}
+  /* Rows are Review's .lrow; the pane is styled like Review's list. */
+  #lab .fq-list{overflow:auto;font-size:12.5px;background:#fff;border:1px solid var(--line);border-radius:6px}
+  #lab .fq-conv{overflow:auto;align-content:start;display:grid;gap:var(--gap-turn);font-size:14px}
+  /* Labels turns use Review's turn markup (turnHtml), boxed: the pane's gap separates them, not .turn's margin. */
+  #lab .fq-turn{border:1px solid var(--line);border-radius:6px;padding:8px;margin:0}
+  #lab .fq-turn.target{border:2px solid var(--warn)}
+  #lab .step.pol{border-left:3px solid var(--ok)}
+  #lab .fq-tool{background:#f3f4f6;font:12px/1.4 ui-monospace,Menlo,monospace;white-space:pre-wrap;word-break:break-word;padding:6px;border-radius:4px}
+  #lab mark{background:#fde68a;padding:0 1px}
+  /* The card in three bands: the question stays at the top, your answer at the bottom, and the
+     reference material (evidence, boundary) scrolls between them. */
+  #lab .fq-card{display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:8px;border:1px solid #e5e7eb;border-radius:6px;
+                padding:10px;font-size:13px;overflow:hidden}
+  #lab .fq-top, #lab .fq-bot{display:grid;gap:8px;align-content:start}
+  #lab .fq-ref{display:grid;gap:8px;align-content:start;overflow:auto;border-top:1px solid #f3f4f6;border-bottom:1px solid #f3f4f6;padding:6px 0}
+  #lab .fq-bot{max-height:55vh;overflow:auto}   /* a long comparison scrolls instead of squeezing the reference band away */
+  #lab .fq-edit{display:grid;gap:8px}
+  #lab .fq-card textarea{width:100%;min-height:70px;font:13px/1.4 system-ui,sans-serif}
+  /* Source lookup: neutral colours only, so neither the panel nor a text hit reads as a verdict. */
+  #lab .fq-reply :is(.pid-ok, .pid-no){cursor:pointer}
+  /* Floating over the conversation, in its content coordinates, so it never moves the reader's scroll. */
+  #lab .fq-conv{position:relative}
+  #lab .src-box{position:absolute;z-index:5;overflow:auto;background:#fff;border:1px solid #d1d5db;border-radius:6px;box-shadow:0 4px 16px rgba(0,0,0,.15);padding:6px 8px;font-size:13px;display:grid;gap:6px;align-content:start}
+  #lab .src-head{display:flex;justify-content:space-between;align-items:start;gap:8px;position:sticky;top:-6px;background:#fff}
+  #lab .src-x{border:0;background:none;font-size:16px;line-height:1;cursor:pointer;padding:0 2px}
+  #lab .src-text{white-space:pre-wrap}
+  #lab .src-hit{cursor:pointer;border-top:1px solid #f3f4f6;padding-top:4px}
+  #lab .src-hit:hover{background:#f9fafb}
+  #lab .src-hit .ex{font:12px/1.4 ui-monospace,Menlo,monospace;color:#4b5563;word-break:break-word}
+  ::highlight(src){background:#bae6fd}
+  /* The reviewer's own quoted words in the labeled reply: calm violet, not a verdict colour. */
+  ::highlight(ev){background:#ddd6fe}
+  #lab .src-quote, #lab .src-cite{font-size:11.5px;padding:0 6px;cursor:pointer}
+  #lab .src-cite{float:right;margin-left:6px}
+  :is(#lab, #keys) kbd{font:11px ui-monospace,Menlo,monospace;border:1px solid currentColor;border-radius:3px;padding:0 3px;margin-left:4px}
+  /* The key list (?): one element, filled for the open tab. */
+  #keys{position:fixed;right:16px;bottom:16px;z-index:30;background:#fff;border:1px solid var(--line);border-radius:8px;
+        box-shadow:0 4px 16px rgba(0,0,0,.12);padding:8px 12px;font-size:12.5px}
+  #keys td{padding:1px 10px 1px 0;vertical-align:top}
+  #keys td:first-child{white-space:nowrap;text-align:right}
+  /* Tool evidence: readable values first; the original payload remains inspectable. */
+  .tool-output{padding:10px 12px;color:var(--ink);font:14px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;white-space:normal;overflow-wrap:anywhere}
+  .tool-fields{display:grid;grid-template-columns:minmax(90px,145px) minmax(0,1fr);gap:5px 14px;margin:0}
+  .tool-fields dt{color:var(--muted);font-size:12px;overflow-wrap:anywhere}
+  .tool-fields dd{margin:0;min-width:0}
+  .tool-fields .tool-wide{grid-column:1 / -1}
+  .tool-fields dd.tool-wide{margin:0 0 8px}
+  .tool-value{white-space:pre-wrap}
+  .tool-empty{color:var(--muted);font-style:italic}
+  .bound{white-space:pre-line}   /* boundary rules: one per line */
+  .tool-items{margin:0;padding-left:22px}
+  .tool-items>li{padding:8px 0;border-bottom:1px solid var(--line)}
+  .tool-items>li:last-child{border-bottom:0}
+  .tool-policy{max-width:75ch;white-space:pre-wrap}
+  .tool-policy p{margin:0 0 10px}
+  .tool-policy h4{font-size:15px;font-weight:600;line-height:1.4;margin:12px 0 6px}
+  .tool-source-note{color:var(--muted);font-size:12px;margin:0 0 8px}
+  details.tool-raw{white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.45 ui-monospace,Menlo,monospace;padding:8px 12px;background:#f8fafc;border-top:1px solid var(--line)}
+  details.tool-raw>summary{white-space:normal;cursor:pointer;color:var(--muted);font:12px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+  #lab .fq-tool{padding:0;background:#fff;white-space:normal;border:1px solid var(--call-line);border-radius:8px;overflow:hidden}
+  #lab .fq-tool .tool-call{padding:8px 12px;background:var(--call-bg);white-space:pre-wrap;overflow-wrap:anywhere}
+  #lab .fq-tool .tool-call>b{color:var(--call)}
+  #lab details.fq-tool.mini>summary.tool-call{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:4px 10px;font:12px/1.4 ui-monospace,Menlo,monospace}
+  /* Judge tab (HW5 Part C): the sample and both rates with their 95% CIs first, then each disagreement.
+     Pass is a green outline, Fail a red fill: the word, the hue and the fill each tell them apart. */
+  #judge .body{max-width:1320px;margin-inline:auto}
+  #jv{font-variant-numeric:tabular-nums}
+  #jv :focus-visible{outline:2px solid var(--user);outline-offset:2px}
+  #jv .jhead{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;margin-bottom:18px}
+  #jv .jhead label{display:inline-flex;gap:6px;align-items:center}
+  #jv .jhead select{font:inherit;padding:2px 6px;border:1px solid var(--line);border-radius:4px;background:#fff}
+  #jv .jhead .who{color:var(--muted);font-size:12.5px}
+  /* One band, left to right by importance: what was tested, the two CIs, then the counts behind them.
+     Cells are sized to their content, so no box is wider than what it holds. */
+  #jv .band{display:flex;flex-wrap:wrap;align-items:flex-start;row-gap:18px}
+  #jv .band>.cell{padding:0 28px;border-left:1px solid var(--line)}
+  #jv .band>.cell:first-child{padding-left:0;border-left:0}
+  #jv .cell .k{font-weight:600}
+  #jv .cell .k span{display:block;font-weight:400;font-size:12.5px;color:var(--muted);max-width:26ch}
+  #jv .cell .big{font-size:30px;font-weight:600;line-height:1.15;margin-top:6px;white-space:nowrap}
+  #jv .cell .big .iv{font-size:15px;font-weight:500;color:var(--ink);margin-left:6px}
+  #jv .cell .pt{font-size:12.5px;color:var(--muted);margin-top:2px}
+  #jv .cell .pt .tag{margin-right:2px}
+  #jv .cm{border-collapse:collapse}
+  #jv .cm th,#jv .cm td{padding:4px 10px;border:1px solid var(--line);text-align:center;font-weight:400}
+  #jv .cm th{color:var(--muted);font-size:12.5px;background:#fff}
+  #jv .cm td b{display:block;font-size:16px}
+  #jv .cm td span{display:block;color:var(--muted);font-size:11.5px}
+  #jv .note{color:var(--muted);font-size:12px;margin:12px 0 0}
+  #jv .count{margin:28px 0 2px;font-size:16px;font-weight:600}
+  #jv .sub{margin:0 0 10px;color:var(--muted);font-size:12.5px}
+  #jv .warn{margin:10px 0;color:var(--warn);font-size:13px;max-width:80ch}
+  #jv .dim{color:var(--muted)}
+  #jv table.dis{border-collapse:collapse;width:100%;table-layout:fixed}
+  #jv col.c-id{width:8em} #jv col.c-lab{width:8.5em} #jv col.c-j{width:5em}
+  #jv table.dis th{text-align:left;font-weight:600;font-size:12.5px;color:var(--muted);padding:6px 10px;border-bottom:1px solid var(--ink);white-space:nowrap}
+  #jv table.dis td{padding:12px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  #jv table.dis tr.off td:first-child{box-shadow:inset 3px 0 0 var(--ink)}
+  #jv td.txt{white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px;line-height:1.5}
+  #jv td.txt details{margin-top:4px}
+  #jv td.txt summary{cursor:pointer;color:var(--muted);font-size:12px}
+  #jv .turn{display:block;color:var(--muted);font-size:12px}
+  #jv .tag{display:inline-block;padding:0 8px;border-radius:9px;font-size:12px;line-height:18px;border:1px solid var(--ink);color:var(--ink);background:#fff}
+  #jv .tag.pass{border-color:var(--ok);background:#ecfdf5;background:color-mix(in srgb,var(--ok) 12%,#fff)}
+  #jv .tag.fail{border-color:var(--warn);background:var(--warn);color:#fff}
+  #jv .jv-edit{display:block;margin-top:6px;font-size:12px}
+  #jv .chg{display:block;margin-top:4px;color:var(--warn);font-size:12px}
+  #jv tr.seen .jv-open::after{content:" (opened)";color:var(--muted);font-size:12px}
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  @media (max-width:1100px){ #jv .band>.cmw{flex-basis:100%;padding-left:0;border-left:0} }
+  @media (max-width:720px){
+    .tabs{flex-wrap:wrap}   /* six tabs overflow a phone; every tab, Judge included, stays reachable */
+    #judge .body{padding:12px 16px 120px}
+    #jv .band{column-gap:16px}
+    #jv .band>.cell{padding:0;border-left:0}
+    #jv .band>.sample{flex-basis:100%}
+    #jv .sample .k span{display:none}   /* "Tested" plus the counts say it; the number and counts share a line */
+    #jv .sample .big,#jv .sample .pt{display:inline-block;vertical-align:baseline;margin-right:10px}
+    #jv .band>.rate{flex:1 1 40%}
+    #jv .cell .big{font-size:24px}
+    #jv .rate .big .iv{display:block;margin:2px 0 0}   /* narrow cards: the interval right under the estimate */
+    #jv table.dis,#jv table.dis tbody,#jv table.dis tr,#jv table.dis td{display:block}
+    #jv table.dis tr.headrow{display:none}
+    #jv table.dis tr{display:flex;flex-wrap:wrap;gap:4px 16px;align-items:baseline;border-bottom:1px solid var(--line);padding:10px 0 10px 12px}
+    #jv table.dis td{border:0;padding:3px 0}
+    #jv table.dis td.txt{flex-basis:100%}
+    #jv table.dis td[data-label]::before{content:attr(data-label);display:block;color:var(--muted);font-size:12px}
+    #jv table.dis td:not(.txt)::before{display:inline;margin-right:6px}
+    #jv table.dis .jv-edit,#jv table.dis .turn{display:inline;margin:0 0 0 8px}
+    #jv table.dis tr.off{box-shadow:inset 3px 0 0 var(--ink)}
+    #jv table.dis tr.off td:first-child{box-shadow:none}
+  }
+</style>
+
+<header>
+  <div class="hrow">
+    <span class="tabs">
+      <button data-tab="review" class="on">Review</button>
+      <button data-tab="suggestions">Suggestions</button>
+      <button data-tab="taxonomy">Taxonomy</button>
+      <button data-tab="labels">Labels</button>
+      <button data-tab="progress">Progress</button>
+      <button data-tab="judge">Judge</button>
+    </span>
+    <span class="right"><span class="meta" id="h-prog"></span></span>
+  </div>
+  <div class="hrow" id="hrow-review">
+    <span class="nav">
+      <button id="prev">←</button><span class="meta" id="pos"></span><button id="next">→</button>
+    </span>
+    <span class="id" id="h-id">loading…</span>
+    <span class="meta" id="h-meta"></span>
+    <span class="right">
+      <span class="meta">View:</span>
+      <label class="meta" title="show the AI's depth-search suggestions under each turn">
+        <input type="checkbox" id="show-sugg"> AI hints</label>
+      <label class="meta" title="assign each failure note to a failure mode, under the note">
+        <input type="checkbox" id="show-axial"> Axial coding</label>
+    </span>
+  </div>
+</header>
+
+<div id="review" class="view on">
+  <div class="cols" data-rail="right">
+    <div class="list" id="list"></div>
+    <div class="body" id="conv"></div>
+    <div class="rail" id="rail"></div>
+  </div>
+</div>
+<div id="suggestions" class="view"><div class="body" id="sugg"></div></div>
+<div id="taxonomy" class="view"><div class="body" id="tax"></div></div>
+<div id="labels" class="view"><div class="body" id="lab"></div></div>
+<div id="progress" class="view"><div class="body"><table class="progress" id="prog"></table></div></div>
+<div id="judge" class="view"><div class="body" id="jv"></div><p id="jv-live" class="sr-only" aria-live="polite"></p></div>
+<div id="keys" hidden></div>
+
+<script>
+const S = {index:[], cur:0, view:null, annotations:[], superseded:{}, withdrawn:[], suggestions:[], modes:[],
+           showSugg:true, expanded:new Set(), showAxial:false,
+           failAt:-1,   // failAt: index of the last failure note jumped to
+           f:{batch:'sample', status:'all', mode:''},   // the list's filters
+           held:[],   // the list's captured membership, in scenario order (see capture)
+           hashSeen:'',   // the hash last applied or written, so our own writes are not re-applied
+           manifest:{manifest_ok:true, reason:null},   // GET /api/manifest; false means the sample reads empty
+           tax:{modes:[], unassigned:[], gone:[]}, flash:null,
+           pickerFor:null,   // annotation id whose "add to a mode" panel is open
+           aiOpen:new Set()};   // trace ids whose collapsed pending AI suggestion was opened
+
+/* A per-viewer display preference only; the page works without storage. */
+try { S.showSugg = localStorage.getItem('showSugg') !== '0'; } catch (e) {}
+try { S.showAxial = localStorage.getItem('showAxial') === '1'; } catch (e) {}
+const $ = s => document.querySelector(s);
+const esc = s => String(s==null?'':s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+/* Raw tool payloads start collapsed. Both tabs re-render on every action, so the payloads the
+   reviewer opened are remembered by key (trace id + step index) and reopened. */
+const openOut = new Set();
+document.addEventListener('toggle', e => {
+  const k = e.target.dataset && e.target.dataset.out;
+  if (k) e.target.open ? openOut.add(k) : openOut.delete(k);
+}, true);   // 'toggle' does not bubble: listen in the capture phase
+const outAttrs = k => `data-out="${esc(k)}"${openOut.has(k) ? ' open' : ''}`;
+/* Render only recorded values: ok=true is not a claim that an action executed. */
+function toolValue(value, field = ''){
+  if (value === undefined) return '<span class="tool-empty">missing</span>';
+  if (value === null) return '<span class="tool-empty">null</span>';
+  if (Array.isArray(value)) return value.length
+    ? `<ol class="tool-items">${value.map(v => `<li>${toolValue(v)}</li>`).join('')}</ol>`
+    : '<span class="tool-empty">[] (empty list)</span>';
+  if (typeof value === 'object'){
+    const entries = Object.entries(value);
+    if (!entries.length) return '<span class="tool-empty">{} (empty object)</span>';
+    return `<dl class="tool-fields">${entries.map(([key, v]) => {
+      const wide = v !== null && typeof v === 'object' || key === 'body' || key === 'snippet';
+      const cls = wide ? ' class="tool-wide"' : '';
+      return `<dt${cls}>${esc(key.replace(/_/g, ' '))}</dt><dd${cls}>${toolValue(v, key)}</dd>`;
+    }).join('')}</dl>`;
+  }
+  if (value === '') return '<span class="tool-empty">"" (empty string)</span>';
+  if (typeof value === 'string' && (field === 'body' || field === 'snippet')){
+    // Escape before adding a small amount of structure; no HTML or link execution.
+    return `<div class="tool-policy">${value.split(/\n\s*\n/).map(block => {
+      const heading = block.match(/^#{1,6} (.+)$/);
+      return heading ? `<h4>${esc(heading[1])}</h4>` : `<p>${esc(block)}</p>`;
+    }).join('')}</div>`;
+  }
+  return `<span class="tool-value">${esc(String(value))}</span>`;
+}
+/* Short inputs stay on the call line; a long one (an escalation's context) renders as readable fields. */
+const toolArgs = s => s.in === undefined ? 'missing input' : JSON.stringify(s.in);
+const longInput = s => toolArgs(s).length > 100;
+const toolInput = s => `<div class="tool-output"><p class="tool-source-note">Input</p>${toolValue(s.in)}</div>`;
+function toolOutput(s, key){
+  const raw = JSON.stringify(s.out, null, 1);
+  const note = s.tool === 'search_help_center' ? '<p class="tool-source-note">Search snippets only · these are not opened policy documents.</p>' : '';
+  // Keep the direct JSON text node last: Labels source lookup searches it and opens this disclosure.
+  return `<div class="tool-output">${note}${toolValue(s.out)}</div>`
+    + `<details class="tool-raw" ${outAttrs(key)}><summary>Raw JSON output</summary>${esc(raw === undefined ? 'missing (no output recorded)' : raw)}</details>`;
+}
+const j = async (u,o) => (await fetch(u,o)).json();
+const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
+
+async function boot(){
+  S.index = await j('/api/index');
+  S.manifest = await j('/api/manifest');
+  S.annotations = await j('/api/annotations');
+  S.superseded = (await j('/api/history')).superseded_counts;
+  S.withdrawn = await j('/api/withdrawn');
+  S.suggestions = await j('/api/suggestions');
+  S.modes = (await j('/api/patterns')).modes || [];
+  await renderTaxonomy();   // the mode and "needs a decision" filters read it
+  const lab = applyHash();
+  await show();
+  if (lab) setTab('labels');   // a Labels hash reopens the Labels tab at its pair
+}
+
+function unsavedNotes(){
+  return [...document.querySelectorAll('#conv textarea')].filter(x => x.value.trim()).length;
+}
+
+/* Leaving a conversation re-renders #conv, so anything typed and not saved is
+   gone. Ask once rather than losing a reviewer's only copy of an observation. */
+function mayLeave(){
+  const n = unsavedNotes();
+  return !n || confirm(`${n} unsaved note(s) on this page will be discarded. Continue?`);
+}
+
+/* The tabs, the progress header and the list's filters load whether or not a
+   conversation is open; only the conversation's own rendering needs a row. */
+async function show(){
+  // A later show() supersedes this one: each await below checks the generation
+  // and drops a stale completion (fast back/forward could otherwise render a
+  // conversation the user already left, or read S.view after it was cleared).
+  const gen = S.showGen = (S.showGen || 0) + 1;
+  const row = S.index[S.cur];
+  if (row){
+    const view = await j('/api/session/' + row.session_id);
+    if (gen !== S.showGen) return;
+    S.view = view;
+    const t = S.view.totals;
+    $('#h-id').textContent = S.view.scenario_id + '  ·  ' + S.view.session_id.slice(0,8);
+    $('#h-meta').textContent = `${roleLabel()} · ${plural(t.turns, 'turn')} · `
+      + `${plural(t.tool_calls, 'tool call')} · ${t.latency_s}s`;
+    $('#h-meta').title = `user u${S.view.user_id} · session ${S.view.session_id.slice(0,8)} · `
+      + `${plural(t.distinct_tools, 'distinct tool')} · prompt ${S.view.prompt_version || '?'}`;
+  }
+  S.flash = null; S.pickerFor = null; S.aiOpen = new Set();
+  await renderTaxonomy();   // modes feed the MODE rows and the list; never throws
+  if (gen !== S.showGen) return;
+  renderProgress(); renderSuggestions();
+  if (!row){
+    S.view = null;
+    $('#h-id').textContent = 'no conversation open';
+    $('#h-meta').textContent = '';
+    $('#conv').innerHTML = '<p class="empty">no conversation open: none matches the filters</p>';
+    $('#rail').innerHTML = '';
+    return;
+  }
+  renderConversation(); renderRail();
+  S.failAt = -1;
+  if (S.f.status === 'failing') nextFailure();   // on open only, not on every re-render
+  const el = document.querySelector('#list .lrow.cur');
+  if (el) el.scrollIntoView({block: 'nearest'});
+}
+
+/* Scroll to the next live failure note in document order (verdict box or step
+   note), cycling, and flash it. Live notes render as .saved; failures add .fail. */
+function nextFailure(){
+  const els = [...document.querySelectorAll('#conv .saved.fail')];
+  if (!els.length) return;
+  S.failAt = (S.failAt + 1) % els.length;
+  const el = els[S.failAt];
+  el.scrollIntoView({block: 'center'});
+  el.classList.remove('hl'); void el.offsetWidth; el.classList.add('hl');   // restart the animation
+  setTimeout(() => el.classList.remove('hl'), 1600);
+}
+
+/* Re-rendering #conv replaces every textarea, so anything typed and not saved
+   would vanish. Snapshot by (trace,turn,step) and restore after. This is what
+   lets every save path re-render, which in turn is what gives a just-saved note
+   its edit and retract buttons. */
+function snapshotDrafts(){
+  const d = {};
+  for (const box of document.querySelectorAll('#conv .note')){
+    const ta = box.querySelector('textarea');
+    const key = `${box.dataset.trace}|${box.dataset.turn}|${box.dataset.step}`;
+    if (ta && ta.value.trim()){
+      d[key] = ta.value;
+      // an edit in progress must survive a re-render, or saving adds a second note
+      if (box.dataset.supersedes) d[key + '|supersedes'] = box.dataset.supersedes;
+    }
+  }
+  for (const ta of document.querySelectorAll('#conv .sugg[data-sid] textarea')){
+    const card = ta.closest('.sugg');
+    if (ta.value.trim()) d['sg|' + card.dataset.sid] = [card.dataset.form, ta.value];
+  }
+  return d;
+}
+
+function restoreDrafts(drafts){
+  for (const box of document.querySelectorAll('#conv .note')){
+    const key = `${box.dataset.trace}|${box.dataset.turn}|${box.dataset.step}`;
+    if (drafts[key]){
+      box.querySelector('textarea').value = drafts[key];
+      const add = box.querySelector('.add');
+      if (add) add.hidden = false;          // a draft in a step note stays open
+      const sup = drafts[key + '|supersedes'];
+      if (sup && S.annotations.some(a => a.id === sup)){   // only while that note is still live
+        box.dataset.supersedes = sup;
+        const err = box.querySelector('.msg-err');
+        if (err) err.textContent = 'editing — saving replaces that note (the original stays in history)';
+      }
+      const more = box.querySelector('.addmore');
+      if (more) more.hidden = true;
+    }
+  }
+  for (const card of document.querySelectorAll('#conv .sugg[data-sid]:not(.done)')){
+    const v = drafts['sg|' + card.dataset.sid];
+    if (v) openAiForm(card, v[0], v[1]);
+  }
+}
+
+function renderConversation(drafts){
+  const out = [];
+  if (S.view.turns.length > 1)
+    out.push(`<p class="meta">Each turn is a separate trace: give each turn its own verdict.</p>`);
+  for (const turn of S.view.turns) out.push(turnHtml(turn, {notes: true, role: roleLabel()}));
+  $('#conv').innerHTML = out.join('');
+  wireNotes(); wireSuggestions(); wireModes();
+  if (drafts) restoreDrafts(drafts);
+}
+
+/* One turn's markup, shared by Review and the Labels focus view.
+   Review: o.notes adds the note buttons, step note boxes and the verdict box (with AI cards).
+   Labels: o.lab (fq-* classes), o.cls / o.id on the turn, o.tag after the header, o.key (raw-output key
+   prefix), o.fold (an earlier turn: tool calls fold to one line, interim text omitted), o.prose (interim
+   text format) and o.reply (the reply's HTML). Labels source lookup depends on this shape: the turn is
+   .fq-turn, .fq-user's last child is the user text node, a details[data-out]'s last child is the raw JSON
+   text node, and .fq-reply is the reply text element. */
+function turnHtml(turn, o){
+  const add = step => o.notes ? addNote(step) : '', note = step => o.notes ? noteBox(turn, step) : '';
+  const out = [`<section class="turn${o.cls ? ' ' + o.cls : ''}"${o.id ? ` id="${o.id}"` : ''}>`,
+    `<h3>Turn ${turn.turn} <span class="tid">trace ${esc(turn.trace_id)} · ${turn.latency_s}s</span>${o.notes ? verdictBadge(turn) : o.tag || ''}</h3>`,
+    `<div class="msg user${o.lab ? ' fq-user' : ''}"><div class="who">User · ${esc(o.role)}${add('user')}</div>${esc(turn.user)}</div>`,
+    note('user')];
+  for (const [i, s] of turn.steps.entries()){
+    const step = stepAnchor(s, i), key = `${o.key || ''}${turn.trace_id}#${i}`;
+    if (o.fold){ if (s.kind === 'tool') out.push(toolStep(s, key)); continue; }
+    if (s.kind === 'agent')
+      out.push(`<div class="msg agent"><div class="who">Assistant · interim${add(step)}</div>${(o.prose || esc)(s.text)}</div>`);
+    else
+      out.push(`<div class="step${o.lab && s.tool === 'get_policy' ? ' pol' : ''}"><div class="fn"><span class="meta">Tool call ·</span> ${esc(s.tool)}()${add(step)}</div>`
+        + (longInput(s) ? toolInput(s) : `<pre>in  ${esc(JSON.stringify(s.in, null, 1))}</pre>`) + toolOutput(s, key) + '</div>');
+    out.push(note(step));
+  }
+  out.push(`<div class="reply"><div class="who">Assistant · final reply</div><div class="txt${o.lab ? ' fq-reply' : ''}">${o.reply ?? esc(turn.reply)}</div>`,
+           note('reply'), `</div></section>`);
+  return out.join('');
+}
+
+/* A note anchors to (trace_id, turn, step) -- structural, not character offsets,
+   which break whenever rendering changes. */
+function stepAnchor(s, i){ return s.kind === 'tool' ? `tool:${s.tool}#${i}` : `agent#${i}`; }
+
+function existing(trace_id, step){
+  return S.annotations.filter(a => a.trace_id === trace_id && a.step === step);
+}
+
+/* Standard chat roles (user / assistant / tool) plus the Cartwheel role, which
+   decides what the agent may do (AUTH-1). "support staff", so a support USER is
+   never read as the support agent. */
+const roleName = role => ({support: 'support staff'}[role] || role || 'unknown role');
+const roleLabel = () => roleName(S.view.user_role);
+
+/* The turn's verdict: any live note on its trace. A failure marked at a step
+   counts -- the same rule the Progress count uses (server.py index_rows). */
+function verdictBadge(turn){
+  const live = S.annotations.filter(a => a.trace_id === turn.trace_id), v = verdictOf(live);
+  const fail = live.find(a => !a.no_failure);
+  const at = v === 'failure' && fail.step !== 'reply' ? ' (at ' + esc(fail.step) + ')' : '';
+  return `<span class="badge ${v === 'nofailure' || v === 'failure' ? 'ok' : 'missing'}">${
+    v === 'missing' || v === 'conflict' ? '●' : '✓'} ${VERDICT[v]}${at}</span>`;
+}
+
+/* The turn's verdict, derived from its live notes and exclusive: any failure
+   note is "failure observed"; a no-failure note beside one is a CONFLICT. */
+const VERDICT = {failure: 'FAILURE OBSERVED', nofailure: 'NO FAILURE OBSERVED',
+                 missing: 'VERDICT MISSING', conflict: 'CONFLICT'};
+function verdictOf(live){
+  const fail = live.some(a => !a.no_failure), pass = live.some(a => a.no_failure);
+  return fail && pass ? 'conflict' : fail ? 'failure' : pass ? 'nofailure' : 'missing';
+}
+
+const addNote = step => `<button class="addnote" data-step="${esc(step)}" title="mark a failure at this step">+ note</button>`;
+
+const NOTE_BUTTONS = `
+    <button class="edit" title="replace this note">edit</button>
+    <button class="retract" title="withdraw this note">retract</button><span class="wd" hidden><input class="wd-reason"
+      placeholder="reason (optional)"> <button class="wd-go">Withdraw</button> <button class="wd-cancel">Cancel</button></span>`;
+
+function noteBox(turn, step){
+  const verdict = step === 'reply';
+  const mine = existing(turn.trace_id, step);
+  /* Edit and retract both APPEND -- hw4.md line 106 requires the original open
+     code to stay in the saved history, so nothing is rewritten or removed. */
+  /* The verdict is shown, not implied: a failure and a no-failure note with
+     text looked identical, so a misfiled verdict was invisible. */
+  const saved = mine.map(a => `<div class="saved${a.no_failure ? '' : ' fail'}" data-id="${esc(a.id)}"><span class="verdict">${
+    a.no_failure ? 'NO FAILURE OBSERVED' : 'FAILURE'}</span>${esc(a.note || '')}${NOTE_BUTTONS}</div>${a.no_failure ? '' : modeRow(a)}`).join('');
+  /* A withdrawn note stays on screen, struck through, with the reason given --
+     so a reclassified failure is visible without editing it into "no failure". */
+  const gone = S.withdrawn.filter(w => w.trace_id === turn.trace_id && w.step === step
+      && (w.turn == null || Number(w.turn) === turn.turn))
+    .map(w => `<div class="withdrawn" title="${esc((w.note || '') + (w.ts ? ' · withdrawn ' + w.ts.slice(0, 10) : ''))}">withdrawn${
+      w.reason ? ': ' + esc(w.reason) : ''} <s>${esc(cutWords(w.note || '', 160))}</s></div>`).join('');
+  const dead = S.superseded[`${turn.trace_id}|${step}`] || 0;
+  const histline = dead
+    ? `<div class="anchor">${plural(dead, 'earlier version')} kept in the history</div>` : '';
+  const attrs = `data-trace="${esc(turn.trace_id)}" data-turn="${turn.turn}" data-step="${esc(step)}"`;
+  const err = '<div class="msg-err" style="color:var(--warn);font-size:12px"></div>';
+  if (verdict) return verdictBox(turn, attrs, gone + histline, err);
+  /* A step note marks WHERE the first failure happened; "no failure" is a
+     whole-turn verdict and lives in the verdict box. Empty until opened. */
+  return `<div class="note stepnote" ${attrs}>${saved}${gone}${histline}
+    <div class="add" hidden><textarea placeholder="the failure at this step, in your own words"></textarea>
+      <div class="row"><button class="save">Failure here</button> <button class="cancel">cancel</button>
+        <span class="anchor">${esc(step)}</span></div>${err}</div></div>`;
+}
+
+/* TURN n VERDICT: the verdict is derived and exclusive; REASONS are every live
+   failure note on the turn (any step, yours and accepted suggestions'),
+   numbered; the AI's suggested reason is decided on its own buttons, which
+   never write the reviewer's verdict. */
+function verdictBox(turn, attrs, history, err){
+  const live = S.annotations.filter(a => a.trace_id === turn.trace_id), v = verdictOf(live);
+  const reasons = live.filter(a => !a.no_failure);
+  const rows = reasons.map((a, k) => reasonRow(a, `${k + 1}.`)).join('')
+    + live.filter(a => a.no_failure).map(a => reasonRow(a, v === 'conflict' ? 'no failure observed:' : 'why it passes:')).join('');
+  const open = v === 'missing';   // no verdict yet: the form is open
+  return `<div class="note verdictbox" ${attrs}>
+    <div class="vh">TURN ${turn.turn} &nbsp;VERDICT: <b class="v-${v}">${VERDICT[v]}</b></div>
+    ${v === 'conflict' ? '<div class="stepref">a failure reason and a no-failure note are both live; retract one</div>' : ''}
+    ${rows ? `<div class="lbl">${v === 'nofailure' ? 'REASON' : 'REASONS'}</div>${rows}` : ''}${history}
+    ${open ? '' : '<button class="addmore linkbtn">+ add reason</button>'}
+    <div class="add"${open ? '' : ' hidden'}><textarea placeholder="${esc(REASON_HINT[v])}"></textarea>
+      <div class="row">${verdictButtons(v)}${open ? '' : ' <button class="cancel">cancel</button>'}</div></div>${err}
+    ${aiSection(turn, v, reasons)}${
+      S.flash && S.flash.trace === turn.trace_id ? `<div class="flash">${esc(S.flash.text)}</div>` : ''}</div>`;
+}
+
+const REASON_HINT = {
+  missing: 'failure observed: what went wrong, in your own words / no failure observed: why it passes (optional)',
+  failure: 'another failure reason, in your own words', conflict: 'another failure reason, in your own words',
+  nofailure: 'a failure reason (switches the verdict) / why it passes (optional)'};
+
+/* "No failure observed" is never offered beside a live failure reason; on a
+   no-failure turn a failure reason switches the verdict (.switch, confirmed). */
+function verdictButtons(v){
+  if (v === 'missing') return '<button class="save">Failure observed</button> <button class="none">No failure observed</button>';
+  if (v === 'nofailure') return '<button class="save switch">Failure observed (switches the verdict)</button> <button class="none">Save why it passes</button>';
+  return '<button class="save">Save reason</button>';
+}
+
+/* One reason. An accepted suggestion's note is marked and has no edit/retract:
+   it changes through its suggestion's decision. Modes show only under Axial coding. */
+function reasonRow(a, label){
+  const ai = a.source === 'accepted_suggestion';
+  return `<div class="saved${a.no_failure ? '' : ' fail'}" data-id="${esc(a.id)}"><span class="verdict">${esc(label)}</span>${
+    ai ? '<span class="meta">(AI, accepted)</span> ' : ''}${esc(a.note || '')}${
+    a.step !== 'reply' ? ` <span class="anchor">at ${esc(a.step)}</span>` : ''}${ai ? '' : NOTE_BUTTONS}</div>${
+    a.no_failure ? '' : modeRow(a)}`;
+}
+
+function wireNotes(){
+  for (const b of document.querySelectorAll('#conv .addnote')){
+    b.onclick = () => {
+      const box = b.closest('section').querySelector(`.stepnote[data-step="${CSS.escape(b.dataset.step)}"]`);
+      box.querySelector('.add').hidden = false;
+      box.querySelector('textarea').focus();
+    };
+  }
+  for (const box of document.querySelectorAll('.note')){
+    const buttons = box.querySelectorAll('button');
+    const post = async (no_failure) => {
+      const ta = box.querySelector('textarea');
+      const note = ta.value.trim();
+      if (!no_failure && !note) return;
+      /* A no-failure verdict keeps its reason: a close negative is only useful
+         at axial coding if it says why it passes. Only a failure needs text. */
+      // an edit keeps the edited note's step (the verdict box lists step notes too)
+      const target = S.annotations.find(a => a.id === box.dataset.supersedes);
+      const rec = {trace_id: box.dataset.trace, turn: Number(box.dataset.turn),
+                   step: target ? target.step : box.dataset.step,
+                   note,
+                   no_failure: !!no_failure,
+                   session_id: S.view.session_id, scenario_id: S.view.scenario_id,
+                   ts: new Date().toISOString()};
+      if (box.dataset.supersedes) rec.supersedes = box.dataset.supersedes;
+      buttons.forEach(b => b.disabled = true);       // a double-click would append twice
+      try {
+        const drafts = snapshotDrafts();
+        delete drafts[`${rec.trace_id}|${rec.turn}|${rec.step}`];   // this one is saved
+        if (!await send(rec, box, drafts)) return;   // text stays; it is the only copy
+      } finally {
+        buttons.forEach(b => b.disabled = false);
+      }
+    };
+    box.querySelector('.save').onclick = () => {
+      if (!box.querySelector('.save').classList.contains('switch')) return post(false);
+      if (!box.querySelector('textarea').value.trim()) return;
+      if (!confirm('Switch verdict to failure observed? Your "no failure observed" note is replaced (kept in history).')) return;
+      // one append: the failure reason supersedes the no-failure note
+      if (!box.dataset.supersedes)
+        box.dataset.supersedes = S.annotations.find(a => a.trace_id === box.dataset.trace && a.no_failure).id;
+      post(false);
+    };
+    const none = box.querySelector('.none');
+    if (none) none.onclick = () => post(true);
+    const cancel = box.querySelector('.cancel');
+    const more = box.querySelector('.addmore');
+    if (more) more.onclick = () => {
+      box.querySelector('.add').hidden = false; more.hidden = true;
+      box.querySelector('textarea').focus();
+    };
+    if (cancel) cancel.onclick = () => {
+      box.querySelector('textarea').value = '';
+      delete box.dataset.supersedes;
+      box.querySelector('.add').hidden = true;
+      if (more) more.hidden = false;
+    };
+
+    for (const row of box.querySelectorAll('.saved')){
+      const id = row.dataset.id;
+      if (!row.querySelector('.edit')) continue;   // an accepted suggestion's note
+      row.querySelector('.edit').onclick = () => {
+        const add = box.querySelector('.add');
+        if (add) add.hidden = false;
+        const ta = box.querySelector('textarea');
+        const a = S.annotations.find(x => x.id === id);
+        ta.value = a ? (a.note || '') : '';
+        box.dataset.supersedes = id;          // the next save replaces this record
+        ta.focus();
+        box.querySelector('.msg-err').textContent =
+          'editing — saving replaces that note (the original stays in history)';
+      };
+      /* Withdraw inline, with an optional reason: the note stays visible struck
+         through. It stays in the history but stops counting. */
+      const wd = row.querySelector('.wd'), retract = row.querySelector('.retract');
+      retract.onclick = () => { wd.hidden = false; retract.hidden = true; wd.querySelector('input').focus(); };
+      wd.querySelector('.wd-cancel').onclick = () => {
+        wd.querySelector('input').value = ''; wd.hidden = true; retract.hidden = false;
+      };
+      wd.querySelector('.wd-go').onclick = async () => {
+        const btns = wd.querySelectorAll('button');
+        btns.forEach(b => b.disabled = true);   // a second click would append a second tombstone
+        try {
+          const a = S.annotations.find(x => x.id === id);
+          await send({trace_id: box.dataset.trace, turn: Number(a ? a.turn : box.dataset.turn),
+                      step: a ? a.step : box.dataset.step, supersedes: id, retracted: true, ts: new Date().toISOString(),
+                      reason: wd.querySelector('input').value.trim()},
+                     box, snapshotDrafts());
+        } finally {
+          btns.forEach(b => b.disabled = false);
+        }
+      };
+    }
+  }
+}
+
+/* ---- Axial coding: a mode is attached to a NOTE. The row lists the modes whose
+   source_annotation_ids hold this note; "+ add mode" opens an inline panel under
+   the row (one at a time, S.pickerFor) listing the modes it is not in. Nothing is
+   assigned until a mode card is clicked. */
+const cutWords = (x, n) => {
+  if (x.length <= n) return x;
+  const s = x.slice(0, n - 1), sp = s.lastIndexOf(' ');
+  return (sp > n / 2 ? s.slice(0, sp) : s).replace(/[\s,.;:]+$/, '') + '…';
+};
+function modeRow(a){
+  if (!S.showAxial) return '';
+  const inIt = m => (m.source_annotation_ids || []).includes(a.id);
+  const chips = S.tax.modes.filter(inIt).map(m =>
+    `<span class="chip">${esc(m.name)}<button class="unmode" data-mode="${esc(m.name)}" title="remove this note from ${esc(m.name)}">×</button></span>`).join('');
+  const open = S.pickerFor === a.id;
+  const row = `<div class="moderow" data-id="${esc(a.id)}"><span class="lbl">MODE</span>${chips}
+    <button class="addmode-btn" aria-expanded="${open}">+ add mode</button><span class="stepref"></span></div>`;
+  if (!open) return row;
+  const cards = S.tax.modes.filter(m => !inIt(m))
+    .sort((x, y) => (y.trace_count - x.trace_count) || x.name.localeCompare(y.name))
+    .map(m => {
+      const ex = m.closest_example;
+      return `<button class="modecard" data-mode="${esc(m.name)}">
+        <div class="nm"><b>${esc(m.name)}</b> · ${plural(m.trace_count, 'trace')}</div>
+        <div class="df">${esc(m.definition || '')}</div>${ex ? `
+        <div class="ex">e.g. ${esc(ex.scenario_id)}: “${esc(cutWords(ex.note || '', 140))}”</div>` : ''}</button>`;
+    }).join('');
+  return row + `<div class="modepick" data-id="${esc(a.id)}">
+    <div class="ph">Add to a mode<button class="pclose" title="close (Esc)">close ×</button></div>
+    ${cards || '<div class="meta">This note is already in every mode.</div>'}</div>`;
+}
+
+/* Open (or close, id null) the mode panel. Re-rendering keeps S the only
+   source of truth for which panel is open; drafts survive via the snapshot. */
+function setPicker(id){
+  S.pickerFor = id;
+  renderConversation(snapshotDrafts());
+  if (id){
+    const p = [...document.querySelectorAll('#conv .modepick')].find(x => x.dataset.id === id);
+    const first = p && (p.querySelector('.modecard') || p.querySelector('.pclose'));
+    if (first) first.focus({preventScroll: true});
+  }
+}
+
+/* One POST for assign/unassign; returns the error text, or '' on success. */
+async function patternsPost(kind, body){
+  const r = await fetch('/api/patterns/' + kind, {method:'POST',
+    headers:{'Content-Type':'application/json'}, body: JSON.stringify(body)});
+  if (r.ok) return '';
+  const err = await r.json().catch(() => ({}));
+  return 'not saved: ' + (err.error || r.status);
+}
+
+async function afterPatterns(){
+  try { S.withdrawn = await j('/api/withdrawn'); } catch (e) { console.error(e); }
+  await renderTaxonomy(); renderProgress();
+  if (S.view) renderConversation(snapshotDrafts());
+}
+
+function wireModes(){
+  for (const row of document.querySelectorAll('#conv .moderow')){
+    const msg = row.querySelector('.stepref');
+    row.querySelector('.addmode-btn').onclick = () =>
+      setPicker(S.pickerFor === row.dataset.id ? null : row.dataset.id);
+    const panel = row.nextElementSibling;
+    if (panel && panel.classList.contains('modepick')){
+      panel.querySelector('.pclose').onclick = () => setPicker(null);
+      const cards = panel.querySelectorAll('.modecard');
+      for (const c of cards){
+        c.onclick = async () => {
+          cards.forEach(x => x.disabled = true);      // a double-click would assign twice
+          const err = await patternsPost('assign', {annotation_id: row.dataset.id, mode: c.dataset.mode});
+          if (err){ msg.textContent = err; cards.forEach(x => x.disabled = false); return; }
+          S.pickerFor = null;
+          await afterPatterns();
+        };
+      }
+    }
+    for (const b of row.querySelectorAll('.unmode')){
+      b.onclick = async () => {
+        b.disabled = true;
+        const err = await patternsPost('unassign', {annotation_id: row.dataset.id, mode: b.dataset.mode});
+        if (err){ msg.textContent = err; b.disabled = false; return; }
+        await afterPatterns();
+      };
+    }
+  }
+}
+
+/* ---- The conversation list. Every row's status is computed here from data the
+   page already holds (annotations, suggestions, taxonomy modes); the index adds
+   only batch membership. A turn is u(nreviewed), p(assed: notes, none a
+   failure) or f(ailing: a live failure note). */
+const TURN = {u: 'unreviewed', p: 'reviewed, no failure', f: 'has a failure note'};
+
+function rowInfo(r){
+  const notes = S.annotations.filter(a => r.trace_ids.includes(a.trace_id));
+  const fails = notes.filter(a => !a.no_failure);
+  const turns = r.trace_ids.map(t => !notes.some(a => a.trace_id === t) ? 'u'
+    : fails.some(a => a.trace_id === t) ? 'f' : 'p');
+  const failIds = new Set(fails.map(a => a.id));
+  /* In a mode by one of its notes OR by an example trace, as the Taxonomy tab counts it. */
+  const modes = S.tax.modes.filter(m => (m.source_annotation_ids || []).some(i => failIds.has(i))
+    || (m.example_trace_ids || []).some(t => r.trace_ids.includes(t)));
+  return {turns, failing: turns.filter(x => x === 'f').length, modes: modes.map(m => m.name),
+          // what the old "Needs a decision" caught: a failure note in no mode, or a gone example
+          needs: [...S.tax.unassigned, ...S.tax.gone].some(x => r.trace_ids.includes(x.trace_id)),
+          pending: S.suggestions.some(sg => (sg.status || 'pending') === 'pending'
+                                            && r.trace_ids.includes(sg.trace_id))};
+}
+
+/* Batch scope: 'sample' (any batch), 'pool' (not in the sample), or a batch name. */
+const inBatch = (r, b) => b === 'sample' ? r.in_sample : b === 'pool' ? !r.in_sample : r.batch === b;
+const STATUS = {all: ['all', () => true],
+                unreviewed: ['unreviewed', r => !r.reviewed],
+                failing: ['failing', (r, x) => x.failing > 0],
+                pending: ['suggestion pending', (r, x) => x.pending],
+                needs: ['needs a decision: no mode or gone example', (r, x) => x.needs]};
+
+function matches(i, info, f){
+  const r = S.index[i], x = info[i];
+  return inBatch(r, f.batch) && STATUS[f.status][1](r, x) && (!f.mode || x.modes.includes(f.mode));
+}
+
+/* A stable working set. Membership is captured when a filter changes, on boot
+   and on "refresh list" -- not re-filtered on every render, so a row does not
+   vanish (or appear) the moment a verdict is saved. Its chips still update
+   live; the header counts held rows that no longer match. Order is scenario
+   id only: an order that depends on review state moves rows while you work. */
+const sid = i => S.index[i] ? S.index[i].scenario_id : '';
+function capture(){
+  const info = S.index.map(rowInfo);
+  S.held = S.index.map((_, i) => i).filter(i => matches(i, info, S.f)).sort((a, b) => sid(a).localeCompare(sid(b)));
+}
+
+/* The served set: the captured rows. The open conversation may be outside it
+   (opened by a link or the URL): prev/next then move to its neighbours by
+   scenario id. */
+function navList(){ return S.held; }
+
+/* URL hash state: #batch=&status=&mode=&s=. Filters are replaced in place;
+   opening a conversation pushes, so back/forward step through what was opened. */
+const reviewHash = () => '#' + new URLSearchParams({...S.f, s: sid(S.cur)}).toString();
+function writeHash(push){
+  const h = reviewHash();
+  if (h === location.hash) return;
+  S.hashSeen = h;
+  history[push ? 'pushState' : 'replaceState'](null, '', h);
+}
+
+/* The Labels tab's own hash, told apart from Review's by tab=labels: #tab=labels&mode=<fqMode>&pair=<trace_id>|<mode>.
+   Entering the tab pushes it; a pair or mode change replaces it. */
+const isLabHash = () => new URLSearchParams(location.hash.slice(1)).get('tab') === 'labels';
+function writeLabHash(push){
+  const cur = S.lab.fq && S.lab.fq.items[S.lab.fi], p = {tab: 'labels', mode: S.lab.fqMode};
+  if (cur) p.pair = cur.trace_id + '|' + cur.mode;
+  const h = '#' + new URLSearchParams(p).toString();
+  if (h === location.hash) return;
+  S.hashSeen = h;
+  history[push ? 'pushState' : 'replaceState'](null, '', h);
+}
+
+/* Filters and the open conversation from the hash. An unknown value falls back
+   to its default rather than yielding an empty list; a known scenario opens even
+   when filtered out; an unknown one opens the first row (nothing when the list is empty).
+   A Labels hash records the wanted pair for renderFocus and leaves Review's state as it is
+   (its defaults on first load). Returns true for a Labels hash. */
+function applyHash(){
+  const raw = new URLSearchParams(location.hash.slice(1)), lab = raw.get('tab') === 'labels';
+  if (lab){
+    S.lab.want = {mode: raw.get('mode') || '', pair: raw.get('pair') || ''};
+    S.hashSeen = location.hash;
+    if (S.reviewSet) return true;
+  }
+  const h = lab ? new URLSearchParams() : raw, batches = new Set(S.index.map(r => r.batch).filter(Boolean));
+  const b = h.get('batch'), st = h.get('status'), m = h.get('mode');
+  const f = {batch: b === 'sample' || b === 'pool' || batches.has(b) ? b : 'sample',
+             status: Object.hasOwn(STATUS, st) ? st : 'all',   // not 'constructor' etc.
+             mode: S.tax.modes.some(x => x.name === m) ? m : ''};
+  if (!S.held.length || Object.keys(f).some(k => f[k] !== S.f[k])){ S.f = f; capture(); }
+  const i = S.index.findIndex(r => r.scenario_id === h.get('s'));
+  // A known conversation opens even outside the held list (it was opened from the
+  // Suggestions or Taxonomy tab, or dropped by a refresh); only an unknown one
+  // falls back to the first row.
+  S.cur = i >= 0 ? i : S.held[0] ?? -1;
+  S.reviewSet = true;
+  if (lab) return true;
+  writeHash(false);   // normalise: the URL shows what was actually applied
+  S.hashSeen = location.hash;
+  return false;
+}
+
+/* Back/forward, or a hash typed into the address bar. */
+function onHash(){
+  if (location.hash === S.hashSeen) return;
+  const labOn = $('#labels').classList.contains('on');
+  if (isLabHash()){
+    applyHash();
+    if (!labOn) setTab('labels');
+    else if (!S.lab.busy) renderLabels();   // busy: the save's own render applies the wanted pair
+    return;
+  }
+  // Back from Labels to the Review entry it was entered from: only the tab changes.
+  if (labOn && location.hash === reviewHash()){ S.hashSeen = location.hash; setTab('review'); return; }
+  // Declined: the browser already moved to the target entry; push the current
+  // conversation back rather than overwrite the target: the target entry is kept;
+  // forward entries are dropped, as with any new navigation.
+  if (!mayLeave()){ labOn ? writeLabHash(true) : writeHash(true); return; }
+  applyHash(); show();
+  if (labOn) setTab('review');
+}
+window.addEventListener('popstate', onHash);
+window.addEventListener('hashchange', onHash);
+
+function openConv(i){
+  S.cur = i; writeHash(true); show();
+}
+
+function listRow(i, x){
+  const r = S.index[i];
+  const chips = x.turns.map((t, k) => `<span class="tc ${t}" title="turn ${k + 1}: ${TURN[t]}"></span>`).join('');
+  /* One line per conversation so more fit on screen: the chips carry the turn
+     count, so it is not repeated as text; long mode names truncate (full on hover). */
+  const role = r.user_role === 'support' ? 'support' : roleName(r.user_role);
+  /* The chips are the whole status (count = turns, colour = reviewed / failing,
+     position = which turn), so no separate reviewed/total pill; the right edge
+     shows the batch instead. */
+  return `<div class="lrow${i === S.cur ? ' cur' : ''}" data-i="${i}" title="${esc(r.scenario_id)} · ${
+      esc(roleName(r.user_role))} · ${plural(r.turns, 'turn')} · ${r.turns_annotated} reviewed${
+      x.failing ? `, ${x.failing} failing` : ''} · ${esc(r.batch || 'not in sample')}">
+    <b>${esc(r.scenario_id.replace(/^support-/, ''))}</b><span class="role">${esc(role)}</span><span>${chips}</span>${
+      x.pending ? '<span class="dia" title="an AI suggestion is pending">◆</span>' : ''}
+    <span class="modes" title="${esc(x.modes.join(', '))}">${x.modes.map(m => `<span class="chip">${esc(m)}</span>`).join('')}</span>
+    <span class="bt${r.batch ? '' : ' pool'}">${esc(r.batch || 'pool')}</span></div>`;
+}
+
+/* The batch filter grouped by hw4.md Part B batch, read from the manifest's
+   part_b_batch; ids stay as they are (they key the manifest, suggestions and the
+   URL hash), only the label says which handout batch and, for a depth search,
+   which mode. A batch with no part_b_batch lands under "other". */
+const PART_B = {1: 'Batch 1 · uniform + cluster', 2: 'Batch 2 · by user role',
+                3: 'Batch 3 · depth search', 4: 'Batch 4 · final uniform'};
+function batchOptions(names, opt){
+  const meta = new Map((S.manifest.batches || []).map(b => [b.batch, b]));
+  const groups = new Map(Object.keys(PART_B).map(k => [String(k), []]));
+  for (const b of names){
+    const m = meta.get(b) || {}, k = m.part_b_batch ? String(m.part_b_batch) : 'other';
+    if (!groups.has(k)) groups.set(k, []);
+    groups.get(k).push(opt('batch', b, m.mode ? `${b} · ${m.mode.replaceAll('_', ' ')}` : b));
+  }
+  return [...groups].map(([k, opts]) => `<optgroup label="${esc(PART_B[k] || 'other')}${
+      opts.length ? '' : ' (not drawn)'}">${opts.join('')}</optgroup>`).join('');
+}
+
+function renderList(){
+  const info = S.index.map(rowInfo);
+  const count = over => S.index.filter((_, i) => matches(i, info, {...S.f, ...over})).length;
+  const opt = (key, value, label) => `<option value="${esc(value)}"${S.f[key] === value ? ' selected' : ''}>${
+    esc(label)} (${count({[key]: value})})</option>`;
+  const batches = [...new Set(S.index.map(r => r.batch).filter(Boolean))].sort();
+  const L = navList();
+  const warn = S.manifest.manifest_ok ? '' : `<div class="warn">Sample unreadable: ${
+    esc(S.manifest.reason)}. Every conversation reads as "not in sample"; fix the manifest and reload.</div>`;
+  $('#list').innerHTML = `<div class="filters">${warn}
+      <label for="f-batch">Batch</label><select id="f-batch" data-f="batch">${opt('batch', 'sample', 'sample (all batches)')}${
+        batchOptions(batches, opt)}${opt('batch', 'pool', 'not in sample (pool only)')}</select>
+      <label for="f-status">Status</label><select id="f-status" data-f="status">${Object.entries(STATUS).map(([k, [label]]) =>
+        opt('status', k, k === 'all' ? 'all statuses' : label)).join('')}</select>
+      <label for="f-mode">Mode</label><select id="f-mode" data-f="mode">${opt('mode', '', 'any mode')}${S.tax.modes.map(m =>
+        opt('mode', m.name, m.name + (m.status === 'dropped' ? ' (retired)' : ''))).join('')}</select>
+      <div class="meta scope">${scopeLine(L, count({status: 'all', mode: ''}), L.filter(i => !matches(i, info, S.f)).length)}</div></div>`
+    + (L.map(i => listRow(i, info[i])).join('') || '<p class="empty">no conversation matches</p>');
+  for (const sel of document.querySelectorAll('#list select')){
+    sel.onchange = () => {
+      S.f[sel.dataset.f] = sel.value; capture(); writeHash(false);
+      /* Open the first match when the open conversation left the list, or j/k
+         would continue from its position in the middle of the new list. */
+      const L = navList();
+      if (L.length && !L.includes(S.cur) && mayLeave()){ S.cur = L[0]; writeHash(false); show(); return; }
+      renderPos();
+      if (sel.dataset.f === 'status' && S.f.status === 'failing'){ S.failAt = -1; nextFailure(); }
+    };
+  }
+  const refresh = document.querySelector('#list .refresh');
+  if (refresh) refresh.onclick = () => { capture(); renderPos(); };
+  for (const el of document.querySelectorAll('#list .lrow')){
+    el.onclick = () => {
+      const i = Number(el.dataset.i);
+      if (i !== S.cur && mayLeave()) openConv(i);
+    };
+  }
+  return L;
+}
+
+/* "depth-4 · all statuses · any mode · 2 of 2": the filters in words, the held
+   rows of the batch scope, and how many held rows no longer match. */
+function scopeLine(L, scope, changed){
+  const batch = {sample: 'sample (all batches)', pool: 'not in sample'}[S.f.batch] || S.f.batch;
+  const status = S.f.status === 'all' ? 'all statuses' : STATUS[S.f.status][0];
+  return `${esc(batch)} · ${esc(status)} · ${esc(S.f.mode || 'any mode')} · <b>${L.length}</b> of ${scope}
+    <button class="refresh linkbtn" title="re-apply the filters to current data">↻ refresh list${
+      changed ? ` · ${changed} changed` : ''}</button>`;
+}
+
+function renderPos(){
+  const L = renderList(), k = L.indexOf(S.cur);
+  $('#pos').textContent = `${k < 0 ? '–' : k + 1} / ${L.length}`;
+}
+
+/* One POST path for save, edit and retract, so the error handling is identical. */
+async function send(rec, box, drafts){
+  /* Two phases: only the POST may report "not saved". Once it succeeded, a
+     failed refresh must still return true, or a retry writes a second note. */
+  try {
+    const r = await fetch('/api/annotations', {method:'POST',
+      headers:{'Content-Type':'application/json'}, body: JSON.stringify(rec)});
+    if (!r.ok){
+      const err = await r.json().catch(() => ({}));
+      box.querySelector('.msg-err').textContent = 'not saved: ' + (err.error || r.status);
+      return false;
+    }
+  } catch (e) {
+    box.querySelector('.msg-err').textContent = 'not saved (' + e + ') — text kept';
+    return false;
+  }
+  box.querySelector('.msg-err').textContent = '';
+  try {
+    S.annotations = await j('/api/annotations');
+    S.index = await j('/api/index');
+    S.superseded = (await j('/api/history')).superseded_counts;
+    S.withdrawn = await j('/api/withdrawn');
+    renderProgress(); await renderTaxonomy();
+    if (drafts) renderConversation(drafts);   // one path for save, edit and retract
+  } catch (e) {
+    console.error(e);
+    box.querySelector('.msg-err').textContent = 'saved — refresh failed, reload the page (' + e + ')';
+  }
+  return true;
+}
+
+/* keepNulls: on an evidence card a null IS the evidence — order 8002 is
+   `delivered` with delivered_at null, and hiding the row leaves the reviewer
+   unable to distinguish "missing" from "not rendered". */
+function kv(obj, skip, keepNulls){
+  const rows = Object.entries(obj)
+    .filter(([k,v]) => !skip.includes(k)
+                       && (keepNulls || (v !== null && v !== undefined))
+                       && !(Array.isArray(v) && !v.length))
+    .map(([k,v]) => `<tr><td class="k">${esc(k)}</td><td>${
+      Array.isArray(v) ? v.map(x => esc(JSON.stringify(x))).join('<br>')
+      : (v === null || v === undefined) ? '<span class="k">—</span>'
+      : esc(v)}</td></tr>`);
+  return `<table>${rows.join('')}</table>`;
+}
+
+function renderRail(){ $('#rail').innerHTML = railHtml(S.view); }
+
+/* The evidence cards of one session view (facts, policy, world_asof): Review's rail and the Labels
+   card's Evidence section. Styled under .rail or .ev-rail. */
+function railHtml(view){
+  const f = view.facts, p = view.policy, out = [];
+  out.push(`<h4>Evidence <span class="k">as of ${esc(view.world_asof)}</span></h4>`);
+  for (const o of f.orders){
+    out.push('<div class="card">');
+    out.push(`<div><code>order ${o.order_id}</code></div>`);
+    out.push((o.flags || []).map(x => `<span class="flag">${esc(x)}</span>`).join(''));
+    out.push(kv(o, ['order_id','flags'], true));
+    out.push('</div>');
+  }
+  for (const pr of f.products){
+    out.push('<div class="card">');
+    out.push(`<div><code>product ${pr.product_id}</code></div>`);
+    out.push((pr.flags || []).map(x => `<span class="flag">${esc(x)}</span>`).join(''));
+    out.push(kv(pr, ['product_id','flags'], true));
+    out.push('</div>');
+  }
+  if (!f.orders.length && !f.products.length)
+    out.push('<div class="card">no order or product referenced</div>');
+  const list = (xs) => xs.length
+    ? `<ul class="plain">${xs.map(x => `<li><code>${esc(x)}</code></li>`).join('')}</ul>`
+    : '<ul class="plain"><li>none</li></ul>';
+  out.push('<h4>Policy</h4><div class="card">');
+  out.push(`<div class="k">opened (get_policy)</div>${list(p.opened)}`);
+  out.push(`<div class="k">surfaced in search only</div>${list(p.surfaced)}`);
+  out.push(`<div class="k">cited in replies</div>${list(p.cited)}`);
+  out.push(`<div class="${p.cited_not_opened.length ? 'gap' : 'k'}">cited but never opened: ${
+    p.cited_not_opened.length ? esc(p.cited_not_opened.join(', ')) : '—'}</div>`);
+  if (p.cited_not_seen_at_all.length)
+    out.push(`<div class="gap">cited but never seen at all: ${
+      esc(p.cited_not_seen_at_all.join(', '))}</div>`);
+  out.push('</div>');
+  return out.join('');
+}
+
+/* ---- AI suggestions: agent depth-search hits the reviewer accepts or rejects.
+   A rejection needs a reason (the boundary that excluded the trace) and is kept;
+   an acceptance becomes the reviewer's own failure note on the server. */
+const modeDef = name => (S.modes.find(m => m.name === name) || {}).definition || '';
+
+/* Searches whose quote is just the reply's first sentence (depth_search.py
+   quotes with re.compile(r".")): the failure is an absence, so the quote is not
+   evidence of it: the search's reason is the evidence, shown once. */
+const ABSENCE_MODES = new Set(['missed_mandatory_escalation', 'skipped_order_search']);
+const evidenceLines = sg => ABSENCE_MODES.has(sg.mode) ? `<div>Evidence: ${esc(sg.reason || sg.evidence || '')}</div>`
+  : `<div>Why: ${esc(sg.reason || sg.evidence || '')}</div>${sg.quote ? `<div>Evidence: “${esc(sg.quote)}”</div>` : ''}`;
+
+/* Collapsed to one line until the turn has a verdict, so the reviewer reads
+   the turn before weighing the search's claim. */
+function aiSection(turn, v, reasons){
+  if (!S.showSugg) return '';
+  const mine = S.suggestions.filter(sg => sg.trace_id === turn.trace_id);
+  if (!mine.length) return '';
+  const pending = mine.filter(sg => (sg.status || 'pending') === 'pending');
+  if (v === 'missing' && pending.length && !S.aiOpen.has(turn.trace_id))
+    return `<div class="vsec ai"><button class="aishow linkbtn" data-trace="${esc(turn.trace_id)}">AI suggests a reason: ${
+      esc(pending.map(sg => sg.mode).join(', '))} ▸</button></div>`;
+  return `<div class="vsec ai">${mine.map(sg => aiCard(sg, v, reasons)).join('')}</div>`;
+}
+
+/* What a decided suggestion did, in the reasons' numbering. */
+function decisionSummary(sg, reasons){
+  const d = sg.decision || {}, n = id => reasons.findIndex(a => a.id === id) + 1;
+  if (sg.status === 'rejected') return 'not a failure here';
+  if (d.attached) return n(d.attached.annotation_id) ? `covered by reason ${n(d.attached.annotation_id)}` : 'covered by your reason';
+  const own = reasons.find(a => a.suggestion_id === sg.id);
+  return own ? `added as reason ${n(own.id)}` : 'added (its note is no longer live)';
+}
+
+function aiCard(sg, v, reasons){
+  const st = sg.status || 'pending', dec = sg.decision || {};
+  // the server's default text for "covered" adds nothing to decisionSummary
+  const d = dec.attached && dec.reason === `covered by reason ${dec.attached.annotation_id}` ? {...dec, reason: ''} : dec;
+  if (st !== 'pending' && !S.expanded.has(sg.id))
+    return `<div class="sugg done" data-sid="${esc(sg.id)}"><span class="lbl">AI SUGGESTED</span> <b>${esc(sg.mode)}</b> — ${
+      esc(decisionSummary(sg, reasons))}${d.reason ? ': ' + esc(d.reason) : ''}<button class="chg">change</button></div>`;
+  return `<div class="sugg" data-sid="${esc(sg.id)}">
+    <div><span class="lbl">AI suggests a reason:</span> <b>${esc(sg.mode)}</b>${sg.strength === 'weak' ? ' (possible)' : ''}</div>
+    ${evidenceLines(sg)}
+    <div class="prov">turn ${esc(sg.turn)} · ${esc(sg.step)} · ${esc(sg.strength || '')} · ${esc(sg.signal || '')} · <details class="def">
+      <summary>definition</summary>${esc(modeDef(sg.mode))}</details></div>${
+    st !== 'pending' ? `<div class="meta">now ${esc(decisionSummary(sg, reasons))}${d.reason ? ': ' + esc(d.reason) : ''} — you can change it</div>` : ''}
+    <div class="row"><button class="acc">${v === 'nofailure' ? 'Add as reason — switches verdict to failure observed' : 'Add as reason'}</button>
+      ${coverControl(sg, reasons)} <button class="rej">Not a failure here</button>
+      <span class="msg-err" style="color:var(--warn);font-size:12px"></span></div>
+    <div class="aiform" hidden><textarea></textarea>
+      <div class="row"><button class="go"></button> <button class="ai-cancel">cancel</button></div></div></div>`;
+}
+
+/* "Covered by my reason" attaches one of YOUR failure reasons on this turn to
+   the suggested mode. A reason already in another mode cannot (one failure,
+   one mode); with several, the reviewer picks which. */
+function coverControl(sg, reasons){
+  const inOther = a => (S.tax.modes.find(m => m.name !== sg.mode && (m.source_annotation_ids || []).includes(a.id)) || {}).name;
+  const own = reasons.map((a, k) => ({a, n: k + 1, other: inOther(a)})).filter(x => x.a.source !== 'accepted_suggestion');
+  const ok = own.filter(x => !x.other);
+  const why = !own.length ? 'no failure reason of yours on this turn'
+    : !ok.length ? own.map(x => `your reason ${x.n} is in mode ${x.other}`).join('; ') : '';
+  const pick = own.length > 1 ? `<select class="cover-pick">${own.map(x => `<option value="${esc(x.a.id)}"${
+    x.other ? ' disabled' : ''}>reason ${x.n}${x.other ? ' (in mode ' + esc(x.other) + ')' : ''}</option>`).join('')}</select> ` : '';
+  return `${ok.length ? pick : ''}<span title="${esc(why)}"><button class="cov"${
+    ok.length === 1 && !pick ? ` data-annotation="${esc(ok[0].a.id)}"` : ''}${why ? ' disabled' : ''}>Covered by my reason</button></span>`;
+}
+
+function wireSuggestions(){
+  for (const b of document.querySelectorAll('#conv .aishow')){
+    b.onclick = () => { S.aiOpen.add(b.dataset.trace); renderConversation(snapshotDrafts()); };
+  }
+  for (const b of document.querySelectorAll('#conv .sugg .chg')){
+    b.onclick = () => { S.expanded.add(b.closest('.sugg').dataset.sid); renderConversation(snapshotDrafts()); };
+  }
+  for (const card of document.querySelectorAll('#conv .sugg[data-sid]:not(.done)')){
+    const sid = card.dataset.sid, ta = card.querySelector('.aiform textarea');
+    card.querySelector('.acc').onclick = () => openAiForm(card, 'acc');
+    card.querySelector('.rej').onclick = () => openAiForm(card, 'rej');
+    card.querySelector('.ai-cancel').onclick = () => { ta.value = ''; card.querySelector('.aiform').hidden = true; };
+    const cov = card.querySelector('.cov'), pick = card.querySelector('.cover-pick');
+    cov.onclick = () => decide(sid, 'accepted', '', card, null, pick ? pick.value : cov.dataset.annotation);
+    card.querySelector('.go').onclick = () =>
+      decide(sid, card.dataset.form === 'rej' ? 'rejected' : 'accepted', ta.value, card);
+  }
+}
+
+/* Only a rejection needs the reviewer's words (they become the mode boundary).
+   "Add as reason" opens the AI's why, editable, so what gets saved is seen
+   before it is confirmed; "Covered by my reason" needs no text. */
+function openAiForm(card, kind, text){
+  const sg = S.suggestions.find(x => x.id === card.dataset.sid) || {};
+  const form = card.querySelector('.aiform'), ta = form.querySelector('textarea'), go = form.querySelector('.go');
+  card.dataset.form = kind; form.hidden = false;
+  ta.value = text ?? (kind === 'acc' ? (sg.reason || sg.evidence || '') : '');
+  ta.placeholder = kind === 'acc' ? 'the reason to add (the AI\'s why, edit if needed)'
+    : 'why this trace does not show this failure — becomes the mode boundary (required)';
+  go.textContent = kind === 'acc' ? card.querySelector('.acc').textContent : 'Confirm: not a failure here';
+  const gate = () => { go.disabled = kind === 'rej' && !ta.value.trim(); };
+  ta.oninput = gate; gate();
+  if (text === undefined) ta.focus();   // not when a re-render restores a draft
+}
+
+/* annotationId: "covered by my reason" -- the server attaches that note to the
+   mode, writes none, and withdraws a live no-failure note in the same write. */
+async function decide(id, decision, reason, card, verdict, annotationId){
+  const buttons = card.querySelectorAll('button');
+  buttons.forEach(b => b.disabled = true);            // a double-click would 409
+  let r;
+  try {   // only the POST may report "not saved" (see send())
+    r = await fetch('/api/suggestions/decision', {method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({id, decision, reason, ...(verdict ? {verdict} : {}),
+                            ...(annotationId ? {annotation_id: annotationId} : {})})});
+    if (!r.ok){
+      const err = await r.json().catch(() => ({}));
+      card.querySelector('.msg-err').textContent = 'not saved: ' + (err.error || r.status);
+      buttons.forEach(b => b.disabled = false);
+      return false;
+    }
+  } catch (e) {
+    card.querySelector('.msg-err').textContent = 'not saved (' + e + ')';
+    buttons.forEach(b => b.disabled = false);
+    return false;
+  }
+  try {
+    const body = await r.json().catch(() => ({}));
+    const mu = body.mode_update;
+    S.flash = mu && mu.length ? {trace: (body.suggestion || {}).trace_id,
+                    text: mu.map(u => `${u.action === 'added' ? 'added to' : 'removed from'} ${u.mode} (${u.count})`).join('; ')} : null;
+    const drafts = snapshotDrafts();
+    delete drafts['sg|' + id];   // this card's reason is now saved
+    S.expanded.delete(id);
+    S.suggestions = await j('/api/suggestions');
+    S.annotations = await j('/api/annotations');
+    S.index = await j('/api/index');
+    S.superseded = (await j('/api/history')).superseded_counts;
+    S.withdrawn = await j('/api/withdrawn');
+    await renderTaxonomy();
+    renderConversation(drafts); renderSuggestions(); renderProgress();
+  } catch (e) {
+    console.error(e);
+    const err = card.querySelector('.msg-err');
+    if (err) err.textContent = 'saved — refresh failed, reload the page (' + e + ')';
+  } finally {
+    buttons.forEach(b => b.disabled = false);
+  }
+  return true;   // the decision was saved, even if the refresh failed
+}
+
+function renderSuggestions(){
+  const n = st => S.suggestions.filter(x => (x.status || 'pending') === st).length;
+  const rows = S.suggestions.map(sg => {
+    const served = S.index.findIndex(r => r.trace_ids.includes(sg.trace_id));
+    return `<tr class="row" data-i="${served}"><td>${esc((sg.status || 'pending'))}</td>
+      <td>${esc(sg.scenario_id)}${served < 0 ? ' <span class="meta">(not served)</span>' : ''}</td>
+      <td><b>${esc(sg.mode)}</b><div class="meta">${esc(sg.signal)}</div></td>
+      <td>${esc(sg.evidence)}${sg.decision && sg.decision.reason
+        ? `<div class="meta">reason: ${esc(sg.decision.reason)}</div>` : ''}</td></tr>`;
+  }).join('');
+  $('#sugg').innerHTML = S.suggestions.length
+    ? `<p>${n('pending')} pending · ${n('accepted')} accepted · ${n('rejected')} rejected.
+         Click a row to open the conversation and decide there.</p>
+       <table class="slist">${rows}</table>`
+    : '<p class="empty">No suggestions yet. The agent writes them to analysis/state/suggestions.json.</p>';
+  for (const tr of document.querySelectorAll('#sugg tr.row')){
+    tr.onclick = () => {
+      const i = Number(tr.dataset.i);
+      if (i < 0 || !mayLeave()) return;
+      openConv(i);
+      document.querySelector('.tabs button[data-tab="review"]').click();
+    };
+  }
+}
+
+/* A scenario in the pool opens it on the Review tab; any other is plain text. */
+function scenLink(sid){
+  const i = S.index.findIndex(r => r.scenario_id === sid);
+  return i < 0 ? esc(sid) : `<a href="#" class="open" data-i="${i}">${esc(sid)}</a>`;
+}
+
+const alsoIn = (xs, label = 'also in') => xs && xs.length ? ` <span class="meta">${esc(label)}: ${esc(xs.join(', '))}</span>` : '';
+
+/* `mode` given: a positive, with a [Remove] (by its note, or by trace when the
+   row has no source note). Close negatives pass none. */
+function exampleRow(e, mode){
+  const where = e.scenario_id ? `${scenLink(e.scenario_id)} (t${esc(e.turn)})` : `<code>${esc(e.trace_id)}</code>`;
+  const rm = mode ? ` <button class="unassign" data-mode="${esc(mode)}" ${e.annotation_id
+      ? `data-annotation="${esc(e.annotation_id)}"` : `data-trace="${esc(e.trace_id)}"`}>Remove</button>` : '';
+  return `<li>${where} ${e.note == null ? '<span class="meta">no live note</span>' : esc(e.note)}${
+    e.from_suggestion ? ' <span class="meta">(accepted AI suggestion)</span>' : ''}${alsoIn(e.in_modes)}${rm}</li>`;
+}
+
+/* Never throws: a refresh that fails after a successful save must not read as
+   "not saved" to the caller (a retry would write a second note). */
+async function renderTaxonomy(){
+  try { await loadTaxonomy(); }
+  catch (e) {
+    console.error(e);
+    const meta = $('#h-meta');
+    if (meta && !meta.textContent.includes('taxonomy failed')) meta.textContent += ` · taxonomy failed to load (${e.message || e})`;
+  }
+}
+
+async function loadTaxonomy(){
+  const t = await j('/api/taxonomy');
+  if (!t || !Array.isArray(t.modes)) throw new Error((t && t.error) || 'bad /api/taxonomy response');
+  S.tax = t;
+  const names = t.modes.map(m => `<option value="${esc(m.name)}">${esc(m.name)}</option>`).join('');
+  const un = t.unassigned.map(u => `<div class="card"><b>${scenLink(u.scenario_id)}</b> · t${esc(u.turn)}${alsoIn(u.in_modes, 'trace also listed in')}
+      <div>${esc(u.note)}</div>
+      <select><option value="" disabled selected>choose a mode</option>${names}</select> <button class="assign" data-annotation="${esc(u.annotation_id)}">Assign</button>
+      <span class="stepref"></span></div>`).join('');
+  const where = g => g.scenario_id ? scenLink(g.scenario_id) : `<code>${esc(g.trace_id)}</code>`;
+  const gone = t.gone.map(g => g.kind === 'no_note'
+    ? `<div class="card"><b>${where(g)}</b> · t${esc(g.turn)} <span class="meta">in ${esc(g.mode)}</span>
+      <div>listed as example but no note recorded</div>
+      <span class="meta">assign its failure note to ${esc(g.mode)}</span></div>`
+    : `<div class="card"><b>${where(g)}</b> · t${esc(g.turn)} <span class="meta">in ${esc(g.mode)}</span>
+      <div>evidence note was withdrawn or changed to no failure</div>
+      <div class="meta">${g.live_note ? 'latest note on this trace: ' + esc(g.live_note.note) : 'no live note on this trace'}</div>
+      <button class="unassign" data-annotation="${esc(g.annotation_id)}" data-mode="${esc(g.mode)}">Remove from ${esc(g.mode)}</button>
+      <span class="stepref"></span></div>`).join('');
+  const conflicts = m => (m.conflicts || []).map(c => `<div class="stepref">listed as both example and close negative: ${
+      c.scenario_id ? esc(c.scenario_id) : esc(c.trace_id)} (t${esc(c.turn)})</div>`).join('');
+  const cards = [...t.modes].sort((a, b) => b.trace_count - a.trace_count).map(m => `<div class="card">
+      <b>${esc(m.name)}</b><span class="badge ${m.trace_count < 3 ? 'missing' : 'ok'}">${plural(m.conversation_count, 'conversation')} · ${plural(m.trace_count, 'trace')} ${m.trace_count < 3 ? 'needs 3' : '✓'}</span>
+      <div>${esc(m.definition)}</div>
+      <div class="meta bound">${esc(m.boundary)}</div>
+      <div class="meta">source: ${esc(m.requirement_source)} · evaluator: ${esc(m.evaluator_type)}</div>
+      <ul class="plain">${m.examples.map(e => exampleRow(e, m.name)).join('')}</ul>
+      ${conflicts(m)}
+      <details><summary class="meta">close negatives (${m.negatives.length})</summary>
+        <ul class="plain">${m.negatives.map(e => exampleRow(e)).join('')}</ul></details>
+      <span class="stepref"></span></div>`).join('');
+  $('#tax').innerHTML = `<h4>Not yet in a mode (${t.unassigned.length})</h4>`
+    + (un || '<p class="empty">Every failure note is in a mode.</p>')
+    + (t.gone.length ? `<h4>Needs a decision (${t.gone.length})</h4>` + gone : '')
+    + `<h4>Modes (${t.modes.length})</h4>` + cards;
+  for (const a of document.querySelectorAll('#tax a.open')){
+    a.onclick = e => {
+      e.preventDefault();
+      if (!mayLeave()) return;
+      setAxial(true);          // arriving from the taxonomy means assigning notes
+      openConv(Number(a.dataset.i));
+      document.querySelector('.tabs button[data-tab="review"]').click();
+    };
+  }
+  for (const b of document.querySelectorAll('#tax button.assign')){
+    b.onclick = async () => {
+      const mode = b.previousElementSibling.value;
+      if (!mode){ b.nextElementSibling.textContent = 'choose a mode first'; return; }
+      b.disabled = true;
+      const err = await patternsPost('assign', {annotation_id: b.dataset.annotation, mode});
+      if (err){ b.nextElementSibling.textContent = err; b.disabled = false; return; }
+      await afterPatterns();
+    };
+  }
+  for (const b of document.querySelectorAll('#tax button.unassign')){
+    b.onclick = async () => {
+      b.disabled = true;
+      const body = b.dataset.annotation ? {annotation_id: b.dataset.annotation} : {trace_id: b.dataset.trace};
+      const err = await patternsPost('unassign', {...body, mode: b.dataset.mode});
+      if (err){ b.closest('.card').querySelector('.stepref').textContent = err; b.disabled = false; return; }
+      await afterPatterns();
+    };
+  }
+  renderPos();
+}
+
+async function renderProgress(){
+  const p = await j('/api/progress');
+  $('#h-prog').textContent = `reviewed ${p.conversations_reviewed}/${p.conversations_total}`;
+  $('#prog').innerHTML = Object.entries(p)
+    .map(([k,v]) => `<tr><td class="k">${esc(k.replace(/_/g,' '))}</td><td><b>${esc(v)}</b></td></tr>`)
+    .join('');
+}
+
+/* Part E: one Failure / No failure label per (sampled trace, final mode), in two steps per pair.
+   1 Decide is blind and holds the only form: no AI answer on the page. 2 Compare follows the first save:
+   your live answer next to the AI's, both quote sets marked in the reply. Only Save writes; the server
+   records the blind answer (the pair's first focus save) and derives `switched` from the history. */
+S.lab = {fq:null, fi:null, sessions:{}, busy:false, fqMode:'', modes:[], chip:'todo',
+         want:null,     // {mode, pair} from a Labels URL hash, applied by the next renderFocus
+         drafts:{},     // trace_id|mode -> {verdict, text, base}: the step 1 form, kept across renders and j/k; base = the live values it started from
+         revising:{},   // trace_id|mode -> true while a labeled pair is back in step 1 (Revise)
+         msg:{},        // trace_id|mode -> the last save outcome on the card ("nothing changed", an error); cleared on navigation
+         headMsg:''};   // the last Langfuse verify result
+const labName = v => v === 1 ? 'Failure' : 'No failure';   // stored 1 / 0. Not Pass/Fail: HW5 stores Pass as 1
+/* ts -> "16:52" today, else "11-10" (local time). */
+const whenShort = ts => {
+  const d = new Date(ts), p2 = n => String(n).padStart(2, '0');
+  if (isNaN(d)) return '';
+  return d.toDateString() === new Date().toDateString() ? `${p2(d.getHours())}:${p2(d.getMinutes())}` : `${p2(d.getMonth() + 1)}-${p2(d.getDate())}`;
+};
+/* One line per label record, oldest first: the blind answer and the AI's answer at that moment, then each
+   change. `switched` is the server's, derived from the history; `note` exists on legacy records only. */
+const histHtml = h => (h || []).map((r, i) => {
+  /* A verdict change with no `switched` because no AI answer was recorded (none on it or on the first record). */
+  const noAi = r.switched == null && !(r.ai || h[0].ai) ? ' (AI then: not recorded)' : '';
+  const what = i > 0 ? `→ ${r.switched ? 'switched to ' : ''}${labName(r.label)}${r.switched ? " (AI's)" : ''}${
+        r.label !== h[i - 1].label ? noAi : ''}`
+    : r.blind_label == null ? `You: ${labName(r.label)} (not blind)`
+    : `You: ${labName(r.blind_label)} (blind)${r.ai ? ` · AI then: ${labName(r.ai.label)}` : ''}${
+        r.label !== r.blind_label ? ` → ${r.switched ? 'switched to ' : ''}${labName(r.label)}${noAi}` : ''}`;
+  return `<div>${esc(what)} <span class="meta">${whenShort(r.ts)}</span>${r.note ? ` · "${esc(r.note)}"` : ''}</div>`;
+}).join('');
+const propEv = p => ((p && p.evidence) || '').replace(/^UNSURE:\s*/, '').trim();
+/* {body} when saved, else {err}; never throws (network down, non-JSON reply). */
+async function postLabel(body){
+  try {
+    const r = await fetch('/api/labels', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)});
+    const d = await r.json().catch(() => ({}));
+    return r.ok ? {body: d} : {err: d.error || `HTTP ${r.status}`};
+  } catch (e) { return {err: `not saved: ${e.message || e}`}; }
+}
+const queueUrl = () => '/api/labels/queue' + (S.lab.fqMode ? '?mode=' + encodeURIComponent(S.lab.fqMode) : '');
+/* Re-read the queue and stay on pair `key` (else the first pair still to do). */
+async function reloadQueue(key){
+  S.lab.fq = await j(queueUrl());
+  const here = S.lab.fq.items.findIndex(x => x.trace_id + '|' + x.mode === key);
+  S.lab.fi = here >= 0 ? here : nextUndone(S.lab.fq.items, -1);
+}
+/* A step 1 form: the live record's values (empty for an unlabeled pair), which are also its base. */
+const newDraft = x => { const b = x.label ? {verdict: x.label.label, text: x.label.evidence || ''} : {verdict: null, text: ''}; return {...b, base: b}; };
+/* Unsaved: the verdict or the trimmed text differs from the live values the draft started from. */
+const dirty = d => !!d && (d.verdict !== d.base.verdict || d.text.trim() !== d.base.text.trim());
+const warnUnload = e => { e.preventDefault(); e.returnValue = ''; };
+/* The leave warning is registered only while some draft is unsaved, so a clean page closes quietly. */
+function syncUnload(){
+  removeEventListener('beforeunload', warnUnload);
+  if (Object.values(S.lab.drafts).some(dirty)) addEventListener('beforeunload', warnUnload);
+}
+/* The queue chips: To do (unlabeled), Differs from AI (live label != the current AI answer), All.
+   A taxonomy item's proposal is the reviewer's own HW4 judgment, not an AI answer, so it never differs. */
+const differsFromAi = x => !!(!x.taxonomy && x.label && x.proposal && x.label.label !== x.proposal.label);
+const CHIPS = [['todo', 'To do', x => !x.label], ['differs', 'Differs from AI', differsFromAi], ['all', 'All', () => true]];
+/* Step 2 agreement tag. For two Failure verdicts it compares claims: the reviewer's quotes (quotesIn,
+   every occurrence) and the AI's quotes (first occurrence, as highlight() marks them), as [start, end)
+   in the normalized reply text; overlapping spans are the same claim. */
+const yourSpans = (n, ev) => quotesIn(ev).flatMap(s => {
+  const q = norm(s), out = [];
+  for (let at = n.indexOf(q); at >= 0; at = n.indexOf(q, at + 1)) out.push([at, at + q.length]);
+  return out;
+});
+const aiSpans = (n, ev) => quotesIn(ev).map(q => { const k = n.indexOf(norm(q)); return k >= 0 ? [k, k + q.length] : null; }).filter(Boolean);
+function agreement(you, ai, reply){
+  if (you.label !== ai.label) return 'different verdict';
+  if (you.label === 0) return 'same verdict';
+  const n = norm((reply || '').replace(/\*\*/g, '')), ys = yourSpans(n, you.evidence), as = aiSpans(n, ai.evidence);
+  if (!ys.length) return "can't compare (quote the claim)";
+  if (!as.length) return "same verdict · can't compare (the AI quotes nothing in the reply)";
+  return ys.some(([a, b]) => as.some(([c, d]) => a < d && c < b)) ? 'same verdict · same claim' : 'same verdict · different claim';
+}
+/* S: the next pair still to do in the whole queue, wrapping. */
+function labNextTodo(){
+  if (S.lab.busy || !S.lab.fq) return;
+  const items = S.lab.fq.items, n = items.length;
+  for (let d = 1; d < n; d++){ const k = (S.lab.fi + d) % n; if (!items[k].label){ S.lab.msg = {}; S.lab.fi = k; renderFocus(); return; } }
+  $('#lab-msg').textContent = 'No other pair left to do in this queue.';
+}
+/* Verify: POST /api/labels/sync for the selected mode (every mode when none), then re-read the queue. */
+async function labVerify(){
+  if (S.lab.busy) return;
+  S.lab.busy = true; $('#lab-sync').disabled = true;
+  let tried = 0, left = 0, offline = false, err = '';
+  for (const m of S.lab.fqMode ? [S.lab.fqMode] : S.lab.modes){
+    try {
+      const r = await fetch('/api/labels/sync', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({mode: m})});
+      const s = await r.json().catch(() => ({}));
+      if (!r.ok){ err = `${m}: ${s.error || 'HTTP ' + r.status}`; break; }
+      tried += s.tried || 0; left += s.not_synced || 0; offline = offline || !!s.offline;
+    } catch (e) { err = `${m}: ${e.message || e}`; break; }
+  }
+  S.lab.headMsg = err ? `Verify failed: ${err}` : offline ? `Langfuse is not configured on the server: nothing checked, ${left} not verified`
+    : `Langfuse: checked ${tried}, still not verified ${left}`;
+  const cur = S.lab.fq && S.lab.fq.items[S.lab.fi];
+  try { await reloadQueue(cur ? cur.trace_id + '|' + cur.mode : ''); }
+  catch (e) { S.lab.headMsg += ` (the queue did not reload: ${e.message || e})`; }
+  finally { S.lab.busy = false; }
+  renderFocus();
+}
+
+/* Focus queue: the pairs that need reading (all modes), or a careful pass over one mode, each shown
+   inside its conversation. In step 2 the claim the AI quotes is highlighted in the reply (<mark>). */
+const quotesIn = ev => [...(ev || '').matchAll(/(?<![A-Za-z])['‘"“]([^"“”‘]{8,}?)['’"”](?![A-Za-z])/g)]
+  .flatMap(m => m[1].split(/\.\.\.|…/)).map(s => s.trim()).filter(s => s.length >= 8);
+const norm = s => s.replace(/[’‘]/g, "'").replace(/[“”]/g, '"').replace(/[–—]/g, '-').toLowerCase();
+function highlight(text, quotes){
+  const plain = (text || '').replace(/\*\*/g, '');
+  const n = norm(plain), spans = [];
+  for (const q of quotes){ const k = n.indexOf(norm(q)); if (k >= 0) spans.push([k, k + q.length]); }
+  spans.sort((a, b) => a[0] - b[0]);
+  let out = '', at = 0;
+  for (const [a, b] of spans){ if (a < at) continue; out += esc(plain.slice(at, a)) + '<mark>' + esc(plain.slice(a, b)) + '</mark>'; at = b; }
+  return {html: out + esc(plain.slice(at)), hits: spans.length};
+}
+/* The reviewer's own evidence anchored in the labeled reply: every quote (quotesIn, the AI side's
+   extractor: single or double quotes) that occurs verbatim (norm) in the reply's displayed text, as
+   Ranges across its text nodes (<mark>, ids). */
+function evRanges(root, ev){
+  const nodes = [], w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  let all = '';
+  for (let n; (n = w.nextNode());){ nodes.push([n, all.length]); all += n.data; }
+  const t = norm(all), out = [];
+  const pos = (i, end) => { for (const [n, s] of nodes) if (end ? i <= s + n.data.length : i < s + n.data.length) return [n, i - s]; };
+  for (const s of quotesIn(ev)){
+    const q = norm(s);
+    for (let at = t.indexOf(q); at >= 0; at = t.indexOf(q, at + 1)){
+      const r = new Range(); r.setStart(...pos(at)); r.setEnd(...pos(at + q.length, true)); out.push(r);
+    }
+  }
+  return out;
+}
+/* A cite excerpt: the hit plus up to three words each side, whitespace collapsed; the JSON escapes of a
+   tool output (\" \n) are undone and inner double quotes become single, so the cite stays one quote. */
+const citeExcerpt = h => (h.text.slice(0, h.at).match(/(?:\S+\s+){0,3}\S*$/)[0] + h.text.slice(h.at, h.end)
+  + h.text.slice(h.end).match(/^\S*(?:\s+\S+){0,3}/)[0]).replace(/\\n/g, ' ').replace(/\\?"/g, "'").replace(/\s+/g, ' ').trim();
+const bold = t => esc(t || '').replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
+/* A tool call folded to one line (earlier turns in the focus view; see turnHtml's o.fold), with the same
+   readable output and raw JSON inside. Its key keeps the step index last, as source lookup reads it. */
+function toolStep(s, k){
+  const head = `<b>${esc(s.tool)}</b>(${longInput(s) ? '…' : esc(toolArgs(s))})`;
+  const cls = `fq-tool ${s.tool === 'get_policy' ? 'pol' : ''}`, input = longInput(s) ? toolInput(s) : '';
+  return `<details class="${cls} mini" ${outAttrs('mini:' + k)}><summary class="tool-call">${head}</summary>${input}${toolOutput(s, k)}</details>`;
+}
+/* Cited policy ids in the reply: green when the conversation opened it with get_policy, red when not. */
+const markPolicies = (html, opened) => html.replace(/\b(cw-[a-z-]+|store-[a-z-]+-policy)\b/g,
+  id => `<span class="${opened.has(id) ? 'pid-ok' : 'pid-no'}" title="${opened.has(id) ? 'opened with get_policy' : 'NOT opened with get_policy'}">${id}</span>`);
+/* Policy panel text: the first successful get_policy body up to the clicked turn, else a search
+   snippet, else nothing. Headers stay neutral: showing a source is not a support check. */
+function policySource(turns, id){
+  for (const [n, t] of turns.entries()) for (const s of t.steps)
+    if (s.kind === 'tool' && s.tool === 'get_policy' && s.in && s.in.policy_id === id && s.out && s.out.ok && s.out.body)
+      return {head: `${id} · opened in turn ${n + 1}`, text: s.out.body};
+  for (const t of turns) for (const s of t.steps){
+    const r = s.kind === 'tool' && s.tool === 'search_help_center' && s.out && Array.isArray(s.out.results) && s.out.results.find(r => r.policy_id === id);
+    if (r) return {head: `${id} · search snippet only, not opened`, text: (r.snippet || '') + ((r.snippet || '').length >= 300 ? '\n(cut at 300 chars)' : '')};
+  }
+  return {head: `${id} · not shown to the agent in this conversation`, text: ''};
+}
+/* Numbers in source text, by value. Dates and times (2026-05-24, 17:12:24) are blanked first, with
+   same-length spaces so offsets hold; the guards then keep decimal tails (4.024) from matching while
+   "30-day", "5-10" and a sentence-final period ("within 30 days.") still yield numbers. */
+const srcNumbers = t => [...t.replace(/\d{4}-\d{2}-\d{2}(?:T[\d:.]+Z?)?|\d{1,2}:\d{2}(?::\d{2})?/g, m => ' '.repeat(m.length))
+  .matchAll(/(?<![\d.])\d+(?:,\d{3})*(?:\.\d+)?(?!\d|\.\d)/g)]
+  .map(m => ({v: parseFloat(m[0].replace(/,/g, '')), raw: m[0], at: m.index, end: m.index + m[0].length}));
+window.__srcNumbers = t => srcNumbers(t).map(x => x.v);   // console check of the date guard
+/* Numbers worth matching in a selection: >= 2 significant digits, not a year. */
+const selNumbers = t => srcNumbers(t).filter(x => !/^(19|20)\d\d$/.test(x.raw)
+  && String(x.v).replace(/^0\.?0*|\./g, '').length >= 2).map(x => x.v);
+/* Source-box rows from text hits {at, end, text, name, tag, search}: one row per source (a search result
+   is its own source), counting repeats; page order, search snippets last since the agent never opened
+   them. Excerpt: 80 chars each side of the first match, whitespace collapsed, match bold. */
+function hitRows(hits){
+  const rows = new Map();
+  for (const h of hits){ const k = `${h.name}|${h.tag}`, r = rows.get(k); r ? r.n++ : rows.set(k, {h, n: 1}); }
+  const c = t => esc(t.replace(/\s+/g, ' '));
+  return [...rows.values()].sort((a, b) => a.h.search - b.h.search).map(({h, n}) => {
+    const s = Math.max(0, h.at - 80), e = Math.min(h.text.length, h.end + 80);
+    return {h, n, ex: (s ? '…' : '') + c(h.text.slice(s, h.at)) + '<b>' + c(h.text.slice(h.at, h.end)) + '</b>'
+      + c(h.text.slice(h.end, e)) + (e < h.text.length ? '…' : '')};
+  });
+}
+/* The index of the first undecided pair after `from` (wrapping); `from` itself if all are decided. */
+function nextUndone(items, from){
+  for (let d = 1; d <= items.length; d++){ const k = (from + d + items.length) % items.length; if (!items[k].label) return k; }
+  return Math.max(0, from);
+}
+/* The focus columns fill the window from where they start down to its bottom edge (measured, not a
+   guessed header height), so the page never scrolls and each column scrolls on its own. */
+function fitLab(){
+  const fq = document.querySelector('#lab .fq');
+  if (!fq || !fq.offsetParent) return;   // not shown (another tab, or the table view)
+  const top = fq.getBoundingClientRect().top + scrollY;
+  fq.style.height = Math.max(320, innerHeight - top - 12) + 'px';
+}
+addEventListener('resize', fitLab);
+if (window.ResizeObserver) new ResizeObserver(fitLab).observe(document.querySelector('header'));
+async function renderFocus(){
+  /* A later render supersedes this one: after each await a stale render stops, so the card, the list
+     and the URL always show the same pair (fast j/k could otherwise finish an older fetch last). */
+  const gen = S.lab.gen = (S.lab.gen || 0) + 1;
+  const box = $('#lab');
+  if (window.CSS && CSS.highlights){ CSS.highlights.delete('src'); CSS.highlights.delete('ev'); }   // ranges point into the DOM about to be replaced
+  if (!S.lab.modes.length){
+    S.lab.modes = (await j('/api/labels')).modes || [];
+    if (gen !== S.lab.gen) return;
+    /* The last mode picked survives a reload; a stored mode that no longer exists falls back to all modes. */
+    let m = ''; try { m = localStorage.getItem('review.lab.fqMode') || ''; } catch (e) {}
+    S.lab.fqMode = S.lab.modes.includes(m) ? m : '';
+  }
+  /* A pair named by the URL (load, reload, back/forward): its mode's queue, opened at that pair. */
+  const want = S.lab.want; S.lab.want = null;
+  if (want){
+    const m = S.lab.modes.includes(want.mode) ? want.mode : '';
+    if (m !== S.lab.fqMode){ S.lab.fqMode = m; S.lab.fq = null; }
+    S.lab.fi = null;
+  }
+  if (!S.lab.fq){
+    const fq = await j(queueUrl());
+    if (gen !== S.lab.gen) return;
+    S.lab.fq = fq;
+  }
+  if (S.lab.fi === null){   // open at the URL's pair, else at the first pair still to decide
+    const w = want ? S.lab.fq.items.findIndex(x => x.trace_id + '|' + x.mode === want.pair) : -1;
+    S.lab.fi = w >= 0 ? w : nextUndone(S.lab.fq.items, -1);
+  }
+  const q = S.lab.fq, items = q.items;
+  if (S.lab.fi >= items.length) S.lab.fi = Math.max(0, items.length - 1);
+  const cur = items[S.lab.fi];
+  const pick = `<select id="fq-mode" title="careful pass: every agent proposal and taxonomy pair of one mode, read in context">
+      <option value="" ${S.lab.fqMode ? '' : 'selected'}>hard pairs, all modes</option>
+      ${S.lab.modes.map(m => `<option value="${esc(m)}" ${m === S.lab.fqMode ? 'selected' : ''}>careful pass: ${esc(m)}</option>`).join('')}</select>`;
+  /* The chip's rows (indices into items, list order): j/k and the position walk only these. The open
+     pair stays listed after it leaves the chip (a save in To do), so its card and row agree. */
+  const inChip = CHIPS.find(c => c[0] === S.lab.chip)[2];
+  const vis = items.map((x, k) => k).filter(k => inChip(items[k]) || k === S.lab.fi);
+  const chips = `<span class="chips">${CHIPS.map(([id, name, f]) => `<button data-chip="${id}" class="${S.lab.chip === id ? 'on' : ''}" aria-pressed="${S.lab.chip === id}">${name} <b>${items.filter(f).length}</b></button>`).join('')}</span>`;
+  const at = vis.indexOf(S.lab.fi);
+  const nav = `<span class="nav"><button id="fq-prev" title="previous row (j)">←</button><span class="meta">${at < 0 ? '–' : at + 1} / ${vis.length}</span><button id="fq-next" title="next row (k)">→</button></span>`;
+  /* Progress toward HW5's 30 Failure / 30 No failure from independent conversations: the selected mode,
+     else the open pair's mode. */
+  const bm = S.lab.fqMode || (cur && cur.mode), bal = bm && q.balance && q.balance[bm];
+  const bar = (n, name, cls) => `<span class="prog ${cls}">${name} ${n}/30<span class="bar"><span style="width:${Math.min(100, n / 30 * 100)}%"></span></span></span>`;
+  const progress = bal ? `<span class="progs" title="${esc(bm)}, by conversation: Failure = a labeled turn is Failure; No failure = every sampled turn labeled No failure; ${bal.conversations.partial} partly labeled. By label: Failure ${bal.labels.fail}, No failure ${bal.labels.pass}.">${
+      S.lab.fqMode ? '' : `<span class="meta">${esc(bm.replace(/_/g, ' '))}:</span>`}${bar(bal.conversations.fail, 'Failure', 'f')}${bar(bal.conversations.pass, 'No failure', 'n')}<span class="meta">by conversation</span></span>` : '';
+  const sync = q.unsynced ? `<button id="lab-sync" title="reads each score back from Langfuse; sends again what is missing or differs">${q.unsynced} not verified · Verify</button>` : '';
+  const head = `<div class="labhead">${pick} ${chips} ${nav} ${progress} ${sync} <span class="stepref" id="lab-msg">${esc(S.lab.headMsg)}</span></div>`;
+  const wireHead = () => {
+    $('#fq-mode').onchange = e => {
+      if (S.lab.busy){ e.target.value = S.lab.fqMode; return; }   // a save in flight reloads this mode's queue
+      S.lab.fqMode = e.target.value; S.lab.fq = null; S.lab.fi = null; S.lab.msg = {};
+      try { localStorage.setItem('review.lab.fqMode', S.lab.fqMode); } catch (err) {}
+      renderFocus();
+    };
+    for (const b of box.querySelectorAll('[data-chip]')) b.onclick = () => { if (S.lab.busy) return; S.lab.chip = b.dataset.chip; renderFocus(); };
+    $('#fq-prev').onclick = () => labStep(-1);
+    $('#fq-next').onclick = () => labStep(1);
+    if ($('#lab-sync')) $('#lab-sync').onclick = labVerify;
+    if ($('#labels').classList.contains('on')) writeLabHash(false);   // a save finishing after a tab switch must not take the URL
+  };
+  if (!cur){ box.innerHTML = head + '<p class="empty">No pairs in this queue.</p>'; wireHead(); return; }
+  if (!S.lab.sessions[cur.scenario_id]){
+    const sv = await j('/api/session/' + encodeURIComponent(cur.scenario_id));
+    S.lab.sessions[cur.scenario_id] = sv;   // cache it either way; a newer render may want it
+    if (gen !== S.lab.gen) return;
+  }
+  const v = S.lab.sessions[cur.scenario_id], p = cur.proposal;
+  const key = cur.trace_id + '|' + cur.mode;
+  /* Step 1 Decide: unlabeled, or Revise pressed. Step 2 Compare: labeled. */
+  const step = !cur.label || S.lab.revising[key] ? 1 : 2;
+  const d = step === 1 ? (S.lab.drafts[key] ||= newDraft(cur)) : null;
+  const hist = cur.history || [], last = hist[hist.length - 1];
+  /* The AI's answer at the latest save (its `ai` copy), else the current proposal ("AI now"). Step 2 only.
+     A taxonomy item has none: its proposal (and an `ai` saved before that rule) is the reviewer's own. */
+  const aiThen = !cur.taxonomy && last && last.ai, ai = cur.taxonomy ? null : aiThen || p;
+  const quotes = step === 2 ? quotesIn(ai && ai.evidence) : [];
+  let hits = 0;
+  const openedBy = [], seen = new Set();
+  for (const t of v.turns){
+    for (const s of t.steps) if (s.kind === 'tool' && s.tool === 'get_policy' && s.in && s.in.policy_id) seen.add(s.in.policy_id);
+    openedBy.push(new Set(seen));
+  }
+  const turns = v.turns.map((t, k) => {
+    const target = k + 1 === cur.turn;
+    /* Only the labeled turn shows its steps in full; earlier turns keep one line per tool call. */
+    const h = target ? highlight(t.reply, quotes) : {html: esc((t.reply || '').replace(/\*\*/g, '')), hits: 0};
+    hits += h.hits;
+    return turnHtml(t, {lab: true, cls: 'fq-turn' + (target ? ' target' : ''), id: target ? 'fq-target' : '',
+                        tag: target ? ' · labeling this turn' : '', role: roleName(v.user_role), key: 'lab:',
+                        fold: !target, prose: bold, reply: markPolicies(h.html, openedBy[k])});
+  }).join('');
+  const sameTurn = items.filter(x => x.trace_id === cur.trace_id);   // pairs on this turn, one per mode
+  const citedHere = [...new Set(((v.turns[cur.turn - 1] || {}).reply || '').match(/\b(cw-[a-z-]+|store-[a-z-]+-policy)\b/g) || [])];
+  const checklist = /policy/.test(cur.mode) ? `<div class="cited"><div class="meta">Policy ids cited in this reply: opened with get_policy before it?</div>${citedHere.length
+      ? citedHere.map(id => `<div>${openedBy[cur.turn - 1].has(id) ? 'opened' : '<span class="pid-no">NOT opened</span>'} · ${esc(id)}</div>`).join('')
+      : '<div class="meta">no policy id cited</div>'}<div class="meta">Does not check rules stated without an id.</div></div>` : '';
+  /* Same pair and step re-rendered: keep the reader's place and the reference folds instead of re-aiming.
+     Evidence and boundary open in step 1 and fold in step 2. */
+  const same = S.lab.lastKey === key, sameStep = same && S.lab.lastStep === step;
+  const was = box.querySelector('.fq-conv'), keepTop = was && same ? was.scrollTop : null;
+  const openOf = id => { const el = box.querySelector(id); return sameStep && el ? el.open : step === 1; };
+  const evOpen = openOf('#fq-evid'), bdOpen = openOf('#fq-bound');
+  const newTurn = S.lab.lastTrace === cur.trace_id && !same;
+  const mk = x => x.label ? `<span class="mk ${x.label.label ? 'f' : ''}">${x.label.label ? 'F' : 'N'}</span>` : '<span class="mk"></span>';
+  const you = cur.label, isBlind = hist.length === 1 && hist[0].blind_label != null;
+  const aiPane = !ai ? '<span class="meta">No AI answer</span>'
+    : `${aiThen ? '' : '<div class="meta">AI then: not recorded</div><div class="lbl">AI now</div>'}<b class="${ai.label ? 'f' : ''}">${labName(ai.label)}</b>${
+        /^UNSURE/.test(ai.evidence || '') ? ' <span class="meta">(unsure)</span>' : ''}<div class="just">${esc(propEv(ai))}</div>`;
+  const decide = () => `
+        <div class="fq-edit">
+        <div class="seg-row"><span class="meta">Verdict</span><div class="seg" role="radiogroup" aria-label="Verdict">
+          <button id="fq-1" role="radio" class="${d.verdict === 1 ? 'on' : ''}" aria-checked="${d.verdict === 1}">Failure<kbd>F</kbd></button><button id="fq-0" role="radio" class="${d.verdict === 0 ? 'on' : ''}" aria-checked="${d.verdict === 0}">No failure<kbd>N</kbd></button></div></div>
+        <label class="meta" for="fq-ev">Justification${S.lab.revising[key] ? ' (revising your saved answer: change the justification, the verdict, or both)' : ''} · Esc leaves the box</label>
+        <textarea id="fq-ev" required placeholder="Quote the claim and the source that supports it, or say that none does."></textarea>
+        <div class="actbar"><span class="status" id="fq-need" role="status"></span>${S.lab.revising[key] ? '<button id="fq-cancel" class="link" title="back to Compare; the draft is dropped">Cancel</button>' : ''}<button id="fq-save" class="save" disabled>Save<kbd>⌘↵</kbd></button></div></div>`;
+  const compare = () => `
+        <div class="cmp">
+          <div class="pane you"><div class="lbl">You · ${esc(whenShort((last || you).ts))}${isBlind ? ' · blind' : ''}</div><b class="${you.label ? 'f' : ''}">${labName(you.label)}</b><div class="just">${esc(you.evidence || '')}</div>${
+            you.langfuse === 'synced' ? '' : `<div class="meta">Langfuse: ${esc(you.langfuse || 'not sent')}</div>`}</div>
+          <div class="pane ai"><div class="lbl">${aiThen ? 'AI · at your save' : 'AI'}</div>${aiPane}</div></div>
+        ${ai ? `<div class="tag">${esc(agreement(you, ai, (v.turns[cur.turn - 1] || {}).reply))}</div>` : ''}
+        <div class="meta"><span class="sw you"></span>your quotes · <span class="sw ai"></span>the AI's quotes${quotes.length && !hits ? " (not found in the reply)" : ''}</div>
+        <div class="actbar"><span class="status" role="status">${esc(S.lab.msg[key] || '')}</span>${quotes.length && hits ? '<button id="fq-jump" class="link">jump to the AI\'s quote</button>' : ''}<button id="fq-revise" class="link">Revise<kbd>R</kbd></button><button id="fq-go" class="save" title="next row in the list">Next<kbd>K</kbd></button></div>
+        ${hist.length ? `<div class="hist">${histHtml(hist)}</div>` : ''}`;
+  box.innerHTML = head + `<div class="fq">
+    <div class="fq-list">${vis.map(k => { const x = items[k], xk = x.trace_id + '|' + x.mode; return `<div class="lrow${k === S.lab.fi ? ' cur' : ''}${x.label ? ' done' : ''}" data-k="${k}" title="${
+        esc(x.scenario_id)} t${esc(x.turn)} · ${esc(x.mode)}${x.label ? ' · your label: ' + labName(x.label.label) : ''}${differsFromAi(x) ? ' · differs from the AI' : ''} · ${esc(x.taxonomy ? 'taxonomy pair' : x.batch || 'not in sample')}">
+      <b>${esc(x.scenario_id.replace(/^support-/, ''))}</b><span class="role">t${esc(x.turn)}</span>${mk(x)}<span class="dia2">${differsFromAi(x) ? '◆' : ''}</span><span class="dot">${dirty(S.lab.drafts[xk]) ? '•' : ''}</span>${
+      S.lab.fqMode ? '' : `<span class="modes">${esc(x.mode.replace(/_/g, ' '))}</span>`}
+      <span class="bt">${esc(x.taxonomy ? 'taxonomy' : x.batch || '')}</span></div>`; }).join('')}</div>
+    <div class="fq-conv">${turns}</div>
+    <div class="fq-card"><div class="fq-top">
+      <div class="steps"><span class="${step === 1 ? 'on' : ''}">1 Decide${cur.label ? ' ✓' : ''}</span> → <span class="${step === 2 ? 'on' : ''}">2 Compare</span></div>
+      <div class="pairhead">${esc(cur.scenario_id.replace('support-', ''))} t${esc(cur.turn)}${sameTurn.length > 1 ? ` · question ${sameTurn.indexOf(cur) + 1} of ${sameTurn.length} for this turn` : ''}</div>
+      ${newTurn ? `<div class="sameturn">Same turn, new question: the conversation is unchanged, the failure mode is different.</div>` : ''}
+      <div class="q ${same ? '' : 'flash'}">Does this turn show the failure <b>${esc(cur.mode.replace(/_/g, ' '))}</b>?</div>
+      <div class="meta">${esc(cur.definition || '')}</div></div>
+      <div class="fq-ref">
+      <details id="fq-bound"${bdOpen ? ' open' : ''}><summary class="meta">boundary</summary><div class="meta bound">${esc(cur.boundary || '')}</div></details>
+      <details id="fq-evid"${evOpen ? ' open' : ''}><summary class="meta">Evidence facts</summary><div class="ev-rail">${railHtml(v)}</div></details>
+      ${checklist}</div>
+      <div class="fq-bot">${step === 1 ? decide() : compare()}
+      ${step === 2 ? `<div class="meta">${scenLink(cur.scenario_id)} opens it in Review</div>` : ''}
+    </div></div></div>`;
+  fitLab();
+  wireHead();
+  const evBox = $('#fq-ev');
+  /* Your quotes are marked in the reply: the box as you type in step 1, your saved justification in step 2. */
+  const anchorEv = () => {
+    const reply = box.querySelector('#fq-target .fq-reply');
+    if (!reply || !(window.CSS && CSS.highlights)) return;
+    const rs = evRanges(reply, evBox ? evBox.value : you.evidence);
+    rs.length ? CSS.highlights.set('ev', new Highlight(...rs)) : CSS.highlights.delete('ev');
+  };
+  /* Save is enabled when the justification is non-empty and (verdict, justification) differs from the live
+     record, compared on trimmed text; a verdict changed alone stays disabled, the server's rule. */
+  const why = () => {
+    const t = d.text.trim(), was = cur.label && (cur.label.evidence || '').trim();
+    if (d.verdict == null) return [false, t ? 'pick a verdict: F or N' : ''];
+    if (!t) return [false, 'write a justification'];
+    if (cur.label && t === was) return [false, d.verdict === cur.label.label ? '' : 'a changed verdict needs a new justification'];
+    return [true, ''];
+  };
+  const updateSave = () => {
+    const [ok, reason] = why();
+    $('#fq-save').disabled = !ok || S.lab.busy;
+    $('#fq-need').textContent = S.lab.msg[key] || reason || (ok ? 'unsaved changes' : '');
+    const dot = box.querySelector('.fq-list .lrow.cur .dot');
+    if (dot) dot.textContent = dirty(d) ? '•' : '';
+    syncUnload();
+  };
+  if (evBox){
+    evBox.value = d.text;
+    evBox.oninput = () => { d.text = evBox.value; delete S.lab.msg[key]; anchorEv(); updateSave(); };
+    updateSave();
+  }
+  anchorEv();
+  /* Revise: back to step 1 with the live answer in the form (plus a quoted line, from the source box). */
+  const revise = extra => {
+    if (S.lab.busy || !cur.label) return;
+    const dd = newDraft(cur);
+    if (extra) dd.text = (dd.text.trim() ? dd.text.replace(/\s+$/, '') + '\n' : '') + extra;
+    S.lab.drafts[key] = dd; S.lab.revising[key] = true; delete S.lab.msg[key];
+    renderFocus().then(() => { const el = $('#fq-ev'); if (el){ el.focus(); el.setSelectionRange(el.value.length, el.value.length); } });
+  };
+  /* Quote capture from the source box: appends one line, through the input handler (draft + anchors);
+     no focus move, so the reply selection and the box stay. In step 2 it opens Revise with the line added.
+     Not during a save: its draft is being cleared. */
+  const addEvidence = line => {
+    if (S.lab.busy) return;
+    if (!evBox){ revise(line); return; }
+    evBox.value = (evBox.value.trim() ? evBox.value.replace(/\s+$/, '') + '\n' : '') + line;
+    evBox.scrollTop = evBox.scrollHeight;
+    evBox.dispatchEvent(new Event('input'));
+  };
+  S.lab.lastKey = key; S.lab.lastStep = step; S.lab.lastTrace = cur.trace_id;
+  /* Scroll only the conversation column: scrollIntoView would also scroll the page and hide the controls.
+     A new pair opens at the top of the labeled turn (read user message, tools, reply in order); the same
+     pair re-rendered (a save, a revise, a toggle) keeps the reader's place. "jump to the AI's quote" aims. */
+  const conv = box.querySelector('.fq-conv'), aim = box.querySelector('#fq-target');
+  const aimAt = el => { conv.scrollTop = Math.max(0, el.getBoundingClientRect().top - conv.getBoundingClientRect().top + conv.scrollTop - 8); };
+  if (conv && keepTop != null) conv.scrollTop = keepTop;
+  else if (conv && aim) aimAt(aim);
+  if ($('#fq-jump')) $('#fq-jump').onclick = () => { const m = box.querySelector('.fq-conv mark'); if (m && conv){ aimAt(m); conv.scrollTop = Math.max(0, conv.scrollTop - 72); } };
+  /* The rebuilt list starts at the top; center the current row (rects: .fq-list is not an offsetParent). */
+  const list = box.querySelector('.fq-list'), row = list && list.querySelector('.cur');
+  if (row){ const lr = list.getBoundingClientRect(), rr = row.getBoundingClientRect(); list.scrollTop += rr.top - lr.top - (lr.height - rr.height) / 2; }
+  /* Source box: floats in .fq-conv content coordinates just below (or above, if no room) the clicked id
+     or the selection's last line, so showing it never moves the reader's scroll. One at a time; a
+     re-render drops it with the DOM. `back` returns to the claim after a jump to a hit. */
+  let sb = null, back = null;
+  /* Closing by the reader (×, outside) also clears the hit highlights; openBox replaces the box only,
+     since a selection sets its highlights before opening the box. */
+  const closeBox = keepHl => { if (sb) sb.el.remove(); sb = null; if (keepHl !== true && window.CSS && CSS.highlights) CSS.highlights.delete('src'); };
+  /* Put the box just below `rect` (viewport), or above it when there is no room below. */
+  const place = (el, rect) => {
+    const cr = conv.getBoundingClientRect(), h = el.offsetHeight, w = el.offsetWidth;
+    const below = cr.bottom - rect.bottom, above = rect.top - cr.top;
+    const y = below < h + 8 && above > below ? rect.top - h - 4 : rect.bottom + 4;
+    el.style.top = Math.max(0, y - cr.top + conv.scrollTop) + 'px';
+    el.style.left = Math.max(8, Math.min(rect.left - cr.left + conv.scrollLeft, conv.clientWidth - w - 8)) + 'px';
+  };
+  const dropBack = () => { if (back) back.btn.remove(); back = null; };
+  const lastRect = rg => { const rr = rg.getClientRects(); return rr[rr.length - 1] || rg.getBoundingClientRect(); };
+  /* keepHl: only a selection keeps highlights (it sets them before opening); a policy box clears old ones. */
+  const openBox = (rect, title, body, id, keepHl) => {
+    closeBox(keepHl === true); dropBack();
+    const el = document.createElement('div'), w = Math.min(560, conv.clientWidth - 24);
+    el.className = 'src-box';
+    el.style.cssText = `width:${w}px;max-height:${Math.round(Math.min(320, conv.clientHeight * 0.45))}px`;
+    el.innerHTML = `<div class="src-head"><b>${esc(title)}</b><button class="src-x" title="close">×</button></div>${body}`;
+    conv.append(el);
+    place(el, rect);
+    el.querySelector('.src-x').onclick = closeBox;
+    sb = {el, id};
+    return el;
+  };
+  /* Outside the box closes it; a mousedown in the labeled reply or on an id may start a new lookup,
+     which replaces the box itself. conv itself: its scrollbar. */
+  box.onmousedown = e => {
+    /* Any press outside the box closes it, the gaps in the pane included; not its scrollbar (a press on
+       conv itself past clientWidth), an id (it toggles), or the labeled reply, where a press may start a
+       new selection: there a plain click closes on mouse-up instead. */
+    const onScrollbar = e.target === conv && e.offsetX >= conv.clientWidth;
+    if (sb && !onScrollbar && !e.target.closest('.src-box, .src-back, .fq-reply :is(.pid-ok, .pid-no), #fq-target .fq-reply')) closeBox();
+  };
+  /* A. Click a policy id in a reply: its text as the agent saw it up to that turn. The same id again
+     closes it. detail > 1: a double-click must not reopen-close. */
+  box.onclick = e => {
+    const sp = e.target.closest('.fq-reply :is(.pid-ok, .pid-no)');
+    if (!sp || e.detail > 1) return;
+    const id = sp.textContent, k = [...box.querySelectorAll('.fq-turn')].indexOf(sp.closest('.fq-turn'));
+    if (sb && sb.id === `${k}|${id}`){ closeBox(); return; }
+    if (k < 0) return;
+    const src = policySource(v.turns.slice(0, k + 1), id);
+    openBox(lastRect(sp), src.head, src.text ? `<div class="src-text">${esc(src.text)}</div>` : '', `${k}|${id}`);
+  };
+  /* B. Select text in the labeled reply: find it in what the agent had seen up to this turn (tool outputs
+     as displayed, user messages). Literal first, then numbers by value. Names each source; never a verdict. */
+  box.onmouseup = e => {
+    const sel = getSelection(), reply = box.querySelector('#fq-target .fq-reply');
+    /* Only a mouse-up inside the reply starts a search: a later click on a button would otherwise
+       re-run it on the selection still standing. */
+    if (!reply || !reply.contains(e.target)) return;
+    if (!sel.rangeCount || sel.isCollapsed){ if (sb && !e.target.closest('.pid-ok, .pid-no')) closeBox(); return; }   // plain click: dismiss
+    if (!reply.contains(sel.anchorNode) || !reply.contains(sel.focusNode)) return;
+    const inId = n => (n.nodeType === 1 ? n : n.parentElement).closest('.pid-ok, .pid-no');
+    const txt = sel.toString().trim();
+    if (txt.length < 2 || txt.length > 200 || inId(sel.anchorNode) || inId(sel.focusNode)) return;
+    const srcs = [];   // {node, d, n, name, tool}: text nodes in DOM order (page order)
+    [...box.querySelectorAll('.fq-turn')].slice(0, cur.turn).forEach((tEl, k) => {
+      const u = tEl.querySelector('.fq-user').lastChild;
+      if (u && u.nodeType === 3) srcs.push({node: u, n: k + 1, name: `user message (t${k + 1})`});
+      for (const d of tEl.querySelectorAll('details[data-out]')){
+        const s = v.turns[k].steps[Number(d.dataset.out.split('#').pop())] || {}, node = d.lastChild;
+        if (node && node.nodeType === 3) srcs.push({node, d, n: k + 1, tool: s.tool,
+          name: s.tool === 'get_policy' ? `get_policy ${(s.in || {}).policy_id || ''} (t${k + 1})` : `${s.tool} (t${k + 1})`});
+      }
+    });
+    const qUser = norm(txt), qOut = norm(JSON.stringify(txt).slice(1, -1));   // outputs show JSON: " and line breaks are escaped
+    const find = (x, rule) => {
+      const hits = [], t = norm(x.node.data);   // norm keeps length, so offsets index node.data too
+      const name = at => {
+        if (x.tool !== 'search_help_center') return x.name;
+        const ids = [...t.slice(0, at).matchAll(/"policy_id": "([^"]+)"/g)];   // each result lists policy_id before snippet
+        return ids.length ? `search snippet ${ids[ids.length - 1][1]} (t${x.n})` : x.name;
+      };
+      if (rule === 'text'){
+        const q = x.d ? qOut : qUser;
+        for (let at = t.indexOf(q); at >= 0; at = t.indexOf(q, at + 1))
+          hits.push({at, end: at + q.length, name: name(at), tag: x.tool === 'search_help_center' ? 'not opened' : ''});
+      } else for (const n of srcNumbers(t)) if (nums.includes(n.v))
+        hits.push({at: n.at, end: n.end, name: name(n.at), tag: (x.tool === 'search_help_center' ? 'not opened, ' : '') + `number match: ${n.raw}`});
+      return hits.map(h => ({...h, x, text: x.node.data, search: x.tool === 'search_help_center'}));
+    };
+    const nums = selNumbers(txt);
+    let hits = srcs.flatMap(x => find(x, 'text'));
+    if (!hits.length && nums.length) hits = srcs.flatMap(x => find(x, 'num'));
+    if (window.CSS && CSS.highlights) CSS.highlights.delete('src');
+    const claim = sel.getRangeAt(0).cloneRange(), title = `"${txt}" · text match only, not a support check`;
+    if (hits.length && window.CSS && CSS.highlights)
+      CSS.highlights.set('src', new Highlight(...hits.map(h => { const r = new Range(); r.setStart(h.x.node, h.at); r.setEnd(h.x.node, h.end); return r; })));
+    const rows = hitRows(hits);
+    const quote = '<div><button class="src-quote" title="append this selection to your evidence as a quote">Quote in evidence</button></div>';
+    const el = openBox(lastRect(claim), title, quote + (rows.length
+      ? rows.map(r => `<div class="src-hit"><div><button class="src-cite" title="append this source and excerpt to your evidence">cite</button><b>${esc(r.h.name)}</b>${r.h.tag ? ', ' + esc(r.h.tag) : ''}${r.n > 1 ? ` · ${r.n} matches` : ''}</div><div class="ex">${r.ex}</div></div>`).join('')
+      : '<div class="meta">no match (a paraphrase will not match; this does not prove the source is absent)</div>'), null, true);
+    /* A press on these buttons must not move focus or collapse the reply selection. */
+    el.addEventListener('mousedown', e => { if (e.target.closest('.src-quote, .src-cite')) e.preventDefault(); });
+    el.querySelector('.src-quote').onclick = () => addEvidence(`reply: "${txt}"`);
+    el.querySelectorAll('.src-cite').forEach((b, i) => b.onclick = e => { e.stopPropagation(); addEvidence(`${rows[i].h.name}: "${citeExcerpt(rows[i].h)}"`); });
+    if (!rows.length) return;
+    /* Jump to a hit: open its output, scroll to it, and move the box beside the hit so the other rows
+       stay usable. "back" re-aims at the claim's old place in the pane (an output opened above the
+       claim pushes it down, so a stored scrollTop would be stale) and puts the box back by the claim. */
+    const claimY = () => claim.getBoundingClientRect().top - conv.getBoundingClientRect().top;
+    el.querySelectorAll('.src-hit').forEach((rowEl, i) => rowEl.onclick = () => {
+      const h = rows[i].h;
+      if (!back){
+        const btn = document.createElement('button');
+        btn.className = 'src-back'; btn.textContent = '↩ back to claim';
+        btn.onclick = () => { conv.scrollTop += claimY() - back.at; if (el.isConnected) place(el, lastRect(claim)); dropBack(); };
+        box.querySelector('.fq-top').prepend(btn);
+        back = {btn, at: claimY()};
+      }
+      for (let d = h.x.d; d; d = d.parentElement && d.parentElement.closest('details')) d.open = true;   // a mini call folds the output too
+      const r = new Range(); r.setStart(h.x.node, h.at); r.setEnd(h.x.node, h.end);
+      conv.scrollTop = Math.max(0, r.getBoundingClientRect().top - conv.getBoundingClientRect().top + conv.scrollTop - 80);
+      place(el, lastRect(r));
+    });
+  };
+  for (const el of box.querySelectorAll('.fq-list .lrow[data-k]')) el.onclick = () => { if (S.lab.busy) return; S.lab.msg = {}; S.lab.fi = Number(el.dataset.k); renderFocus(); };
+  for (const a of box.querySelectorAll('a.open')) a.onclick = e => {
+    e.preventDefault(); if (!mayLeave()) return;
+    openConv(Number(a.dataset.i)); document.querySelector('.tabs button[data-tab="review"]').click();
+  };
+  if (step === 2){
+    $('#fq-revise').onclick = () => revise();
+    $('#fq-go').onclick = () => labStep(1);
+    return;
+  }
+  /* F / N only select the verdict; Save is the one write. With no justification yet, the box takes focus. */
+  const pickVerdict = label => {
+    if (S.lab.busy) return;
+    d.verdict = label; delete S.lab.msg[key];
+    for (const [id, l] of [['#fq-1', 1], ['#fq-0', 0]]){ $(id).classList.toggle('on', l === label); $(id).setAttribute('aria-checked', l === label); }
+    updateSave();
+    if (!d.text.trim()) evBox.focus();
+  };
+  $('#fq-1').onclick = () => pickVerdict(1);
+  $('#fq-0').onclick = () => pickVerdict(0);
+  if ($('#fq-cancel')) $('#fq-cancel').onclick = () => {
+    if (S.lab.busy) return;
+    delete S.lab.drafts[key]; delete S.lab.revising[key]; syncUnload(); renderFocus();
+  };
+  /* One save path: append a record (the server keeps the blind answer and the history), then show
+     step 2 on the same pair. An `unchanged` reply wrote nothing and says so. */
+  $('#fq-save').onclick = async () => {
+    if (S.lab.busy || !why()[0]) return;
+    S.lab.busy = true;                            // navigation and keys wait: the render below must follow this pair
+    box.querySelectorAll('.fq-card button').forEach(b => b.disabled = true);
+    const r = await postLabel({mode: cur.mode, trace_id: cur.trace_id, label: d.verdict, evidence: d.text.trim(),
+                               accepted_via: 'focus', proposal_source: p ? p.source : null});
+    if (r.err){
+      S.lab.busy = false; S.lab.msg[key] = r.err;
+      box.querySelectorAll('.fq-card button').forEach(b => b.disabled = false);
+      updateSave(); return;
+    }
+    S.lab.msg[key] = r.body.unchanged ? 'nothing changed' : '';
+    /* The draft goes only once the queue shows the saved record; a failed reload keeps it on screen. */
+    try { await reloadQueue(key); delete S.lab.drafts[key]; delete S.lab.revising[key]; syncUnload(); }
+    catch (e) { S.lab.msg[key] = `saved, but the queue did not reload: ${e.message || e}`; }
+    finally { S.lab.busy = false; }
+    renderFocus();
+  };
+}
+/* ---- One key map for Review and the Labels focus view: j/k previous/next visible row, Space and
+   Shift+Space scroll the conversation pane, ? toggles the key list. Keys are lowercased in both. */
+const typingIn = e => ['INPUT', 'SELECT', 'TEXTAREA'].includes(e.target.tagName);
+const KEYS = {
+  review: [['j / k', 'previous / next conversation in the list'], ['g', 'next failure note'],
+           ['Space / Shift+Space', 'scroll the conversation down / up'], ['Esc', 'close the mode panel'], ['?', 'this key list']],
+  labels: [['j / k', 'previous / next row in the selected chip'], ['F / N', 'select Failure / No failure (step 1 Decide; never saves)'],
+           ['Cmd+Enter', 'Save (step 1; anywhere in the card, the justification box included)'], ['R', 'Revise your saved answer (step 2 Compare)'],
+           ['S', 'next pair still to do'], ['Esc', 'close the source box, then leave the justification box'],
+           ['Space / Shift+Space', 'scroll the conversation down / up'], ['?', 'this key list']]};
+function toggleKeys(tab){
+  const el = $('#keys');
+  if (!el.hidden){ el.hidden = true; return; }
+  el.innerHTML = `<table>${KEYS[tab].map(([k, v]) => `<tr><td>${k.split(' / ').map(x => `<kbd>${esc(x)}</kbd>`).join(' / ')}</td><td>${esc(v)}</td></tr>`).join('')}</table>`;
+  el.hidden = false;
+}
+/* Scroll the pane that holds `el` (its nearest scrolling ancestor, else the page) by 85% of its height. */
+function scrollPane(el, dir){
+  let s = el;
+  while (s && s !== document.body && !/(auto|scroll)/.test(getComputedStyle(s).overflowY)) s = s.parentElement;
+  if (s && s !== document.body) s.scrollBy(0, dir * 0.85 * s.clientHeight);
+  else scrollBy(0, dir * 0.85 * (innerHeight - document.querySelector('header').offsetHeight));
+}
+/* Space and ? for a tab; true when handled. Space is always prevented, so it never presses a focused
+   button (a Failure button above all). Callers skip this while typing. */
+function pageKeys(e, tab, pane){
+  if (e.metaKey || e.ctrlKey || e.altKey) return false;
+  if (e.key === ' '){ e.preventDefault(); if (pane) scrollPane(pane, e.shiftKey ? -1 : 1); return true; }
+  if (e.key === '?'){ e.preventDefault(); if (!e.repeat) toggleKeys(tab); return true; }
+  return false;
+}
+/* Some browsers press a focused button on Space's keyup: prevent that too, in the two tabs that own Space. */
+document.addEventListener('keyup', e => {
+  if (e.key === ' ' && !typingIn(e) && ($('#review').classList.contains('on')
+      || $('#labels').classList.contains('on'))) e.preventDefault();
+});
+/* Labels: walk the rendered list rows in DOM order by clicking the neighbour, so the row's own click
+   handler (busy lock, drafts) applies. The open row may be filtered out: then its neighbours by index. */
+function labStep(dir){
+  if (S.lab.busy) return;
+  const rows = [...document.querySelectorAll('#lab .fq-list [data-k]')], at = rows.findIndex(r => r.classList.contains('cur'));
+  const el = at >= 0 ? rows[at + dir]
+    : dir > 0 ? rows.find(r => Number(r.dataset.k) > S.lab.fi) : rows.filter(r => Number(r.dataset.k) < S.lab.fi).pop();
+  if (el) el.click();
+}
+document.addEventListener('keydown', e => {
+  if (!$('#labels').classList.contains('on')) return;
+  /* Esc peels one layer: an open source box first, then the justification box (blur), then the key list. */
+  if (e.key === 'Escape'){
+    const srcX = document.querySelector('#lab .src-box .src-x');
+    if (srcX){ e.preventDefault(); srcX.click(); return; }
+    if (e.target.id === 'fq-ev'){ e.target.blur(); return; }
+    if (!$('#keys').hidden){ $('#keys').hidden = true; return; }
+  }
+  if (!typingIn(e) && pageKeys(e, 'labels', $('#lab .fq-conv'))) return;   // scrolling is not an action: allowed while saving
+  if (S.lab.busy) return;                            // no label or navigation key while a save is in flight
+  /* Cmd/Ctrl+Enter: Save, from anywhere in the card (the justification box included) or with nothing
+     focused. A disabled Save ignores the click. */
+  if (e.key === 'Enter' && (e.metaKey || e.ctrlKey) && !e.altKey && $('#fq-save')
+      && (e.target === document.body || e.target.closest('#lab .fq-card'))){
+    e.preventDefault(); if (!e.repeat) $('#fq-save').click(); return;
+  }
+  if (typingIn(e)) return;
+  if (e.repeat) return;                              // holding a key must not act on the next pair too
+  if (e.metaKey || e.ctrlKey || e.altKey) return;   // leave Cmd/Ctrl-F and friends to the browser
+  /* Absolute keys, the same on every card: F = Failure, N = No failure, both select only. No
+     Enter-to-agree: the fast path must not lean toward the AI's answer. */
+  const k = e.key.toLowerCase();
+  if (k === 'j') labStep(-1);
+  else if (k === 'k') labStep(1);
+  else if (k === 'f' && $('#fq-1')) $('#fq-1').click();
+  else if (k === 'n' && $('#fq-0')) $('#fq-0').click();
+  else if (k === 'r' && $('#fq-revise')) $('#fq-revise').click();
+  else if (k === 's') labNextTodo();
+});
+
+/* The Labels tab is the focus view only (the Table and bulk accepts view is gone). */
+async function renderLabels(){ return renderFocus(); }
+
+function setTab(tab){
+  document.querySelectorAll('.tabs button').forEach(x => x.classList.toggle('on', x.dataset.tab === tab));
+  document.querySelectorAll('.view').forEach(v => v.classList.toggle('on', v.id === tab));
+  $('#hrow-review').hidden = tab !== 'review';
+  $('#keys').hidden = true;   // its content belongs to the tab it was opened on
+  if (tab === 'labels') renderLabels().catch(e => { $('#lab').textContent = `labels failed to load: ${e.message || e}`; });
+  if (tab === 'judge') renderJudge().catch(e => { $('#jv').textContent = `judge view failed to load: ${e.message || e}`; });
+}
+
+/* HW5 Part C (hw5.md:203): one judge version's cached verdict and critique beside the live human label,
+   per trace of a split. Read-only; the server refuses test rows for a judge that is not frozen. */
+S.jv = {judge:'', split:'dev', dis:true, last:'', seen:new Set()};
+async function renderJudge(){
+  const box = $('#jv');
+  const focusId = box.contains(document.activeElement) ? document.activeElement.id : '';
+  const {judges} = await j('/api/judges');
+  if (!judges.length){ box.textContent = 'No judge is registered yet. Register one with run_development in analysis/run_judges.py.'; return; }
+  if (!judges.some(x => x.judge_id === S.jv.judge)) S.jv.judge = judges[judges.length - 1].judge_id;
+  const res = await fetch(`/api/judge/${encodeURIComponent(S.jv.judge)}?split=${S.jv.split}`);
+  const d = await res.json();
+  const cur = judges.find(x => x.judge_id === S.jv.judge);
+  const head = `<div class="jhead">
+    <label>Judge <select id="jv-judge">${judges.map(x => `<option value="${esc(x.judge_id)}"${x.judge_id === S.jv.judge ? ' selected' : ''}>${esc(x.judge_id)}</option>`).join('')}</select></label>
+    <label>Split <select id="jv-split">${['dev', 'test'].map(s => `<option${s === S.jv.split ? ' selected' : ''}>${s}</option>`).join('')}</select></label>
+    <label><input type="checkbox" id="jv-dis"${S.jv.dis ? ' checked' : ''}> Disagreements only</label>
+    <span class="who">${esc(cur.model)}, ${esc(cur.status)}${cur.input ? `; ${esc(cur.input)}` : ''}</span></div>`;
+  let body, live = '';
+  const tag = v => v ? `<span class="tag ${v === 'Fail' ? 'fail' : 'pass'}">${v}</span>` : '—';
+  if (!res.ok) body = live = `<p>${esc(d.error || res.statusText)}</p>`;
+  else {
+    const m = d.metrics, f = x => x == null ? '—' : x.toFixed(2);
+    const total = m.human_pass + m.human_fail, rare = total > 0 && m.human_fail / total < 0.25;
+    /* A rate's card: the point estimate is the headline, its 95% Wilson interval sits right beside it
+       (one unit to read), and the count behind it goes underneath. */
+    const rate = (k, gloss, num, den, r, iv) => `<div class="cell rate"><div class="k">${k}<span>${gloss}</span></div>
+        <div class="big">${f(r)}${iv[0] == null ? '' : ` <span class="iv">95% CI ${f(iv[0])}–${f(iv[1])}</span>`}</div>
+        <div class="pt">${num} of ${den}</div></div>`;
+    const jx = m.tpr != null && m.tnr != null ? f(m.tpr + m.tnr - 1) : '—';
+    const fnN = d.rows.filter(r => r.agree === false && r.verdict === 'Fail').length;
+    const fpN = d.rows.filter(r => r.agree === false && r.verdict === 'Pass').length;
+    const n = d.rows.filter(r => r.agree !== null).length, dis = fnN + fpN;
+    /* Disagreements first; within them judge Fail on your Pass (read the critique's deciding line)
+       before judge Pass on your Fail (read your evidence). Stable: split order within each group. */
+    const rank = r => r.agree !== false ? 2 : r.verdict === 'Fail' ? 0 : 1;
+    const rows = d.rows.filter(r => !S.jv.dis || r.agree === false).sort((a, b) => rank(a) - rank(b));
+    /* The deciding lines of a critique ("Qn: yes" in v4/v5, an unsourced claim in v1-v3) stay in view;
+       the other answers fold under them. One segment per line and per "Qn:" answer: gpt-4o-mini often
+       writes all six on one line. A critique with no deciding line (prose, v0) shows in full. */
+    const hit = l => /^\s*Q\d+:\s*yes\b|\|\s*(no source|SOURCE:\s*none)\b/i.test(l);
+    const crit = t => { const ls = (t || '—').split('\n').flatMap(l => l.split(/(?=\bQ\d+:\s)/)).map(s => s.trim()).filter(Boolean).map(esc);
+      if (!ls.some(hit)) return ls.join('\n');
+      const other = ls.filter(l => !hit(l));
+      return ls.filter(hit).map(l => `<b>${l}</b>`).join('\n') + (other.length
+        ? `<details><summary>${other.length} other answer${other.length === 1 ? '' : 's'}</summary><span class="dim">${other.join('\n')}</span></details>` : ''); };
+    const reviewHref = sid => '#' + new URLSearchParams({...S.f, s: sid}).toString();
+    const labHref = r => '#' + new URLSearchParams({tab: 'labels', mode: cur.mode, pair: `${r.trace_id}|${cur.mode}`}).toString();
+    const kinds = `${fnN} judge Fail on your Pass (false alarm, FN), ${fpN} judge Pass on your Fail (missed failure, FP)${m.no_verdict ? `, ${m.no_verdict} without a verdict` : ''}`;
+    live = `${dis} of ${n} judged conversations disagree with your label: ${kinds}.`;
+    body = `<div class="band">
+        <div class="cell sample"><div class="k">Tested<span>Conversations on the ${esc(S.jv.split)} split, by your label.</span></div>
+          <div class="big">${total}</div><div class="pt">${tag('Pass')} ${m.human_pass} &nbsp; ${tag('Fail')} ${m.human_fail}</div></div>
+        ${rate('TPR', 'The judge passes conversations you labeled Pass.', m.tp, m.human_pass, m.tpr, m.tpr_interval)}
+        ${rate('TNR', 'The judge fails conversations you labeled Fail.', m.tn, m.human_fail, m.tnr, m.tnr_interval)}
+        <div class="cell cmw">
+          <table class="cm"><tr><th></th><th scope="col">Your ${tag('Pass')} (${m.human_pass})</th><th scope="col">Your ${tag('Fail')} (${m.human_fail})</th></tr>
+            <tr><th scope="row">Judge ${tag('Pass')}</th><td><b>${m.tp}</b><span>TP</span></td><td><b>${m.fp}</b><span>FP, missed failure</span></td></tr>
+            <tr><th scope="row">Judge ${tag('Fail')}</th><td><b>${m.fn}</b><span>FN, false alarm</span></td><td><b>${m.tn}</b><span>TN</span></td></tr></table>
+        </div></div>
+      <p class="note">Pass is the positive class. Youden's J = TPR + TNR − 1 = ${jx} (0 is chance, 1 is perfect). Raw agreement ${f(m.agreement)}${rare ? ', misleading here because failures are rare' : ''}. From the judge's saved verdicts and your exported HW5 labels.</p>
+      ${d.labels_changed_since_export ? `<p class="warn">${d.labels_changed_since_export} label${d.labels_changed_since_export === 1 ? '' : 's'} on this split changed in the Labels tab since the HW5 export (marked below). Re-export (export_labels in analysis/run_judges.py) to update these numbers.</p>` : ''}
+      ${m.no_label ? `<p class="warn">${m.no_label} conversation${m.no_label === 1 ? ' has' : 's have'} no label and ${m.no_label === 1 ? 'is' : 'are'} left out, so these numbers are not comparable to judge_alignment, which refuses such a split.</p>` : ''}
+      <h3 class="count">${dis} disagreement${dis === 1 ? '' : 's'} to review</h3>
+      <p class="sub">${kinds}. The judge read each conversation up to your labeled turn.${S.jv.dis && !dis ? ' Nothing to review on this split.' : ''}</p>
+      ${rows.length ? `<table class="dis"><colgroup><col class="c-id"><col class="c-lab"><col class="c-j"><col><col></colgroup>
+      <tr class="headrow"><th>Conversation</th><th>Your label</th><th>Judge</th><th>Judge critique</th><th>Your evidence</th></tr>
+      ${rows.map(r => { const sid = r.scenario_id || ''; return `<tr class="${r.agree === false ? 'off' : ''}${S.jv.seen.has(sid) ? ' seen' : ''}" data-sid="${esc(sid)}">
+        <td data-label="Conversation"><a href="${esc(reviewHref(sid))}" class="jv-open" data-sid="${esc(sid)}">${esc((sid || r.trace_id).replace(/^support-/, ''))}</a>${r.turn ? `<span class="turn">turn ${r.turn}</span>` : ''}</td>
+        <td data-label="Your label">${tag(r.label)}<a class="jv-edit" href="${esc(labHref(r))}">Edit label</a>${r.label_changed ? '<span class="chg">Changed in Labels; re-export to recount.</span>' : ''}</td>
+        <td data-label="Judge">${tag(r.verdict)}</td>
+        <td class="txt" data-label="Judge critique">${crit(r.critique)}</td><td class="txt" data-label="Your evidence">${esc(r.evidence || '—')}</td></tr>`; }).join('')}</table>` : ''}`;
+  }
+  box.innerHTML = head + body;
+  $('#jv-live').textContent = live.replace(/<[^>]+>/g, '');
+  if (focusId) $('#' + focusId)?.focus();   // a re-render replaces the controls; keep keyboard focus where it was
+  $('#jv-judge').onchange = e => { S.jv.judge = e.target.value; renderJudge(); };
+  $('#jv-split').onchange = e => { S.jv.split = e.target.value; renderJudge(); };
+  $('#jv-dis').onchange = e => { S.jv.dis = e.target.checked; renderJudge(); };
+  /* A plain click opens the conversation in Review; a modified click follows the real href (new tab). */
+  for (const a of box.querySelectorAll('a.jv-open')) a.onclick = e => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button) return;
+    e.preventDefault();
+    const i = S.index.findIndex(x => x.scenario_id === a.dataset.sid);
+    if (i < 0 || !mayLeave()) return;
+    S.jv.last = a.dataset.sid; S.jv.seen.add(a.dataset.sid);
+    openConv(i); document.querySelector('.tabs button[data-tab="review"]').click();
+  };
+  /* Back from a conversation: return to its row. */
+  const back = S.jv.last && [...box.querySelectorAll('tr[data-sid]')].find(t => t.dataset.sid === S.jv.last);
+  if (back){ back.scrollIntoView({block: 'center'}); S.jv.last = ''; }
+}
+/* Entering or leaving Labels is a history entry (Labels has its own hash), so back returns to the other
+   tab. The push comes first: an already-loaded focus view renders synchronously and replaces the hash. */
+document.querySelectorAll('.tabs button').forEach(b => b.onclick = () => {
+  const was = $('#labels').classList.contains('on'), to = b.dataset.tab === 'labels';
+  if (to && !was) writeLabHash(true);
+  setTab(b.dataset.tab);
+  if (!to && was) writeHash(true);
+});
+$('#show-sugg').checked = S.showSugg;
+$('#show-sugg').onchange = e => {
+  S.showSugg = e.target.checked;
+  try { localStorage.setItem('showSugg', S.showSugg ? '1' : '0'); } catch (err) {}
+  if (S.view) renderConversation(snapshotDrafts());
+};
+function setAxial(on){
+  S.showAxial = on;
+  if (!on) S.pickerFor = null;       // no MODE rows, so no panel to reopen later
+  $('#show-axial').checked = on;
+  try { localStorage.setItem('showAxial', on ? '1' : '0'); } catch (err) {}
+  renderPos();
+}
+$('#show-axial').checked = S.showAxial;
+$('#show-axial').onchange = e => {
+  setAxial(e.target.checked);
+  if (S.view) renderConversation(snapshotDrafts());
+};
+/* prev/next step through the held list by scenario id, so they work when the
+   open conversation is outside it (nothing open: next is the first row). */
+$('#prev').onclick = () => {
+  const p = navList().filter(i => sid(i) < sid(S.cur)).pop();
+  if (p !== undefined && mayLeave()) openConv(p);
+};
+$('#next').onclick = () => {
+  const n = navList().find(i => sid(i) > sid(S.cur));
+  if (n !== undefined && mayLeave()) openConv(n);
+};
+document.addEventListener('keydown', e => {
+  const rev = $('#review').classList.contains('on');
+  /* Space and ? first: Space must never press a focused button, a mode card included. */
+  if (!rev) return;   // only the open Review tab navigates conversations; Labels has its own handler
+  if (!typingIn(e) && pageKeys(e, 'review', $('#conv'))) return;
+  /* An open mode panel owns the keyboard: Esc closes it, nothing else navigates. */
+  if (document.querySelector('#conv .modepick')){
+    if (e.key === 'Escape'){ e.preventDefault(); setPicker(null); }
+    return;
+  }
+  if (typingIn(e)) return;
+  if ($('#labels').classList.contains('on')) return;   // the Labels tab has its own handler
+  if (e.key === 'Escape' && !$('#keys').hidden){ $('#keys').hidden = true; return; }
+  if (e.metaKey || e.ctrlKey || e.altKey) return;   // leave Cmd/Ctrl-F and friends to the browser
+  const k = e.key.toLowerCase();
+  if (k === 'j') $('#prev').click();
+  else if (k === 'k') $('#next').click();
+  else if (k === 'g') nextFailure();
+});
+boot();
+</script>

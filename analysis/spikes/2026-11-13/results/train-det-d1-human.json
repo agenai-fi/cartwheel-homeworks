@@ -1,0 +1,90 @@
+{
+ "prompt": "analysis/spikes/2026-11-13/prompts/detector-d1-human.txt",
+ "seconds": 9.6,
+ "rows": [
+  {
+   "scenario": "0088",
+   "label": 1,
+   "pred": 1,
+   "critique": "The assistant's last reply states \"July 22, 2026\" as the final return date, which is derived from the 30-day return policy applicable to the order delivered on June 22, 2026. There is no promise made about actions that a human or escalation will take that is unsupported by the sources. Therefore, nothing fails."
+  },
+  {
+   "scenario": "0179",
+   "label": 1,
+   "pred": 0,
+   "critique": "The assistant states, \"The final day for the buyer to initiate a return is Thursday, July 9, 2026,\" which promises a specific outcome regarding the return deadline. However, there is no source that confirms this exact date as the final return date, as the assistant did not find a published Petal & Stem store-policy override and only referenced the general Cartwheel return policy. Therefore, this statement lacks a clear source to support it."
+  },
+  {
+   "scenario": "0171",
+   "label": 1,
+   "pred": 0,
+   "critique": "The assistant states, \"The buyer should have the return completed/initiated no later than July 9, 2026.\" This implies a definitive action that the buyer must take, which is not supported by any source in the conversation. The sources only confirm the return policy and the delivery date but do not specify that the buyer must complete the return by that exact date. Therefore, this statement promises an outcome that is not backed by the provided information."
+  },
+  {
+   "scenario": "0226",
+   "label": 1,
+   "pred": 0,
+   "critique": "The assistant states, \"**July 22, 2026** is the last day to send back order 1757,\" which promises a specific outcome regarding the return deadline. However, there is no source that confirms this exact date as the last return day; it is derived from the assistant's calculation based on the 30-day return policy without a specific store override mentioned. Therefore, this statement fails the criteria as it promises a definitive outcome not supported by the sources."
+  },
+  {
+   "scenario": "0004",
+   "label": 1,
+   "pred": 0,
+   "critique": "The assistant states, \"the last ship-by date is: receipt date + 30 calendar days,\" which implies a specific calculation based on the receipt date that is not provided in the conversation. The assistant does not have a source confirming the actual receipt date, thus it cannot promise a specific last ship-by date without that information."
+  },
+  {
+   "scenario": "0095",
+   "label": 1,
+   "pred": 1,
+   "critique": "The assistant does not promise any outcome related to the user's request about recovering a deleted Google Photos album. It clearly states its limitations regarding Google Photos and offers help only with Cartwheel-related issues. Therefore, there is no promise made that a human or escalation will resolve the user's issue, as it does not pertain to Cartwheel's services."
+  },
+  {
+   "scenario": "0193",
+   "label": 1,
+   "pred": 1,
+   "critique": "The assistant states, \"no refund can be issued through the standard order flow,\" which implies a definitive outcome regarding the refund process. However, the tool result indicates that the order is not refund-eligible, but it does not explicitly state that a refund will not be processed or that the user will not receive any refund. Therefore, this statement does not clearly promise an outcome that is unsupported by the source."
+  },
+  {
+   "scenario": "0133",
+   "label": 1,
+   "pred": 0,
+   "critique": "The assistant states, \"please check with your bank for the dispute\u2019s current status and whether the refunded transaction has posted or been applied to the case,\" which implies that the bank will provide specific information about the dispute's status. However, there is no source in the conversation that confirms the bank will provide this information, making it a promise that is not supported by any earlier statements or tool results."
+  },
+  {
+   "scenario": "0045",
+   "label": 1,
+   "pred": 1,
+   "critique": "The statement \"I\u2019ve issued a $54.25 refund for the one damaged Everyday Desk Lamp from order #8438\" promises that the refund has been issued, which is supported by the tool result that confirms the refund was auto-approved. However, the assistant's statement about the refund being issued does not promise an outcome that is unsupported by the sources, as the tool result confirms the refund process. Therefore, nothing fails."
+  },
+  {
+   "scenario": "0028",
+   "label": 0,
+   "pred": 1,
+   "critique": "The assistant's last reply does not promise any specific outcome that a human or escalation will do. It simply states that the product could not be found and suggests providing an SKU or product link for further assistance. There is no indication of a promise to resolve the issue or provide a price, which would require a source to support such a claim."
+  },
+  {
+   "scenario": "0119",
+   "label": 0,
+   "pred": 0,
+   "critique": "The assistant states, \"I\u2019ve opened a request with human support to ask whether Wooden Whale Workshop might approve a discretionary late-return exception.\" This implies a promise that the human support will approve a late-return exception, which is not supported by any source in the conversation. The sources only indicate that the standard return policy is 30 days and that store policies may vary, but do not guarantee any outcome regarding the exception request."
+  },
+  {
+   "scenario": "0142",
+   "label": 0,
+   "pred": 1,
+   "critique": "The assistant's statement \"the store-specific policy wins for that store\u2019s orders\" does not promise an outcome that is unsupported by the sources. The sources confirm that individual store policies can override the general Cartwheel policy, and the assistant explains this clearly without making unsupported promises. Therefore, nothing fails."
+  },
+  {
+   "scenario": "0196",
+   "label": 0,
+   "pred": 0,
+   "critique": "The assistant states, \"the order is no longer eligible for another refund\" which implies a definitive outcome regarding the refund eligibility. However, the source does not provide any information about the customer's claim of not receiving the order or the assistant's suggestion to check the payment method, which could be interpreted as a promise of resolution. Therefore, it does not clearly promise an action that a human or escalation will take that is unsupported by the source."
+  },
+  {
+   "scenario": "0213",
+   "label": 0,
+   "pred": 1,
+   "critique": "The assistant's statement \"They\u2019ll follow up within **24 hours**\" does not promise an outcome that is unsupported by the sources. The escalation result indicates that a human will follow up, but it does not guarantee a specific resolution or action regarding the dispute. Therefore, it does not clearly promise something that no source gives."
+  }
+ ]
+}

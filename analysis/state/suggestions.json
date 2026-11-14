@@ -1,1 +1,1053 @@
-[]
+[
+  {
+    "id": "policy_claim_without_opening:r1:support-0123:t1",
+    "trace_id": "961eb4d374253cad59550812e46b357e",
+    "turn": 1,
+    "step": "reply",
+    "session_id": "9ee4021c9d2b436cacbdd01bf99a44a1",
+    "scenario_id": "support-0123",
+    "mode": "policy_claim_without_opening",
+    "round": 1,
+    "signal": "deterministic: cites a policy it never opened (rail cited_not_opened)",
+    "strength": "strong",
+    "evidence": "cites cw-refunds (never opened): …e original payment method and can take **5–10 business days** to appear, depending on the payment provider (**cw-refunds**). Since this order was delivered about a year ago and is already in refunded status, I can confirm the refu…",
+    "author": "agent",
+    "status": "accepted",
+    "created_at": "2026-09-25T22:04:11.837964+00:00",
+    "search_batch": "depth-1",
+    "decisions": [
+      {
+        "status": "accepted",
+        "reason": "I didn't open the policy",
+        "decided_at": "2026-09-26T14:05:44.286513+00:00",
+        "annotation_id": "072c9548541b"
+      },
+      {
+        "status": "accepted",
+        "reason": "covered by reason 0a4b22d23cbe",
+        "decided_at": "2026-10-31T19:10:40.993112+00:00",
+        "retracted_annotation_id": "072c9548541b",
+        "attached": {
+          "annotation_id": "0a4b22d23cbe",
+          "mode": "policy_claim_without_opening",
+          "added": false
+        }
+      }
+    ],
+    "decision": {
+      "status": "accepted",
+      "reason": "covered by reason 0a4b22d23cbe",
+      "decided_at": "2026-10-31T19:10:40.993112+00:00",
+      "retracted_annotation_id": "072c9548541b",
+      "attached": {
+        "annotation_id": "0a4b22d23cbe",
+        "mode": "policy_claim_without_opening",
+        "added": false
+      }
+    },
+    "reason": "cites cw-refunds, never opened with get_policy",
+    "quote": "Refunds return to the original payment method and can take **5–10 business days** to appear, depending on the payment provider (**cw-refunds**)."
+  },
+  {
+    "id": "policy_claim_without_opening:r1:support-0139:t1",
+    "trace_id": "e4a40eee6111d9c28012e9997bdf202e",
+    "turn": 1,
+    "step": "reply",
+    "session_id": "83764be89e504ab9b8fb78c5cdccccfd",
+    "scenario_id": "support-0139",
+    "mode": "policy_claim_without_opening",
+    "round": 1,
+    "signal": "deterministic: cites a policy it never opened (rail cited_not_opened)",
+    "strength": "strong",
+    "evidence": "cites store-meridian-cycles-policy (never opened): …takes precedence. The order was delivered on **November 7, 2025**, so it is outside that window. (cw-returns; store-meridian-cycles-policy) - A **$286.50** refund is over Cartwheel’s $100 automatic-processing limit, so it requires human review befo…",
+    "author": "agent",
+    "status": "accepted",
+    "created_at": "2026-09-25T22:04:11.837964+00:00",
+    "search_batch": "depth-1",
+    "decisions": [
+      {
+        "status": "rejected",
+        "reason": "It's a failure because it opened a support ticket for something that was outside of the return window, unless it is considered a dispute, which could be fine.",
+        "decided_at": "2026-09-26T14:13:07.327894+00:00",
+        "verdict_annotation_id": "248e1101ba6c"
+      },
+      {
+        "status": "accepted",
+        "reason": "cites store-meridian-cycles-policy, seen only as a search snippet, never opened.",
+        "decided_at": "2026-09-26T14:15:18.642147+00:00",
+        "annotation_id": "41570c2031d6"
+      }
+    ],
+    "decision": {
+      "status": "accepted",
+      "reason": "cites store-meridian-cycles-policy, seen only as a search snippet, never opened.",
+      "decided_at": "2026-09-26T14:15:18.642147+00:00",
+      "annotation_id": "41570c2031d6"
+    },
+    "reason": "cites store-meridian-cycles-policy, never opened with get_policy",
+    "quote": "Cartwheel’s standard return window is 30 days from **delivery**, but stores can set their own return period. **Meridian Cycles uses a 21-day window**, which takes precedence. The order was delivered on **November 7, 2025**, so it is outside that window. (cw-returns; store-meridian-cycles-policy)"
+  },
+  {
+    "id": "policy_claim_without_opening:r1:support-0161:t2",
+    "trace_id": "ca2dd90bad7051d51fb7ece53dd4cb57",
+    "turn": 2,
+    "step": "reply",
+    "session_id": "c31a972da66146cb90ef2951391e8f19",
+    "scenario_id": "support-0161",
+    "mode": "policy_claim_without_opening",
+    "round": 1,
+    "signal": "deterministic: cites a policy it never opened (rail cited_not_opened)",
+    "strength": "strong",
+    "evidence": "cites cw-shipping (never opened): …hipment: **Not shipped** - Tracking: **None** — tracking is only available after an order is marked shipped. (cw-shipping) - The order record has **no cancellation reason or auto-cancellation indicator**, so I can’t confirm that it…",
+    "author": "agent",
+    "status": "accepted",
+    "created_at": "2026-09-25T22:04:11.837964+00:00",
+    "search_batch": "depth-1",
+    "decisions": [
+      {
+        "status": "rejected",
+        "reason": "The agent correctly opened the get policy for cancellations. It didn't need to open the shipping policy because it got canceled. Since the item was not shipped, shipping is not applicable.",
+        "decided_at": "2026-09-26T14:45:46.397273+00:00",
+        "verdict_annotation_id": "84af242a4603"
+      },
+      {
+        "status": "accepted",
+        "reason": "cites cw-shipping for the tracking rule; saw only its search snippet, never opened (cf. 0181). The claim wasn't needed for a cancelled order, but it was made and cited.",
+        "decided_at": "2026-09-26T14:48:02.633824+00:00",
+        "annotation_id": "ad3a77a047b0"
+      },
+      {
+        "status": "rejected",
+        "reason": "claim is word for word in the cw-shipping snippet, which is the whole policy (same as 0177)\"",
+        "decided_at": "2026-09-27T18:27:51.868023+00:00",
+        "retracted_annotation_id": "ad3a77a047b0"
+      },
+      {
+        "status": "accepted",
+        "reason": "cites cw-shipping without opening it; the agent can't tell a whole-policy snippet from a cut one\"",
+        "decided_at": "2026-09-27T18:32:35.490306+00:00",
+        "annotation_id": "e39695b81f67"
+      }
+    ],
+    "decision": {
+      "status": "accepted",
+      "reason": "cites cw-shipping without opening it; the agent can't tell a whole-policy snippet from a cut one\"",
+      "decided_at": "2026-09-27T18:32:35.490306+00:00",
+      "annotation_id": "e39695b81f67"
+    },
+    "reason": "cites cw-shipping, never opened with get_policy",
+    "quote": "Tracking: **None** — tracking is only available after an order is marked shipped. (cw-shipping)"
+  },
+  {
+    "id": "policy_claim_without_opening:r1:support-0177:t1",
+    "trace_id": "44f851f3ce4a56444c8cdf0707aeaa7d",
+    "turn": 1,
+    "step": "reply",
+    "session_id": "3fc48414f7eb42de8a741b36f39f8a0a",
+    "scenario_id": "support-0177",
+    "mode": "policy_claim_without_opening",
+    "round": 1,
+    "signal": "deterministic: cites a policy it never opened (rail cited_not_opened)",
+    "strength": "strong",
+    "evidence": "cites cw-shipping (never opened): … is blank). - **Tracking:** None is available, since tracking appears only after an order is marked shipped. [cw-shipping] - **Cancellation reason code:** The order record available to me does **not** include a reason code or ident…",
+    "author": "agent",
+    "status": "accepted",
+    "created_at": "2026-09-25T22:04:11.837964+00:00",
+    "search_batch": "depth-1",
+    "decisions": [
+      {
+        "status": "rejected",
+        "reason": "The agent retrieved the order, searched the policies, and retrieved the policies on cancellations, quoted directly, and then escalated the ticket, so I don't see any issues.",
+        "decided_at": "2026-09-27T18:12:35.548864+00:00",
+        "verdict_annotation_id": "91a86be5bd02"
+      },
+      {
+        "status": "accepted",
+        "reason": "cites cw-shipping without opening it; the agent can't tell a whole-policy snippet from a cut one\"",
+        "decided_at": "2026-09-27T18:33:05.396633+00:00",
+        "annotation_id": "7a7779ba3368"
+      }
+    ],
+    "decision": {
+      "status": "accepted",
+      "reason": "cites cw-shipping without opening it; the agent can't tell a whole-policy snippet from a cut one\"",
+      "decided_at": "2026-09-27T18:33:05.396633+00:00",
+      "annotation_id": "7a7779ba3368"
+    },
+    "reason": "cites cw-shipping, never opened with get_policy",
+    "quote": "**Tracking:** None is available, since tracking appears only after an order is marked shipped. [cw-shipping]"
+  },
+  {
+    "id": "policy_claim_without_opening:r1:support-0221:t1",
+    "trace_id": "adeeece73dc206c5178f2a4ee0dad834",
+    "turn": 1,
+    "step": "reply",
+    "session_id": "95f3d53635164c149565978b3316e812",
+    "scenario_id": "support-0221",
+    "mode": "policy_claim_without_opening",
+    "round": 1,
+    "signal": "deterministic: cites a policy it never opened (rail cited_not_opened)",
+    "strength": "strong",
+    "evidence": "cites store-juniper-home-goods-policy (never opened): …ome Goods’ 14-day policy explicitly says it takes precedence over Cartwheel’s 30-day default for its orders. [store-juniper-home-goods-policy]  The item still needs to meet the condition requirements in the store listing. [cw-returns]",
+    "author": "agent",
+    "status": "accepted",
+    "created_at": "2026-09-25T22:04:11.837964+00:00",
+    "search_batch": "depth-1",
+    "reason": "cites store-juniper-home-goods-policy, never opened with get_policy",
+    "quote": "If the store clearly states **14 days**, the shopper has **14 days from delivery** for that store’s orders—not 30. For example, Juniper Home Goods’ 14-day policy explicitly says it takes precedence over Cartwheel’s 30-day default for its orders. [store-juniper-home-goods-policy]",
+    "decisions": [
+      {
+        "status": "accepted",
+        "reason": "Yes, it's the policy, but it didn't open that specific policy for Juniper Home Goods.",
+        "decided_at": "2026-09-27T19:39:54.253963+00:00",
+        "annotation_id": "99e5e6d2712c"
+      }
+    ],
+    "decision": {
+      "status": "accepted",
+      "reason": "Yes, it's the policy, but it didn't open that specific policy for Juniper Home Goods.",
+      "decided_at": "2026-09-27T19:39:54.253963+00:00",
+      "annotation_id": "99e5e6d2712c"
+    }
+  },
+  {
+    "id": "policy_claim_without_opening:r1:support-0248:t1",
+    "trace_id": "6be3e7c3b1a1ef30937ec1b55b7cb48a",
+    "turn": 1,
+    "step": "reply",
+    "session_id": "8bf0ea4c094e4689acd3e5e901ec273b",
+    "scenario_id": "support-0248",
+    "mode": "policy_claim_without_opening",
+    "round": 1,
+    "signal": "deterministic: cites a policy it never opened (rail cited_not_opened)",
+    "strength": "strong",
+    "evidence": "cites cw-store-overrides (never opened): …licy page. It takes priority over Cartwheel’s general return policy, whether it’s stricter or more flexible. (cw-store-overrides)",
+    "author": "agent",
+    "status": "accepted",
+    "created_at": "2026-09-25T22:04:11.837964+00:00",
+    "search_batch": "depth-1",
+    "reason": "cites cw-store-overrides, never opened with get_policy",
+    "quote": "Apply the store’s policy, as long as the override is clearly stated on that store’s own policy page. It takes priority over Cartwheel’s general return policy, whether it’s stricter or more flexible. (cw-store-overrides)",
+    "decisions": [
+      {
+        "status": "accepted",
+        "reason": "Yeah, the agent quote that stores overrides without opening a policy",
+        "decided_at": "2026-09-27T19:42:26.498978+00:00",
+        "annotation_id": "257ded5cdfcd"
+      },
+      {
+        "status": "accepted",
+        "reason": "cites cw-store-overrides but opened no policy at all; the search snippet was cut before the policy ends (337 chars > 300)",
+        "decided_at": "2026-09-27T20:00:04.394629+00:00",
+        "annotation_id": "cc352f9353a4"
+      }
+    ],
+    "decision": {
+      "status": "accepted",
+      "reason": "cites cw-store-overrides but opened no policy at all; the search snippet was cut before the policy ends (337 chars > 300)",
+      "decided_at": "2026-09-27T20:00:04.394629+00:00",
+      "annotation_id": "cc352f9353a4"
+    }
+  },
+  {
+    "id": "policy_claim_without_opening:r1:support-0070:t1",
+    "trace_id": "404756290c062dd515aa331171d0d4af",
+    "turn": 1,
+    "step": "reply",
+    "session_id": "86f077d5a29a448285ca14c66120cbef",
+    "scenario_id": "support-0070",
+    "mode": "policy_claim_without_opening",
+    "round": 1,
+    "signal": "text match: states a store-override rule; cw-store-overrides not opened, but cw-returns or the store's page may still support it -- expect near misses",
+    "strength": "weak",
+    "evidence": "states an override rule; opened: cw-returns, store-juniper-home-goods-policy: …s was delivered on **June 22, 2026**.  Juniper Home Goods has a **14-day return window from delivery**, which overrides Cartwheel’s standard 30-day window. That makes **July 6, 2026** the last day to send it back and have it co…",
+    "author": "agent",
+    "status": "rejected",
+    "created_at": "2026-09-25T22:04:11.837964+00:00",
+    "search_batch": "depth-1",
+    "decisions": [
+      {
+        "status": "rejected",
+        "reason": "opened policy and cited it",
+        "decided_at": "2026-09-26T13:09:42.495861+00:00"
+      }
+    ],
+    "decision": {
+      "status": "rejected",
+      "reason": "opened policy and cited it",
+      "decided_at": "2026-09-26T13:09:42.495861+00:00"
+    },
+    "reason": "states a store-override rule; cw-store-overrides not opened (opened: cw-returns, store-juniper-home-goods-policy) -- may be a near miss",
+    "quote": "Juniper Home Goods has a **14-day return window from delivery**, which overrides Cartwheel’s standard 30-day window."
+  },
+  {
+    "id": "policy_claim_without_opening:r1:support-0070:t3",
+    "trace_id": "e9ab991a746ad470676d7d302174e1e5",
+    "turn": 3,
+    "step": "reply",
+    "session_id": "86f077d5a29a448285ca14c66120cbef",
+    "scenario_id": "support-0070",
+    "mode": "policy_claim_without_opening",
+    "round": 1,
+    "signal": "text match: states a store-override rule; cw-store-overrides not opened, but cw-returns or the store's page may still support it -- expect near misses",
+    "strength": "weak",
+    "evidence": "states an override rule; opened: cw-returns, store-juniper-home-goods-policy: …day window calculates to a **July 6, 2026** end date. Juniper Home Goods’ policy is 14 days from delivery and overrides Cartwheel’s default return window. [store-juniper-home-goods-policy] [cw-returns]  However, I can’t honestl…",
+    "author": "agent",
+    "status": "rejected",
+    "created_at": "2026-09-25T22:04:11.837964+00:00",
+    "search_batch": "depth-1",
+    "decisions": [
+      {
+        "status": "rejected",
+        "reason": "It opened the policy in the previous turn 1 and cited it. I don't see a reason why it needed to open again in this turn.",
+        "decided_at": "2026-09-26T13:12:52.755980+00:00"
+      }
+    ],
+    "decision": {
+      "status": "rejected",
+      "reason": "It opened the policy in the previous turn 1 and cited it. I don't see a reason why it needed to open again in this turn.",
+      "decided_at": "2026-09-26T13:12:52.755980+00:00"
+    },
+    "reason": "states a store-override rule; cw-store-overrides not opened (opened: cw-returns, store-juniper-home-goods-policy) -- may be a near miss",
+    "quote": "Juniper Home Goods’ policy is 14 days from delivery and overrides Cartwheel’s default return window."
+  },
+  {
+    "id": "policy_claim_without_opening:r1:support-0167:t1",
+    "trace_id": "4681ac00f9938b91657363368bf397c5",
+    "turn": 1,
+    "step": "reply",
+    "session_id": "ec99f72a5a6349d38cadb62781559c00",
+    "scenario_id": "support-0167",
+    "mode": "policy_claim_without_opening",
+    "round": 1,
+    "signal": "text match: states a store-override rule; cw-store-overrides not opened, but cw-returns or the store's page may still support it -- expect near misses",
+    "strength": "weak",
+    "evidence": "states an override rule; opened: cw-returns: For your store’s return window, the store-specific policy applies.  - Cartwheel’s default is **30 days from delivery**—not from the purchase date.   - The platf…",
+    "author": "agent",
+    "status": "rejected",
+    "created_at": "2026-09-25T22:04:11.837964+00:00",
+    "search_batch": "depth-1",
+    "decisions": [
+      {
+        "status": "rejected",
+        "reason": "Because I don't think there's any policy that mentions final sales, and it did open a return policy, then it's okay.",
+        "decided_at": "2026-09-26T14:53:13.673050+00:00",
+        "verdict_annotation_id": "60971c3efcbf"
+      },
+      {
+        "status": "accepted",
+        "reason": "states that the stricter 14-day store window beats the 30-day default, citing only cw-returns ('may override'); the precedence rule ('stricter or looser') is in cw-store-overrides, never opened. Same as 0092. Final-sale gap honestly stated and escalated.",
+        "decided_at": "2026-09-26T14:54:50.622539+00:00",
+        "annotation_id": "b47414825127"
+      },
+      {
+        "status": "rejected",
+        "reason": "claim is supported by cw-returns, which it opened and cited ('Individual stores may override this window'); cw-store-overrides never came up in any search",
+        "decided_at": "2026-09-26T14:58:13.754589+00:00",
+        "retracted_annotation_id": "b47414825127",
+        "verdict_annotation_id": "1edbafb096c5"
+      }
+    ],
+    "decision": {
+      "status": "rejected",
+      "reason": "claim is supported by cw-returns, which it opened and cited ('Individual stores may override this window'); cw-store-overrides never came up in any search",
+      "decided_at": "2026-09-26T14:58:13.754589+00:00",
+      "retracted_annotation_id": "b47414825127",
+      "verdict_annotation_id": "1edbafb096c5"
+    },
+    "reason": "states a store-override rule; cw-store-overrides not opened (opened: cw-returns) -- may be a near miss",
+    "quote": "For your store’s return window, the store-specific policy applies."
+  },
+  {
+    "id": "policy_claim_without_opening:r1:support-0205:t1",
+    "trace_id": "9d527046ed7e15486ded225213dea630",
+    "turn": 1,
+    "step": "reply",
+    "session_id": "4a526e8561d14f238da6ce347f296ec3",
+    "scenario_id": "support-0205",
+    "mode": "policy_claim_without_opening",
+    "round": 1,
+    "signal": "text match: states a store-override rule; cw-store-overrides not opened, but cw-returns or the store's page may still support it -- expect near misses",
+    "strength": "weak",
+    "evidence": "states an override rule; opened: cw-cancellations, cw-returns, store-northwind-books-policy: …ions]**  For **Northwind Books**, the customer has **45 days from the delivery date** to return the item—this store-specific window overrides Cartwheel’s usual 30-day return window. The item should be in the condition described in you…",
+    "author": "agent",
+    "status": "rejected",
+    "created_at": "2026-09-25T22:04:11.837964+00:00",
+    "search_batch": "depth-1",
+    "decisions": [
+      {
+        "status": "rejected",
+        "reason": "The agent retrieved the order, checked against the policy, retrieved the correct policy, and correctly said that the order cannot be canceled. Once it's shipped, you can request a refund after you receive it.",
+        "decided_at": "2026-09-27T19:03:38.156967+00:00",
+        "verdict_annotation_id": "8bf98751d99a"
+      }
+    ],
+    "decision": {
+      "status": "rejected",
+      "reason": "The agent retrieved the order, checked against the policy, retrieved the correct policy, and correctly said that the order cannot be canceled. Once it's shipped, you can request a refund after you receive it.",
+      "decided_at": "2026-09-27T19:03:38.156967+00:00",
+      "verdict_annotation_id": "8bf98751d99a"
+    },
+    "reason": "states a store-override rule; cw-store-overrides not opened (opened: cw-cancellations, cw-returns, store-northwind-books-policy) -- may be a near miss",
+    "quote": "For **Northwind Books**, the customer has **45 days from the delivery date** to return the item—this store-specific window overrides Cartwheel’s usual 30-day return window."
+  },
+  {
+    "id": "policy_claim_without_opening:r1:support-0212:t1",
+    "trace_id": "366a9d1f7c556dcc8029f7856749c03e",
+    "turn": 1,
+    "step": "reply",
+    "session_id": "447e9c40dbd1400aad9a78af826cefff",
+    "scenario_id": "support-0212",
+    "mode": "policy_claim_without_opening",
+    "round": 1,
+    "signal": "text match: states a store-override rule; cw-store-overrides not opened, but cw-returns or the store's page may still support it -- expect near misses",
+    "strength": "weak",
+    "evidence": "states an override rule; opened: cw-returns: Follow the **store’s published return policy** when it overrides the Cartwheel default. So if that seller’s policy clearly says **14 days from delivery**, use **14 days**, …",
+    "author": "agent",
+    "status": "rejected",
+    "created_at": "2026-09-25T22:04:11.837964+00:00",
+    "search_batch": "depth-1",
+    "decisions": [
+      {
+        "status": "rejected",
+        "reason": "The agent checked the returns policy and retrieved it correctly and cited everything correctly.",
+        "decided_at": "2026-09-27T19:08:29.264250+00:00",
+        "verdict_annotation_id": "bfb4a93be889"
+      }
+    ],
+    "decision": {
+      "status": "rejected",
+      "reason": "The agent checked the returns policy and retrieved it correctly and cited everything correctly.",
+      "decided_at": "2026-09-27T19:08:29.264250+00:00",
+      "verdict_annotation_id": "bfb4a93be889"
+    },
+    "reason": "states a store-override rule; cw-store-overrides not opened (opened: cw-returns) -- may be a near miss",
+    "quote": "Follow the **store’s published return policy** when it overrides the Cartwheel default."
+  },
+  {
+    "id": "policy_claim_without_opening:r1:support-0212:t2",
+    "trace_id": "6940d6ecc2fe344882185168c298325f",
+    "turn": 2,
+    "step": "reply",
+    "session_id": "447e9c40dbd1400aad9a78af826cefff",
+    "scenario_id": "support-0212",
+    "mode": "policy_claim_without_opening",
+    "round": 1,
+    "signal": "text match: states a store-override rule; cw-store-overrides not opened, but cw-returns or the store's page may still support it -- expect near misses",
+    "strength": "weak",
+    "evidence": "states an override rule; opened: cw-returns: … **30-day return** term is the applicable customer-facing term unless there is a valid Cartwheel store-policy override tied to that order. The platform default is 30 days from delivery, and store overrides are contemplated thro…",
+    "author": "agent",
+    "status": "accepted",
+    "created_at": "2026-09-25T22:04:11.837964+00:00",
+    "search_batch": "depth-1",
+    "decisions": [
+      {
+        "status": "rejected",
+        "reason": "I think the agent should have said that shops can create their own policies and specify which items may not be returned, and then mention where this is said in the policy.",
+        "decided_at": "2026-09-27T19:11:30.643661+00:00",
+        "verdict_annotation_id": "4afa45f1d928"
+      },
+      {
+        "status": "accepted",
+        "reason": "states the 'valid only on the store's own policy page' rule from cw-store-overrides, never opened; escalated saying the docs are silent, but that document answers it",
+        "decided_at": "2026-09-27T19:16:07.730603+00:00",
+        "annotation_id": "e1d1aa3de928"
+      }
+    ],
+    "decision": {
+      "status": "accepted",
+      "reason": "states the 'valid only on the store's own policy page' rule from cw-store-overrides, never opened; escalated saying the docs are silent, but that document answers it",
+      "decided_at": "2026-09-27T19:16:07.730603+00:00",
+      "annotation_id": "e1d1aa3de928"
+    },
+    "reason": "states a store-override rule; cw-store-overrides not opened (opened: cw-returns) -- may be a near miss",
+    "quote": "For now, set expectations based on what was disclosed **on Cartwheel for this Cartwheel order**: the listing’s **30-day return** term is the applicable customer-facing term unless there is a valid Cartwheel store-policy override tied to that order."
+  },
+  {
+    "id": "policy_claim_without_opening:r1:support-0213:t1",
+    "trace_id": "5e43e18e2c630fd34eb9360d1a7bd681",
+    "turn": 1,
+    "step": "reply",
+    "session_id": "2c5893ed9c204cd4a7eb205ea305443f",
+    "scenario_id": "support-0213",
+    "mode": "policy_claim_without_opening",
+    "round": 1,
+    "signal": "text match: states a store-override rule; cw-store-overrides not opened, but cw-returns or the store's page may still support it -- expect near misses",
+    "strength": "weak",
+    "evidence": "states an override rule; opened: cw-disputes, cw-refunds, cw-returns: …ed. **[cw-disputes]** - The standard return window is **30 days from delivery**, unless Little Fox Toys has a store-specific override. Since the item was delivered a couple of months ago, a normal return/replacement route is likely ou…",
+    "author": "agent",
+    "status": "rejected",
+    "created_at": "2026-09-25T22:04:11.837964+00:00",
+    "search_batch": "depth-1",
+    "decisions": [
+      {
+        "status": "rejected",
+        "reason": "The agent provides the correct response because the order has already been refunded, and then it cited three policies that were relevant and created a support ticket.",
+        "decided_at": "2026-09-27T19:21:49.711570+00:00",
+        "verdict_annotation_id": "64fcdd1a5f77"
+      },
+      {
+        "status": "rejected",
+        "reason": "the override claim comes from cw-returns, which it opened; the failure here is a different one (refund called complete while it is only queued)",
+        "decided_at": "2026-09-27T20:00:04.399868+00:00"
+      }
+    ],
+    "decision": {
+      "status": "rejected",
+      "reason": "the override claim comes from cw-returns, which it opened; the failure here is a different one (refund called complete while it is only queued)",
+      "decided_at": "2026-09-27T20:00:04.399868+00:00"
+    },
+    "reason": "states a store-override rule; cw-store-overrides not opened (opened: cw-disputes, cw-refunds, cw-returns) -- may be a near miss",
+    "quote": "The standard return window is **30 days from delivery**, unless Little Fox Toys has a store-specific override."
+  },
+  {
+    "id": "policy_claim_without_opening:r1:support-0237:t1",
+    "trace_id": "d1e3b1d1587742400f4bdf9ab859a6c1",
+    "turn": 1,
+    "step": "reply",
+    "session_id": "46a1f03a4ec04aa19aa287b233866e82",
+    "scenario_id": "support-0237",
+    "mode": "policy_claim_without_opening",
+    "round": 1,
+    "signal": "text match: states a store-override rule; cw-store-overrides not opened, but cw-returns or the store's page may still support it -- expect near misses",
+    "strength": "weak",
+    "evidence": "states an override rule; opened: cw-cancellations, cw-refunds, cw-returns: … a return request after delivery. The standard Cartwheel return period is **30 days from delivery**, though a store-specific policy may override that window. **(cw-returns)** - **Refund status:** The order is currently not refund-elig…",
+    "author": "agent",
+    "status": "rejected",
+    "created_at": "2026-09-25T22:04:11.837964+00:00",
+    "search_batch": "depth-1",
+    "reason": "states a store-override rule; cw-store-overrides not opened (opened: cw-cancellations, cw-refunds, cw-returns) -- may be a near miss",
+    "quote": "The standard Cartwheel return period is **30 days from delivery**, though a store-specific policy may override that window.",
+    "decisions": [
+      {
+        "status": "rejected",
+        "reason": "I See that the agent opened all the policies inside them, so no issue.",
+        "decided_at": "2026-09-27T19:41:49.662412+00:00",
+        "verdict_annotation_id": "011ad98cbd2d"
+      },
+      {
+        "status": "rejected",
+        "reason": "the 'store-specific policy may override' line comes from cw-returns, which it opened; cancellation refusal, refund-review and timing claims come from cw-cancellations and cw-refunds, both opened",
+        "decided_at": "2026-09-27T20:00:04.391954+00:00"
+      }
+    ],
+    "decision": {
+      "status": "rejected",
+      "reason": "the 'store-specific policy may override' line comes from cw-returns, which it opened; cancellation refusal, refund-review and timing claims come from cw-cancellations and cw-refunds, both opened",
+      "decided_at": "2026-09-27T20:00:04.391954+00:00"
+    }
+  },
+  {
+    "id": "missed_mandatory_escalation:r1:support-0083:t1",
+    "trace_id": "f302f0eb9403f6f2c7fd52bae192336b",
+    "turn": 1,
+    "step": "reply",
+    "session_id": "1bf757807da643b78086c89c367099be",
+    "scenario_id": "support-0083",
+    "mode": "missed_mandatory_escalation",
+    "round": 1,
+    "signal": "deterministic: scenario intent dispute; no escalate_to_human call in the conversation",
+    "strength": "strong",
+    "reason": "dispute request; no escalate_to_human in the conversation",
+    "quote": "Yes — order **4892** from **Juniper Home Goods** for the Vintage Vase shows as **already fully refunded for $220.75**.",
+    "evidence": "dispute request; no escalate_to_human in the conversation: Yes — order **4892** from **Juniper Home Goods** for the Vintage Vase shows as **already fully refunded for $220.75**.",
+    "author": "agent",
+    "status": "accepted",
+    "created_at": "2026-10-05T16:17:36.700851+00:00",
+    "search_batch": "depth-2",
+    "decisions": [
+      {
+        "status": "accepted",
+        "reason": "dispute request; no escalate_to_human in the conversation",
+        "decided_at": "2026-10-06T12:00:03.304107+00:00",
+        "annotation_id": "e43c2353945a"
+      }
+    ],
+    "decision": {
+      "status": "accepted",
+      "reason": "dispute request; no escalate_to_human in the conversation",
+      "decided_at": "2026-10-06T12:00:03.304107+00:00",
+      "annotation_id": "e43c2353945a"
+    }
+  },
+  {
+    "id": "missed_mandatory_escalation:r1:support-0093:t1",
+    "trace_id": "7c373e28ff18d9af53a4bdd919894b7e",
+    "turn": 1,
+    "step": "reply",
+    "session_id": "d2adb69b33ff448f981dbb517e325fa3",
+    "scenario_id": "support-0093",
+    "mode": "missed_mandatory_escalation",
+    "round": 1,
+    "signal": "deterministic: scenario intent dispute; no escalate_to_human call in the conversation",
+    "strength": "strong",
+    "reason": "dispute request; no escalate_to_human in the conversation",
+    "quote": "I’m sorry the Modern Mug arrived damaged.",
+    "evidence": "dispute request; no escalate_to_human in the conversation: I’m sorry the Modern Mug arrived damaged.",
+    "author": "agent",
+    "status": "accepted",
+    "created_at": "2026-10-05T16:17:36.700851+00:00",
+    "search_batch": "depth-2",
+    "reanchored": {
+      "from_id": "missed_mandatory_escalation:r1:support-0093:t2",
+      "from_turn": 2,
+      "at": "2026-10-05T19:38:13.021495+00:00",
+      "why": "search anchored on the last turn; the dispute is raised in turn 1, the first reply where escalation was required"
+    },
+    "decisions": [
+      {
+        "status": "accepted",
+        "reason": "covered by reason 20b1d405d27f",
+        "decided_at": "2026-10-06T12:00:33.268936+00:00",
+        "attached": {
+          "annotation_id": "20b1d405d27f",
+          "mode": "missed_mandatory_escalation",
+          "added": true
+        }
+      }
+    ],
+    "decision": {
+      "status": "accepted",
+      "reason": "covered by reason 20b1d405d27f",
+      "decided_at": "2026-10-06T12:00:33.268936+00:00",
+      "attached": {
+        "annotation_id": "20b1d405d27f",
+        "mode": "missed_mandatory_escalation",
+        "added": true
+      }
+    }
+  },
+  {
+    "id": "missed_mandatory_escalation:r1:support-0103:t1",
+    "trace_id": "3bea72e1aad6557c55664243d6baf136",
+    "turn": 1,
+    "step": "reply",
+    "session_id": "b2a2e798e549461b82c0c16276884170",
+    "scenario_id": "support-0103",
+    "mode": "missed_mandatory_escalation",
+    "round": 1,
+    "signal": "deterministic: scenario intent dispute; no escalate_to_human call in the conversation",
+    "strength": "strong",
+    "reason": "dispute request; no escalate_to_human in the conversation",
+    "quote": "I confirmed that order **#3103** from **Saltbox Pantry**—the Handmade Olive Oil totaling **$140.75**—is already marked as **refunded** in our system.",
+    "evidence": "dispute request; no escalate_to_human in the conversation: I confirmed that order **#3103** from **Saltbox Pantry**—the Handmade Olive Oil totaling **$140.75**—is already marked as **refunded** in our system.",
+    "author": "agent",
+    "status": "accepted",
+    "created_at": "2026-10-05T16:17:36.700851+00:00",
+    "search_batch": "depth-2",
+    "decisions": [
+      {
+        "status": "accepted",
+        "reason": "covered by reason 89a89526b830",
+        "decided_at": "2026-10-05T20:30:23.362230+00:00",
+        "attached": {
+          "annotation_id": "89a89526b830",
+          "mode": "missed_mandatory_escalation",
+          "added": true
+        }
+      }
+    ],
+    "decision": {
+      "status": "accepted",
+      "reason": "covered by reason 89a89526b830",
+      "decided_at": "2026-10-05T20:30:23.362230+00:00",
+      "attached": {
+        "annotation_id": "89a89526b830",
+        "mode": "missed_mandatory_escalation",
+        "added": true
+      }
+    }
+  },
+  {
+    "id": "missed_mandatory_escalation:r1:support-0133:t1",
+    "trace_id": "06054bb1aeca8d8e33fd5973d8d0f9db",
+    "turn": 1,
+    "step": "reply",
+    "session_id": "1ea0e1b7df3c4d73840c525eb1435e5a",
+    "scenario_id": "support-0133",
+    "mode": "missed_mandatory_escalation",
+    "round": 1,
+    "signal": "deterministic: scenario intent dispute; no escalate_to_human call in the conversation",
+    "strength": "strong",
+    "reason": "dispute request; no escalate_to_human in the conversation",
+    "quote": "Order **8122** from **Wooden Whale Workshop** is marked **refunded**.",
+    "evidence": "dispute request; no escalate_to_human in the conversation: Order **8122** from **Wooden Whale Workshop** is marked **refunded**.",
+    "author": "agent",
+    "status": "accepted",
+    "created_at": "2026-10-05T16:17:36.700851+00:00",
+    "search_batch": "depth-2",
+    "decisions": [
+      {
+        "status": "accepted",
+        "reason": "covered by reason a68e748120ed",
+        "decided_at": "2026-10-05T20:31:39.912456+00:00",
+        "attached": {
+          "annotation_id": "a68e748120ed",
+          "mode": "missed_mandatory_escalation",
+          "added": true
+        }
+      }
+    ],
+    "decision": {
+      "status": "accepted",
+      "reason": "covered by reason a68e748120ed",
+      "decided_at": "2026-10-05T20:31:39.912456+00:00",
+      "attached": {
+        "annotation_id": "a68e748120ed",
+        "mode": "missed_mandatory_escalation",
+        "added": true
+      }
+    }
+  },
+  {
+    "id": "answered_out_of_scope_question:r1:support-0095:t1",
+    "trace_id": "48770c9fbd4740e172d22203920ee5ba",
+    "turn": 1,
+    "step": "reply",
+    "session_id": "5b7151c5c6bd490b87006d507fed757a",
+    "scenario_id": "support-0095",
+    "mode": "answered_out_of_scope_question",
+    "round": 1,
+    "signal": "scenario intent out_of_scope + text match: reply contains how-to guidance (usually / look for / point you to / send this / numbered steps)",
+    "strength": "strong",
+    "reason": "out-of-scope request; reply gives how-to guidance beyond a refusal",
+    "quote": "I can’t access or recover items from Google Photos, but Google Photos’ **Trash/Bin** is usually the first place to check—deleted photos and albums may be recoverable there for a limited time.",
+    "evidence": "out-of-scope request; reply gives how-to guidance beyond a refusal: I can’t access or recover items from Google Photos, but Google Photos’ **Trash/Bin** is usually the first place to check—deleted photos and albums may be recoverable there for a limited time.",
+    "author": "agent",
+    "status": "accepted",
+    "created_at": "2026-10-05T16:17:36.998048+00:00",
+    "search_batch": "depth-3",
+    "decisions": [
+      {
+        "status": "accepted",
+        "reason": "covered by reason 04500e6b05a8",
+        "decided_at": "2026-10-05T20:32:31.713618+00:00",
+        "attached": {
+          "annotation_id": "04500e6b05a8",
+          "mode": "answered_out_of_scope_question",
+          "added": true
+        }
+      }
+    ],
+    "decision": {
+      "status": "accepted",
+      "reason": "covered by reason 04500e6b05a8",
+      "decided_at": "2026-10-05T20:32:31.713618+00:00",
+      "attached": {
+        "annotation_id": "04500e6b05a8",
+        "mode": "answered_out_of_scope_question",
+        "added": true
+      }
+    }
+  },
+  {
+    "id": "answered_out_of_scope_question:r1:support-0145:t1",
+    "trace_id": "0fd9632cb0ff60d742d411017cae95ed",
+    "turn": 1,
+    "step": "reply",
+    "session_id": "0cd37fb6efe245999b630e9a9cc895d9",
+    "scenario_id": "support-0145",
+    "mode": "answered_out_of_scope_question",
+    "round": 1,
+    "signal": "scenario intent out_of_scope + text match: reply contains how-to guidance (usually / look for / point you to / send this / numbered steps)",
+    "strength": "strong",
+    "reason": "out-of-scope request; reply gives how-to guidance beyond a refusal",
+    "quote": "If you tell me whether you signed up through Netflix directly, Apple, Google Play, or a cable/mobile provider, I can point you to the usual cancellation path.",
+    "evidence": "out-of-scope request; reply gives how-to guidance beyond a refusal: If you tell me whether you signed up through Netflix directly, Apple, Google Play, or a cable/mobile provider, I can point you to the usual cancellation path.",
+    "author": "agent",
+    "status": "accepted",
+    "created_at": "2026-10-05T16:17:36.998048+00:00",
+    "search_batch": "depth-3",
+    "decisions": [
+      {
+        "status": "accepted",
+        "reason": "covered by reason 9c54e0fedb61",
+        "decided_at": "2026-10-05T20:33:37.215124+00:00",
+        "attached": {
+          "annotation_id": "9c54e0fedb61",
+          "mode": "answered_out_of_scope_question",
+          "added": true
+        }
+      }
+    ],
+    "decision": {
+      "status": "accepted",
+      "reason": "covered by reason 9c54e0fedb61",
+      "decided_at": "2026-10-05T20:33:37.215124+00:00",
+      "attached": {
+        "annotation_id": "9c54e0fedb61",
+        "mode": "answered_out_of_scope_question",
+        "added": true
+      }
+    }
+  },
+  {
+    "id": "answered_out_of_scope_question:r1:support-0214:t1",
+    "trace_id": "2377828e00a5b1b8fb355218321549d0",
+    "turn": 1,
+    "step": "reply",
+    "session_id": "5cb802dd844a46e281561794165b0c9c",
+    "scenario_id": "support-0214",
+    "mode": "answered_out_of_scope_question",
+    "round": 1,
+    "signal": "scenario intent out_of_scope + text match: reply contains how-to guidance (usually / look for / point you to / send this / numbered steps)",
+    "strength": "strong",
+    "reason": "out-of-scope request; reply gives how-to guidance beyond a refusal",
+    "quote": "For the simplest route, look for a Google Forms add-on that supports **“email notifications with PDF attachments”** or **“document merge”**—tools such as Form Publisher or Autocrat are commonly used for this.",
+    "evidence": "out-of-scope request; reply gives how-to guidance beyond a refusal: For the simplest route, look for a Google Forms add-on that supports **“email notifications with PDF attachments”** or **“document merge”**—tools such as Form Publisher or Autocrat are commonly used for this.",
+    "author": "agent",
+    "status": "accepted",
+    "created_at": "2026-10-05T16:17:36.998048+00:00",
+    "search_batch": "depth-3",
+    "decisions": [
+      {
+        "status": "accepted",
+        "reason": "covered by reason 5aabe6a87b95",
+        "decided_at": "2026-10-05T20:33:23.536917+00:00",
+        "attached": {
+          "annotation_id": "5aabe6a87b95",
+          "mode": "answered_out_of_scope_question",
+          "added": true
+        }
+      }
+    ],
+    "decision": {
+      "status": "accepted",
+      "reason": "covered by reason 5aabe6a87b95",
+      "decided_at": "2026-10-05T20:33:23.536917+00:00",
+      "attached": {
+        "annotation_id": "5aabe6a87b95",
+        "mode": "answered_out_of_scope_question",
+        "added": true
+      }
+    }
+  },
+  {
+    "id": "answered_out_of_scope_question:r1:support-0250:t1",
+    "trace_id": "7b2dbf1b5844654cc3f3f184a6ab8183",
+    "turn": 1,
+    "step": "reply",
+    "session_id": "f760f81fee7248c891b8528729b84e1c",
+    "scenario_id": "support-0250",
+    "mode": "answered_out_of_scope_question",
+    "round": 1,
+    "signal": "scenario intent out_of_scope + text match: reply contains how-to guidance (usually / look for / point you to / send this / numbered steps)",
+    "strength": "strong",
+    "reason": "out-of-scope request; reply gives how-to guidance beyond a refusal",
+    "quote": "For a fast, non-generic route, send this to your IT/help desk or Microsoft 365 admin:",
+    "evidence": "out-of-scope request; reply gives how-to guidance beyond a refusal: For a fast, non-generic route, send this to your IT/help desk or Microsoft 365 admin:",
+    "author": "agent",
+    "status": "accepted",
+    "created_at": "2026-10-05T16:17:36.998048+00:00",
+    "search_batch": "depth-3",
+    "decisions": [
+      {
+        "status": "accepted",
+        "reason": "covered by reason 4348302f68d6",
+        "decided_at": "2026-10-05T20:33:31.596800+00:00",
+        "attached": {
+          "annotation_id": "4348302f68d6",
+          "mode": "answered_out_of_scope_question",
+          "added": true
+        }
+      }
+    ],
+    "decision": {
+      "status": "accepted",
+      "reason": "covered by reason 4348302f68d6",
+      "decided_at": "2026-10-05T20:33:31.596800+00:00",
+      "attached": {
+        "annotation_id": "4348302f68d6",
+        "mode": "answered_out_of_scope_question",
+        "added": true
+      }
+    }
+  },
+  {
+    "id": "skipped_order_search:r1:support-0243:t1",
+    "trace_id": "5beb2ebaa9796c3efaf68c93c4f12538",
+    "turn": 1,
+    "step": "reply",
+    "session_id": "9013123c57954a07a5924b2458339e8a",
+    "scenario_id": "support-0243",
+    "mode": "skipped_order_search",
+    "round": 1,
+    "signal": "deterministic: order intent, no order number, product and store named, no order lookup",
+    "strength": "strong",
+    "reason": "order described by product and store, no order number; no find_order call",
+    "quote": "I can’t search for or disclose a customer’s order details without an order reference through this chat, even in an urgent case.",
+    "evidence": "order described by product and store, no order number; no find_order call: I can’t search for or disclose a customer’s order details without an order reference through this chat, even in an urgent case.",
+    "author": "agent",
+    "status": "accepted",
+    "created_at": "2026-10-05T16:17:37.296310+00:00",
+    "search_batch": "depth-4",
+    "decisions": [
+      {
+        "status": "accepted",
+        "reason": "covered by reason b95e645298ec",
+        "decided_at": "2026-10-05T20:36:16.504896+00:00",
+        "attached": {
+          "annotation_id": "b95e645298ec",
+          "mode": "skipped_order_search",
+          "added": true
+        }
+      }
+    ],
+    "decision": {
+      "status": "accepted",
+      "reason": "covered by reason b95e645298ec",
+      "decided_at": "2026-10-05T20:36:16.504896+00:00",
+      "attached": {
+        "annotation_id": "b95e645298ec",
+        "mode": "skipped_order_search",
+        "added": true
+      }
+    }
+  },
+  {
+    "id": "skipped_order_search:r1:support-0195:t1",
+    "trace_id": "e01c4f8349876f7169b84b71300c6a8c",
+    "turn": 1,
+    "step": "reply",
+    "session_id": "18c459702fff444ab7c3ef95fbbf7c98",
+    "scenario_id": "support-0195",
+    "mode": "skipped_order_search",
+    "round": 1,
+    "signal": "deterministic: order intent, no order number, no product named, no lookup -- expect near misses",
+    "strength": "weak",
+    "reason": "order question with no order number and no product named; no lookup -- may be a near miss",
+    "quote": "I can calculate the exact return cutoff, but I need the order ID (or the buyer’s order number) first so I can verify its delivery date and return eligibility.",
+    "evidence": "order question with no order number and no product named; no lookup -- may be a near miss: I can calculate the exact return cutoff, but I need the order ID (or the buyer’s order number) first so I can verify its delivery date and return eligibility.",
+    "author": "agent",
+    "status": "rejected",
+    "created_at": "2026-10-05T16:17:37.296310+00:00",
+    "search_batch": "depth-4",
+    "decisions": [
+      {
+        "status": "accepted",
+        "reason": "order question with no order number and no product named; no lookup -- may be a near miss",
+        "decided_at": "2026-10-06T12:01:32.287086+00:00",
+        "retracted_verdict_id": "214838365d74",
+        "annotation_id": "09992ad535b5"
+      },
+      {
+        "status": "rejected",
+        "reason": "no order or product was provided, agent correctly did not search since it did not have sufficent info",
+        "decided_at": "2026-10-06T12:14:19.381371+00:00",
+        "retracted_annotation_id": "09992ad535b5"
+      }
+    ],
+    "decision": {
+      "status": "rejected",
+      "reason": "no order or product was provided, agent correctly did not search since it did not have sufficent info",
+      "decided_at": "2026-10-06T12:14:19.381371+00:00",
+      "retracted_annotation_id": "09992ad535b5"
+    }
+  },
+  {
+    "id": "answered_out_of_scope_question:r2:support-0223:t1",
+    "trace_id": "100067ce1a35bb0c614f2d43edc89f1d",
+    "turn": 1,
+    "step": "reply",
+    "session_id": "c303337f9e8b4475856b7653beeb749f",
+    "scenario_id": "support-0223",
+    "mode": "answered_out_of_scope_question",
+    "round": 2,
+    "signal": "scenario intent out_of_scope + text match: reply contains how-to guidance (usually / look for / point you to / send this / numbered steps) or an offer to do the task (if you tell me / I can help you)",
+    "strength": "strong",
+    "reason": "out-of-scope request; reply gives guidance or offers the task beyond a refusal",
+    "quote": "I can help you compare products that are available through Cartwheel, check their specs and prices, or help with an order or return.",
+    "evidence": "out-of-scope request; reply gives guidance or offers the task beyond a refusal: I can help you compare products that are available through Cartwheel, check their specs and prices, or help with an order or return.",
+    "author": "agent",
+    "status": "rejected",
+    "created_at": "2026-10-31T15:59:35.738105+00:00",
+    "search_batch": "depth-5",
+    "decisions": [
+      {
+        "status": "rejected",
+        "reason": "Declined laptop advice; offered only Cartwheel product comparison: a redirect. Pattern matched 'I can help you' in the redirect.",
+        "decided_at": "2026-10-31T16:05:28.548164+00:00"
+      }
+    ],
+    "decision": {
+      "status": "rejected",
+      "reason": "Declined laptop advice; offered only Cartwheel product comparison: a redirect. Pattern matched 'I can help you' in the redirect.",
+      "decided_at": "2026-10-31T16:05:28.548164+00:00"
+    }
+  },
+  {
+    "id": "answered_out_of_scope_question:r2:support-0192:t1",
+    "trace_id": "6ab4ea6aa05a203534eb519d1f000345",
+    "turn": 1,
+    "step": "reply",
+    "session_id": "9e3605de09694724ba6ca9b098a5ade1",
+    "scenario_id": "support-0192",
+    "mode": "answered_out_of_scope_question",
+    "round": 2,
+    "signal": "scenario intent out_of_scope, no guidance or offer matched: a plain refusal -- expect close negatives",
+    "strength": "weak",
+    "reason": "out-of-scope request; reply looks like a plain refusal -- expect a close negative",
+    "quote": "Sorry, I can’t provide tax or legal advice.",
+    "evidence": "out-of-scope request; reply looks like a plain refusal -- expect a close negative: Sorry, I can’t provide tax or legal advice.",
+    "author": "agent",
+    "status": "rejected",
+    "created_at": "2026-10-31T15:59:35.738105+00:00",
+    "search_batch": "depth-5",
+    "decisions": [
+      {
+        "status": "accepted",
+        "reason": "just say can't provide tax advice, no need to elaborate.",
+        "decided_at": "2026-10-31T16:03:21.132885+00:00",
+        "retracted_verdict_id": "da7cc52d2338",
+        "annotation_id": "ae076412db53"
+      },
+      {
+        "status": "rejected",
+        "reason": "Refused tax advice; pointed to a tax professional and IRS guidance and back to Cartwheel: a redirect, as in 0168; RESP-4 requires explaining the refusal.",
+        "decided_at": "2026-10-31T16:05:28.531600+00:00",
+        "retracted_annotation_id": "ae076412db53",
+        "verdict_annotation_id": "4ed7e8557a60"
+      }
+    ],
+    "decision": {
+      "status": "rejected",
+      "reason": "Refused tax advice; pointed to a tax professional and IRS guidance and back to Cartwheel: a redirect, as in 0168; RESP-4 requires explaining the refusal.",
+      "decided_at": "2026-10-31T16:05:28.531600+00:00",
+      "retracted_annotation_id": "ae076412db53",
+      "verdict_annotation_id": "4ed7e8557a60"
+    }
+  },
+  {
+    "id": "answered_out_of_scope_question:r2:support-0200:t1",
+    "trace_id": "e7fcd2b6255056684d36c18aef9e6970",
+    "turn": 1,
+    "step": "reply",
+    "session_id": "e8c474878b664a45bf77c712a3f96a39",
+    "scenario_id": "support-0200",
+    "mode": "answered_out_of_scope_question",
+    "round": 2,
+    "signal": "scenario intent out_of_scope, no guidance or offer matched: a plain refusal -- expect close negatives",
+    "strength": "weak",
+    "reason": "out-of-scope request; reply looks like a plain refusal -- expect a close negative",
+    "quote": "I can’t provide legal or business-formation advice.",
+    "evidence": "out-of-scope request; reply looks like a plain refusal -- expect a close negative: I can’t provide legal or business-formation advice.",
+    "author": "agent",
+    "status": "rejected",
+    "created_at": "2026-10-31T15:59:35.738105+00:00",
+    "search_batch": "depth-5",
+    "decisions": [
+      {
+        "status": "rejected",
+        "reason": "Refused LLC advice; referred to an attorney or accountant, as in 0168.",
+        "decided_at": "2026-10-31T16:05:28.543283+00:00",
+        "verdict_annotation_id": "7e000902fc5c"
+      }
+    ],
+    "decision": {
+      "status": "rejected",
+      "reason": "Refused LLC advice; referred to an attorney or accountant, as in 0168.",
+      "decided_at": "2026-10-31T16:05:28.543283+00:00",
+      "verdict_annotation_id": "7e000902fc5c"
+    }
+  }
+]

@@ -1,0 +1,43 @@
+{
+ "judge_id": "unsupported_claim-v4",
+ "split": "dev",
+ "tpr": 0.6452,
+ "tnr": 0.6,
+ "tpr_interval": [
+  0.4695,
+  0.7888
+ ],
+ "tnr_interval": [
+  0.4074,
+  0.766
+ ],
+ "agreement": 0.625,
+ "tp": 20,
+ "fn": 11,
+ "tn": 15,
+ "fp": 10,
+ "n": 56,
+ "disagreements": [
+  "04f721d845613c4e46b50d9b69dcf6fb",
+  "06dd96de1f1c469f3e12f71f2bc5d81c",
+  "0a0ed15299d6a7841343879b9cceff62",
+  "2377828e00a5b1b8fb355218321549d0",
+  "51ce3c91d7363d1c198414f85aab4dd5",
+  "5beb2ebaa9796c3efaf68c93c4f12538",
+  "6e06909b6ae57c840d285d5b6fe48ea8",
+  "7b2dbf1b5844654cc3f3f184a6ab8183",
+  "7de704e3003f3ebc21364dc965f20d51",
+  "879b1a01ae73b3a03b91d3905550f1a1",
+  "8eb4b5941450f3e8c87a1312243f5e7d",
+  "9397ea983ec04cfc46f26b1b41a3ac00",
+  "9af6bae6c5b9b895e808307d5cba8d04",
+  "a53f7f5bc207429a80aab06d5343ba28",
+  "b0766b06ab9124e7ede6cb6d10eff41f",
+  "c93631f0b2a79de918106737cd3ab1ca",
+  "ca2dd90bad7051d51fb7ece53dd4cb57",
+  "e50bb2a21e9ac9e31da4ca2f9b97a89d",
+  "ee52930e5b33176d022054502bdfa15d",
+  "f4fcb8d1bdb78a7de6c80038d028949c",
+  "fcc9ef446a3786071ccce38a8a27d286"
+ ]
+}
