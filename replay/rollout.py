@@ -37,8 +37,11 @@ import sqlite3
 from pathlib import Path
 from typing import Any, Iterator
 
+from replay.judge_input import flatten_messages
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 EVAL_CASES_PATH = REPO_ROOT / "eval_cases" / "cases.jsonl"
+JUDGE_PINS_PATH = REPO_ROOT / "eval_cases" / "judges.json"
 
 # The write tools of App 1. "No write before confirmation" checks look for
 # exactly these names in a turn's tool calls.
@@ -131,12 +134,16 @@ def _auth_context(case_input: dict[str, Any]) -> Any:
 
 
 def _extract_turn(new_items: list[Any]) -> dict[str, Any]:
-    """Collapse one Runner turn's items into {reply, tool_calls, steps}."""
+    """Collapse one Runner turn's items into {reply, tool_calls, events, steps}.
+
+    ``events`` keeps the agent's text and tool steps in their original order,
+    in the HW5 normalized message shape, for the judge input."""
     from agents.items import MessageOutputItem, ToolCallItem, ToolCallOutputItem
 
     calls: dict[str, dict[str, Any]] = {}
     ordered: list[dict[str, Any]] = []
     reply_parts: list[str] = []
+    events: list[dict[str, Any]] = []
     for item in new_items:
         if isinstance(item, ToolCallItem):
             raw = item.raw_item
@@ -147,6 +154,7 @@ def _extract_turn(new_items: list[Any]) -> dict[str, Any]:
             }
             calls[getattr(raw, "call_id", None)] = record
             ordered.append(record)
+            events.append({"role": "tool_call", "name": record["name"], "arguments": record["args"]})
         elif isinstance(item, ToolCallOutputItem):
             call_id = None
             raw = item.raw_item
@@ -156,14 +164,22 @@ def _extract_turn(new_items: list[Any]) -> dict[str, Any]:
                 call_id = getattr(raw, "call_id", None)
             if call_id in calls:
                 calls[call_id]["result"] = item.output
+                events.append(
+                    {"role": "tool_result", "name": calls[call_id]["name"], "content": item.output}
+                )
         elif isinstance(item, MessageOutputItem):
-            for part in getattr(item.raw_item, "content", []) or []:
-                text = getattr(part, "text", None)
-                if text:
-                    reply_parts.append(text)
+            texts = [
+                text
+                for part in getattr(item.raw_item, "content", []) or []
+                if (text := getattr(part, "text", None))
+            ]
+            reply_parts.extend(texts)
+            if texts:
+                events.append({"role": "assistant", "text": "\n".join(texts)})
     return {
         "reply": "\n".join(reply_parts),
         "tool_calls": ordered,
+        "events": events,
         "steps": len(new_items),
     }
 
@@ -220,6 +236,7 @@ def run_case(
             usage["cached_input_tokens"] += (details.cached_tokens or 0) if details else 0
             usage["output_tokens"] += run_usage.output_tokens
         return {
+            "system_prompt": agent.instructions if isinstance(agent.instructions, str) else None,
             "turns": turns,
             "final_reply": turns[-1]["reply"] if turns else "",
             "steps": sum(t["steps"] for t in turns),
@@ -355,8 +372,11 @@ def _analysis_state_dir() -> Path:
 
 
 def load_frozen_judge(mode: str) -> dict[str, Any]:
-    """Load the highest frozen judge version for a mode from the Module 2
-    state (analysis/state/judges/). Raises if none is frozen."""
+    """Load the accepted frozen judge for a mode from the Module 2 state
+    (analysis/state/judges/). A single frozen version is used as is; when
+    several versions are frozen, JUDGE_PINS_PATH must name the accepted one
+    ({"<mode>": "<judge_id>"}). Raises if none is frozen, if several are
+    frozen and none is pinned, or if the pin names a judge that is not frozen."""
     judges_dir = _analysis_state_dir() / "judges"
     frozen = []
     for path in sorted(judges_dir.glob(f"{mode}-v*.json")):
@@ -365,7 +385,22 @@ def load_frozen_judge(mode: str) -> dict[str, Any]:
             frozen.append(judge)
     if not frozen:
         raise FileNotFoundError(f"no frozen judge for mode {mode!r} in {judges_dir}")
-    return max(frozen, key=lambda j: j.get("version", 0))
+    pins = json.loads(JUDGE_PINS_PATH.read_text()) if JUDGE_PINS_PATH.exists() else {}
+    if mode in pins:
+        pinned = [j for j in frozen if j.get("judge_id") == pins[mode]]
+        if not pinned:
+            raise ValueError(
+                f"{JUDGE_PINS_PATH} pins {pins[mode]!r} for mode {mode!r}, "
+                f"but it is not a frozen judge in {judges_dir}"
+            )
+        return pinned[0]
+    if len(frozen) > 1:
+        ids = ", ".join(sorted(j.get("judge_id", "?") for j in frozen))
+        raise ValueError(
+            f"several frozen judges for mode {mode!r} ({ids}); name the accepted "
+            f"one in {JUDGE_PINS_PATH}"
+        )
+    return frozen[0]
 
 
 def retrieved_docs_text(transcript: dict[str, Any]) -> str:
@@ -386,21 +421,18 @@ def retrieved_docs_text(transcript: dict[str, Any]) -> str:
 
 
 def judge_trace_text(transcript: dict[str, Any]) -> str:
-    """Format a runtime transcript like the normalized traces used in HW5."""
-    lines: list[str] = []
+    """Render a runtime transcript exactly like the HW5 judge input: the
+    agent's system prompt first, then each turn's user message and its
+    events in order, with named tool lines (replay/judge_input.py)."""
+    messages: list[dict[str, Any]] = []
+    if transcript.get("system_prompt"):
+        messages.append({"role": "system", "text": transcript["system_prompt"]})
     for turn in transcript.get("turns", []):
-        lines.append(f"user: {turn.get('user', '')}")
-        for call in turn.get("tool_calls", []):
-            arguments = json.dumps(
-                call.get("args"), ensure_ascii=False, sort_keys=True, default=str
-            )
-            result = json.dumps(
-                call.get("result"), ensure_ascii=False, sort_keys=True, default=str
-            )
-            lines.append(f"tool_call: {arguments}")
-            lines.append(f"tool_result: {result}")
-        lines.append(f"assistant: {turn.get('reply', '')}")
-    return "\n".join(lines)
+        if "events" not in turn:
+            raise ValueError("transcript turn has no events; the judge input needs them")
+        messages.append({"role": "user", "text": turn.get("user", "")})
+        messages.extend(turn["events"])
+    return flatten_messages(messages)
 
 
 def judge_reply(judge: dict[str, Any], reply: str, docs: str) -> str:

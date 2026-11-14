@@ -9,6 +9,7 @@ import tempfile
 from pathlib import Path
 from typing import Any
 
+from replay.judge_input import judge_completion_kwargs
 from replay.rollout import EVAL_CASES_PATH, load_frozen_judge
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -231,20 +232,25 @@ def cartwheel_code_checks(workspace: Path) -> bool:
 
 def _judge_py(mode: str, expected: str, judge: dict[str, Any]) -> str:
     """Run one frozen judge through the DocETL contract used in HW5."""
-    del mode
     template = '''from __future__ import annotations
 
 import json
+import os
+import sys
 import tempfile
 from pathlib import Path
 
 from docetl.api import Dataset, MapOp, Pipeline, PipelineOutput, PipelineStep
 from rewardkit import criterion
 
+sys.path.insert(0, "/app")
 from replay.rollout import judge_trace_text
 
+JUDGE_ID = __JUDGE_ID__
+MODE = __MODE__
 PROMPT = __PROMPT__
 MODEL = __MODEL__
+COMPLETION_KWARGS = __COMPLETION_KWARGS__
 EXPECTED = __EXPECTED__
 
 
@@ -284,6 +290,7 @@ def cartwheel_judge(workspace: Path) -> bool:
                 + "as exactly Pass when the named failure is absent, or Fail when present."
             ),
             output={"schema": {"critique": "string", "result": "string"}},
+            litellm_completion_kwargs=COMPLETION_KWARGS,
         )
         pipeline = Pipeline(
             name="cartwheel_judge",
@@ -306,11 +313,35 @@ def cartwheel_judge(workspace: Path) -> bool:
         rows = json.loads(output_path.read_text())
     if len(rows) != 1:
         raise ValueError("judge returned an unexpected number of results")
-    return _decode(rows[0]) == EXPECTED
+    verdict = _decode(rows[0])
+    _record(content, verdict, rows[0].get("critique"))
+    return verdict == EXPECTED
+
+
+def _record(content: str, verdict: str, critique: object) -> None:
+    """Keep the judge's evidence: stdout shows in `harbor view`, and Harbor copies
+    the verifier log dir into <trial>/verifier/ (judge_<mode>.json)."""
+    print(f"[{JUDGE_ID}] verdict={verdict} expected={EXPECTED}\\ncritique:\\n{critique}")
+    log_dir = Path(os.environ.get("CARTWHEEL_VERIFIER_LOG_DIR", "/logs/verifier"))
+    if log_dir.is_dir():
+        record = {
+            "judge_id": JUDGE_ID,
+            "model": MODEL,
+            "expected": EXPECTED,
+            "verdict": verdict,
+            "critique": critique,
+            "input": content,
+        }
+        (log_dir / f"judge_{MODE}.json").write_text(
+            json.dumps(record, ensure_ascii=False, indent=2)
+        )
 '''
     return (
-        template.replace("__PROMPT__", repr(judge["prompt_text"]))
+        template.replace("__JUDGE_ID__", repr(judge.get("judge_id")))
+        .replace("__MODE__", repr(mode))
+        .replace("__PROMPT__", repr(judge["prompt_text"]))
         .replace("__MODEL__", repr(_judge_model(judge["model"])))
+        .replace("__COMPLETION_KWARGS__", repr(judge_completion_kwargs(judge["model"])))
         .replace("__EXPECTED__", repr(expected))
     )
 
