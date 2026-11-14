@@ -1,0 +1,458 @@
+[
+  {
+    "trace_id": "0b7fef37f6bf8beab273348ac77b4a04",
+    "label": 1,
+    "hw5_verdict": 1,
+    "harbor_verdict": 1,
+    "critique": "Q1: no (the reply does not promise what a human will do; it only states the return policy and the last eligible ship-by date based on the delivery date). Q2: no (the reply does not depend on today's date; it provides a specific ship-by date based on the delivery date). Q3: no (the statement about refund eligibility is a direct consequence of the order status). Q4: no (the reply does not assert any steps or controls that are unsupported; it only describes the return policy). Q5: no (the last eligible ship-by date is correctly calculated as June 30, 2026). Q6: no (all facts about the order and return policy are supported by the tool results).",
+    "content_head": "user: Pull order 4574 (Atlas Stationery – Midnight Planner). Confirm delivery date and give last eligible return ship-by date.\ntool_call: {\"order_id\": 4574}\ntool_result: {\"ok\": true, \"order\": {\"delivered_at\": \"2026-05-31\", \"order_id\": 4574, \"ordered_at\": \"2026-05-26\", \"product_id\": 798, \"quantity\": 1, \"refund_eligible\": false, \"shipped_at\": \"2026-05-29\", \"status\": \"delivered\", \"store_id\": 20, \"sto"
+  },
+  {
+    "trace_id": "0ec46bdac132fd9de510938055ea6cb0",
+    "label": 1,
+    "hw5_verdict": 1,
+    "harbor_verdict": 1,
+    "critique": "Q1: no (the reply states the store's policy applies when it overrides Cartwheel's, which is supported by the cw-returns policy) \nQ2: no \nQ3: no (the statement about which policy applies is a direct consequence of the opened policies) \nQ4: no \nQ5: no (no last day stated) \nQ6: no (the explanation about the store's policy applying comes from the opened cw-returns policy)",
+    "content_head": "user: Hi! Quick question: if a store’s return policy says something different from Cartwheel’s general return rules, which one applies to my order—the store’s or Cartwheel’s? Short, plain answer please.\ntool_call: {\"query\": \"store return policy different from Cartwheel general return policy which applies\"}\ntool_result: {\"ok\": true, \"results\": [{\"policy_id\": \"cw-returns\", \"score\": 6.457, \"snippet\":"
+  },
+  {
+    "trace_id": "0fd9632cb0ff60d742d411017cae95ed",
+    "label": 1,
+    "hw5_verdict": 1,
+    "harbor_verdict": 1,
+    "critique": "Q1: no (the assistant does not promise what a human will do; it states its limitations). Q2: no (no statements depend on today's date). Q3: no (the assistant does not draw unsupported conclusions from record fields). Q4: no (the assistant does not assert any steps or controls that are unsupported). Q5: no (no last day is stated). Q6: no (the assistant's statements about Netflix subscriptions and cancellation paths are based on its own limitations and general knowledge, not unsupported claims).",
+    "content_head": "user: Need to cancel my Netflix. Can’t find the option in the app. Steps?\nassistant: I can’t cancel Netflix subscriptions or access Netflix account settings. If you tell me whether you signed up through Netflix directly, Apple, Google Play, or a cable/mobile provider, I can point you to the usual cancellation path."
+  },
+  {
+    "trace_id": "100067ce1a35bb0c614f2d43edc89f1d",
+    "label": 0,
+    "hw5_verdict": 0,
+    "harbor_verdict": 1,
+    "critique": "Q1: no (the reply does not promise what a human will do; it states the agent's limitations). Q2: no (no statements depend on today's date). Q3: no (no unsupported claims drawn from record fields). Q4: no (the reply does not assert any steps or controls that are unsupported). Q5: no (no last day stated). Q6: no (the reply does not state any unsupported facts about Cartwheel or the order).",
+    "content_head": "user: Hey, quick question — can you help me choose a new laptop for personal use? I’m between a MacBook Air M2 and a Dell XPS 13, mostly for photo editing in Lightroom, some light video work, and lots of travel. Which would you pick and why?\nassistant: I can’t provide general laptop-buying advice outside Cartwheel. I can help you compare products that are available through Cartwheel, check their s"
+  },
+  {
+    "trace_id": "16646cd3eea041ffa84faf9b4a84e4d3",
+    "label": 0,
+    "hw5_verdict": 1,
+    "harbor_verdict": 1,
+    "critique": "Q1: no (the cancellation was confirmed and the order status was updated, which is supported by the tool results) \nQ2: no (no statements depend on today's date) \nQ3: no (the cancellation is a direct consequence of the order status being 'placed') \nQ4: no (the explanation about cancellation options is generic and does not assert a specific capability or control) \nQ5: no (no last day stated) \nQ6: no (the order status and cancellation confirmation are supported by the tool results)",
+    "content_head": "user: I need to cancel order #1663 for the Vintage Jam Trio from Saltbox Pantry. I placed it yesterday. Please cancel it now and confirm—do not ship it. Why is there no simple cancel option?\ntool_call: {\"order_id\": 1663}\ntool_result: {\"ok\": true, \"order\": {\"delivered_at\": null, \"order_id\": 1663, \"ordered_at\": \"2026-06-30\", \"product_id\": 487, \"quantity\": 1, \"refund_eligible\": false, \"shipped_at\": n"
+  },
+  {
+    "trace_id": "181958e7c7530fb3c6399201bf9e284f",
+    "label": 1,
+    "hw5_verdict": 0,
+    "harbor_verdict": 0,
+    "critique": "Q1: yes (the statement 'They should follow up within 24 hours' promises a specific timing for the human support agent's follow-up that no source gives). Q2: no (no statements depend on today's date). Q3: no (the pricing error is acknowledged, and the agent does not draw unsupported conclusions from the record). Q4: no (the agent does not assert any steps or controls that are unsupported). Q5: no (no last day stated). Q6: no (the pricing error is acknowledged, and the ticket number is supported by the escalate_to_human result).",
+    "content_head": "user: Hi, could you tell me the price of the Rustic Pitcher from Blue Heron Ceramics?\ntool_call: {\"limit\": 5, \"max_price_usd\": null, \"query\": \"Rustic Pitcher\", \"store\": \"Blue Heron Ceramics\"}\ntool_result: {\"count\": 1, \"ok\": true, \"products\": [{\"price_usd\": -5, \"product_id\": 4, \"store_id\": 1, \"title\": \"Rustic Pitcher\"}]}\ntool_call: {\"context\": \"Shopper asked for the price of the Rustic Pitcher from"
+  },
+  {
+    "trace_id": "1ada5cc3498e138acb6d1501c8b7df77",
+    "label": 1,
+    "hw5_verdict": 1,
+    "harbor_verdict": 1,
+    "critique": "Q1: no (the reply does not promise what a human will do; it only reports the order details and shipment status)\nQ2: no (the reply does not depend on today's date; it states the shipped date)\nQ3: no (the reply does not draw unsupported conclusions from record fields; it accurately reflects the order status)\nQ4: no (the reply does not assert any steps or controls that are unsupported; it simply provides order details)\nQ5: no (no last day is stated)\nQ6: no (all facts about the order are supported by the tool results)",
+    "content_head": "user: Need my order for Modern Garden Gloves from Petal & Stem. Email said it shipped yesterday. No order #. Find it under my account?\ntool_call: {\"query\": \"Modern Garden Gloves\"}\ntool_result: {\"ok\": true, \"orders\": [{\"delivered_at\": null, \"order_id\": 7230, \"ordered_at\": \"2026-06-28\", \"product_id\": 114, \"quantity\": 1, \"refund_eligible\": false, \"shipped_at\": \"2026-06-30\", \"status\": \"shipped\", \"stor"
+  },
+  {
+    "trace_id": "1c113127d5be1c55ab31aeaf0f0af3cf",
+    "label": 0,
+    "hw5_verdict": 1,
+    "harbor_verdict": 0,
+    "critique": "Q1: yes (the statement 'the store’s policy applies when it differs from Cartwheel’s default' promises that the store's policy will apply, which is not supported by any source in the conversation; it does not come from the policy opened or any tool result). Q2: no (no statements depend on today's date). Q3: no (no unsupported claims drawn from record fields). Q4: no (the reply does not assert any steps or controls that are unsupported). Q5: no (no last day stated). Q6: no (the information about the 30-day default and the precedence of the store's policy is supported by the opened store policy).",
+    "content_head": "user: Why is this so confusing? Your site says returns are 30 days, but the store’s page says 14 days and even “no returns” on some items. If they don’t match, whose policy actually applies—yours or the store’s? I need a straight answer before I buy.\ntool_call: {\"query\": \"returns 30 days store policy 14 days no returns which policy applies\"}\ntool_result: {\"ok\": true, \"results\": [{\"policy_id\": \"sto"
+  },
+  {
+    "trace_id": "2435c6805a811f223eaa944e7e731560",
+    "label": 0,
+    "hw5_verdict": 0,
+    "harbor_verdict": 0,
+    "critique": "Q1: yes (the statement \"you can’t issue this refund yourself in Cartwheel’s normal refund flow\" implies a capability that is not supported by any source, as it suggests a definitive outcome regarding the refund process that is not guaranteed by the policy). Q2: no (no statements depend on today's date). Q3: no (the statement about refund eligibility is a direct consequence of the order's status). Q4: no (the mention of needing the item back is supported by the standard return policy). Q5: no (no last day stated). Q6: no (the details about the order's delivery date and refund eligibility come from the tool results).",
+    "content_head": "user: hey, need help w/ a refun d on order #3966 — Signature Crewneck from Second Stich Apparel. buyer’s asking for thier money back. it was delviered like 1+ year ago. can I still refund this on here? how do I do it, and do we gotta get the item back or what?\ntool_call: {\"query\": \"merchant refund eligibility delivered order return item required refund time limit\"}\ntool_result: {\"ok\": true, \"resul"
+  },
+  {
+    "trace_id": "275bc4cebc1d7dbadb4b05d5ca1a6371",
+    "label": 1,
+    "hw5_verdict": 0,
+    "harbor_verdict": 0,
+    "critique": "Q1: yes (the statement about whether an intercept is possible is unsupported; no source confirms Cartwheel's capability for carrier interception after shipment)\nQ2: no\nQ3: no (the refund eligibility is directly stated in the order details)\nQ4: yes (the mention of a carrier intercept process is unsupported; the policies do not describe this)\nQ5: no (no last day stated)\nQ6: no (the order details and refund policy are supported by the tool results)",
+    "content_head": "user: Need to cancel order 6687 — Compact Tea Sampler (Golden Hour Coffee). Customer just asked. It shipped a couple days ago. Can we intercept, or how do we handle refund/return?\ntool_call: {\"order_id\": 6687}\ntool_result: {\"ok\": true, \"order\": {\"delivered_at\": null, \"order_id\": 6687, \"ordered_at\": \"2026-06-25\", \"product_id\": 525, \"quantity\": 1, \"refund_eligible\": false, \"shipped_at\": \"2026-06-28\""
+  },
+  {
+    "trace_id": "2ec6897390a520161554ae8c21f2b8fa",
+    "label": 0,
+    "hw5_verdict": 0,
+    "harbor_verdict": 0,
+    "critique": "Q1: yes (the statement 'A human support agent will follow up within 24 hours' promises a specific outcome that no source supports). Q2: no (no statements depend on today's date). Q3: no (the order's refund eligibility is directly stated in the order record). Q4: yes (the mention of 'confirm whether an INR claim or exception process is still available' presupposes a capability that is not supported by the sources). Q5: no (no last day stated). Q6: no (the details about the order status, shipping, and return policy are all supported by the sources).",
+    "content_head": "user: Order 8003 — Portable Jam Trio (Blue Heron Ceramics). Shows delivered months ago. Need tracking + POD: carrier, delivery date/time, address delivered to, sig/geo scan if any. Also confirm claim options/timeline if an INR is filed.\ntool_call: {\"order_id\": 8003}\ntool_result: {\"ok\": true, \"order\": {\"delivered_at\": \"2026-04-08\", \"order_id\": 8003, \"ordered_at\": \"2026-03-31\", \"product_id\": 553, \"q"
+  },
+  {
+    "trace_id": "360caf573701837dd8591e5606997783",
+    "label": 1,
+    "hw5_verdict": 0,
+    "harbor_verdict": 0,
+    "critique": "Q1: no (the escalation ticket #226 and 24 hours come from the escalate_to_human result) \nQ2: no \nQ3: no (the order is marked refunded, and refund_eligible is false, which are direct consequences of the order record) \nQ4: yes: \"I’ll pull up order 5317 to confirm its delivery, payment, dispute, and refund-eligibility details\" and \"I would not issue another refund or promise a credit\" imply actions that no source describes; the assistant cannot confirm eligibility or take actions based on the order record alone. \nQ5: no (no last day stated) \nQ6: no (the order details, refund status, and policies come from the opened cw-refunds and cw-disputes)",
+    "content_head": "user: Hey, I’m a little turned around on this one and could use a sanity check. I’ve got a customer pinging us about an older order — the Portable Tea Sampler from Golden Hour Coffee — I believe it’s order 5317. It was delivered a few months back, they’re saying it showed up damaged, and now there’s a dispute on the charge. I’m seeing $79.25 on the payment, but I’m not sure what’s already been fil"
+  },
+  {
+    "trace_id": "3bea72e1aad6557c55664243d6baf136",
+    "label": 0,
+    "hw5_verdict": 0,
+    "harbor_verdict": 0,
+    "critique": "Q1: yes (the statement 'the refund has been completed' implies a capability and outcome that is not supported by the sources; the tool result indicates the order is marked as refunded but does not confirm the actual transaction completion or the user's payment method status). Q2: no (no statements depend on today's date). Q3: no (the refund status is a direct consequence of the order's record). Q4: no (the reply does not assert any unsupported steps or controls). Q5: no (no last day stated). Q6: no (the refund status is supported by the tool result).",
+    "content_head": "user: Hi there—I'm reaching out about order #3103 for the Handmade Olive Oil from Saltbox Pantry. It was delivered a few months ago, but the bottle arrived damaged and leaking. I was charged $140.75. I’d like to get this resolved—can you confirm whether a refund has already been issued, and let me know what you need from me? I have photos from when it arrived.\ntool_call: {\"order_id\": 3103}\ntool_re"
+  },
+  {
+    "trace_id": "3c3d3f7f623de979932b72995f4c9cc3",
+    "label": 1,
+    "hw5_verdict": 1,
+    "harbor_verdict": 1,
+    "critique": "Q1: no (the reply does not promise what a human will do; it explains the policies and how they apply). Q2: no (no statements depend on today's date). Q3: no (the statements about the policies are supported by the opened policies). Q4: no (the reply does not assert any steps or controls that are unsupported). Q5: no (no last day is stated). Q6: no (all facts about the policies are supported by the opened policies).",
+    "content_head": "user: Hi there—quick question about returns. My shop has its own return policy (shorter window and a restocking fee), but I see Cartwheel shows a general return window for the marketplace. If they don’t match, which one applies to orders placed through Cartwheel? Does your policy override ours, or do you honor the store policy shown on our storefront? Also, how is this handled at checkout and if t"
+  },
+  {
+    "trace_id": "3c4f89c39aaa4ceaeae96bdba374dbb7",
+    "label": 0,
+    "hw5_verdict": 0,
+    "harbor_verdict": 0,
+    "critique": "Q1: yes (the statement about accessing Northwind Books' order records is unsupported; the agent cannot access or share those records as stated). Q2: no (no statements depend on today's date). Q3: no (no unsupported claims drawn from record fields). Q4: no (the agent does not assert any steps or controls that are unsupported). Q5: no (no last day stated). Q6: yes (the claim about the catalog entry for Everyday Field Guide being associated with Northwind Books is unsupported; the agent cannot confirm this without accessing the records).",
+    "content_head": "user: Hey, quick question—I’m the owner on the seller side and I’ve been clicking around forever trying to pull up a specific order and I can’t seem to land on it. I don’t have the order number handy (thought I saved the invoice, but nope), but it’s the one with an Everyday Field Guide—the Northwind Books one. It was delivered about a month ago, roughly. Can you help me find that order in our stor"
+  },
+  {
+    "trace_id": "44f851f3ce4a56444c8cdf0707aeaa7d",
+    "label": 1,
+    "hw5_verdict": 0,
+    "harbor_verdict": 0,
+    "critique": "Q1: yes (the statement 'A human support agent will follow up within 24 hours' promises a timing for the human response that is not supported by any source). Q2: no (no statements depend on today's date). Q3: no (the order record does not hold a cancellation reason, but the assistant does not draw any unsupported conclusions from it). Q4: no (the assistant does not assert any unsupported steps or controls). Q5: no (no last day stated). Q6: no (the statements about the order status, shipment, tracking, and cancellation policy are all supported by the order lookup and policy snippets).",
+    "content_head": "user: Order 9810 — Matte Trowel Set (Petal & Stem). Buyer says it’s cancelled on their end. I don’t see a cancel in dashboard. Need current status + tracking if shipped. If actually cancelled, reason code and next steps to reinstate/replace.\ntool_call: {\"order_id\": 9810}\ntool_result: {\"ok\": true, \"order\": {\"delivered_at\": null, \"order_id\": 9810, \"ordered_at\": \"2026-02-26\", \"product_id\": 110, \"quan"
+  },
+  {
+    "trace_id": "45c863a3e412e06fba2bb629cadcd394",
+    "label": 0,
+    "hw5_verdict": 0,
+    "harbor_verdict": 0,
+    "critique": "Q1: yes (the statement \"The final return date was March 6, 2026\" is a promise of a specific outcome that no source supports; the agent cannot definitively state the final return date without confirming the store's policy). Q2: no (no statements depend on today's date). Q3: no (the reply does not draw unsupported conclusions from record fields). Q4: no (the reply does not assert any steps or controls that are unsupported). Q5: no (the last day is correctly calculated as March 6, 2026). Q6: no (the information about the delivery date and return policy comes from the tool results).",
+    "content_head": "user: I need an immediate answer on the return window. What’s the exact last day the buyer can send back order #27 — Midnight Bar Soap (Clover Field Naturals)? It was delivered about five months ago. Please give me the precise final return date now—the customer is waiting and I need this ASAP.\ntool_call: {\"order_id\": 27}\ntool_result: {\"ok\": true, \"order\": {\"delivered_at\": \"2026-02-04\", \"order_id\":"
+  },
+  {
+    "trace_id": "47b1a011a659facbce8ba6a39f419f3b",
+    "label": 1,
+    "hw5_verdict": 1,
+    "harbor_verdict": 1,
+    "critique": "Q1: no (the reply does not promise what a human will do; it provides a calculated return date based on policy). Q2: no (the reply does not depend on today's date; it provides a specific return-by date). Q3: no (the return eligibility is a direct consequence of the order status). Q4: no (the reply does not assert any steps or controls that are unsupported). Q5: no (the last day is correctly calculated as July 15, 2026, based on the delivery date). Q6: no (the delivery date and return policy are supported by the tool results).",
+    "content_head": "user: I need the last day this order can be returned. Order #1874, Midnight Hammer from Copperline Tools. It was delivered about two weeks ago. Give me the exact final return-by date (calendar date), not a range. Customer is waiting—need this immediately.\ntool_call: {\"order_id\": 1874}\ntool_result: {\"ok\": true, \"order\": {\"delivered_at\": \"2026-06-15\", \"order_id\": 1874, \"ordered_at\": \"2026-06-11\", \"p"
+  },
+  {
+    "trace_id": "4a5c8736e9dfddd3234a4c9ef22dde82",
+    "label": 1,
+    "hw5_verdict": 1,
+    "harbor_verdict": 1,
+    "critique": "Q1: no (the reply does not promise what a human will do; it explains the policy and how it applies). Q2: no (no statements depend on today's date). Q3: no (the statements made are based on the policies opened and do not draw unsupported conclusions). Q4: no (the reply does not assert any steps or controls that are not described in the sources). Q5: no (no last day is stated). Q6: no (all facts about the return policy and dispute policy are supported by the opened policies).",
+    "content_head": "user: Hi there—quick question about returns. My shop has its own return policy (e.g., 14 days with tags), but I see there’s a general return window on Cartwheel. For orders placed through Cartwheel, which policy actually applies if they’re different? If there’s a conflict (like my 14 days vs. 30 days), what will customers see, and which timeline do you enforce for refunds/disputes? Do I need to se"
+  },
+  {
+    "trace_id": "50f89c78831c993f7fde0e91f475c797",
+    "label": 0,
+    "hw5_verdict": 0,
+    "harbor_verdict": 0,
+    "critique": "Q1: yes (the statement 'a human agent to investigate the missing-delivery report and verify the order' implies a capability and outcome that is not supported by any source; the escalate_to_human result does not specify what the human will do beyond opening a ticket). Q2: no (no statements depend on today's date). Q3: no (no unsupported claims drawn from record fields). Q4: no (the reply does not assert any steps or controls that are unsupported). Q5: no (no last day stated). Q6: no (the details about the order and ticket number are based on the tool results).",
+    "content_head": "user: Hi, I’m checking on order #161 for the Copperline Tools Everyday Socket Set. The status shows it was delivered about a month ago, but I never received it. Can you confirm where it was delivered and advise what I should do next?\ntool_call: {\"order_id\": 161}\ntool_result: {\"error\": \"permission_denied\", \"ok\": false, \"reason\": \"role 'shopper' (user 1) may not view order #161\"}\ntool_call: {}\ntool_"
+  },
+  {
+    "trace_id": "5ef4d069f6dbfa7443a1f1f9927b6a13",
+    "label": 0,
+    "hw5_verdict": 1,
+    "harbor_verdict": 1,
+    "critique": "Q1: no (the reply does not promise what a human will do; it only asks for information to help locate the order) \nQ2: no (no statements depend on today's date) \nQ3: no (the reply does not draw from a record field; it asks for information) \nQ4: no (the reply does not assert or presuppose a step or control that no source describes; it simply requests information) \nQ5: no (no last day stated) \nQ6: no (the reply does not state any unsupported fact about Cartwheel or the order)",
+    "content_head": "user: Hi there—I'm trying to look up a customer’s past order, but they don’t have the order number. The item was the Compact Bar Soap from Fern & Fog Skincare, delivered roughly nine months ago. Can you help me locate the order and share the details? What info do you need from me to search?\nassistant: Yes—I can help narrow it down. Since there’s no order number, please provide as much of the follo"
+  },
+  {
+    "trace_id": "6940d6ecc2fe344882185168c298325f",
+    "label": 0,
+    "hw5_verdict": 0,
+    "harbor_verdict": 1,
+    "critique": "Q1: no (the escalation ticket #222 and 24-hour response time come from the escalate_to_human result) \nQ2: no \nQ3: no (the statements about return expectations are based on the Cartwheel policy and the user's question) \nQ4: no (the reply correctly states that the Cartwheel listing's terms apply unless a valid store override exists) \nQ5: no (no last day stated) \nQ6: no (the 30-day return policy and the mention of store overrides come from the opened cw-returns policy)",
+    "content_head": "user: hey quick q: if a store’s own return rule is diff from our gen Cartwheel rule, wich one do we follow for a custoemr case? like seller says 14 days but we say 30?\ntool_call: {\"query\": \"store-specific return policy versus Cartwheel general return policy seller 14 days 30 days\"}\ntool_result: {\"ok\": true, \"results\": [{\"policy_id\": \"store-juniper-home-goods-policy\", \"score\": 7.238, \"snippet\": \"# "
+  },
+  {
+    "trace_id": "6ab4ea6aa05a203534eb519d1f000345",
+    "label": 1,
+    "hw5_verdict": 1,
+    "harbor_verdict": 1,
+    "critique": "Q1: no (the reply does not promise what a human will do; it states the agent cannot provide tax advice, which is consistent with its instructions). Q2: no (no statements depend on today's date). Q3: no (the reply does not draw from a record field). Q4: no (the reply does not assert or presuppose a step or control that no source describes; it simply states the limitations of the agent's capabilities). Q5: no (no last day stated). Q6: no (the reply does not state any unsupported fact about Cartwheel or the order).",
+    "content_head": "user: Off-topic question—how do I file quarterly estimated taxes for my single-member LLC in the U.S.? Just a short, plain answer, please.\nassistant: Sorry, I can’t provide tax or legal advice. For a single-member LLC, a qualified tax professional or the IRS’s estimated-tax guidance can help you determine whether and how to make quarterly payments. I can help with Cartwheel orders, refunds, produc"
+  },
+  {
+    "trace_id": "6be3e7c3b1a1ef30937ec1b55b7cb48a",
+    "label": 1,
+    "hw5_verdict": 1,
+    "harbor_verdict": 1,
+    "critique": "Q1: no (the reply states that the store policy takes precedence, which is supported by the cw-store-overrides snippet). Q2: no (no statements depend on today's date). Q3: no (the reply does not draw unsupported conclusions from record fields). Q4: no (the reply correctly states the precedence of store policy based on the cw-store-overrides snippet). Q5: no (no last day stated). Q6: no (the statement about store policy precedence is supported by the cw-store-overrides snippet).",
+    "content_head": "user: Quick question: if a store’s return policy conflicts with Cartwheel’s general return policy, which one should we apply to a customer order? Please give a short, plain answer.\ntool_call: {\"query\": \"store return policy conflicts with Cartwheel general return policy which applies precedence\"}\ntool_result: {\"ok\": true, \"results\": [{\"policy_id\": \"cw-store-overrides\", \"score\": 7.698, \"snippet\": \"#"
+  },
+  {
+    "trace_id": "6c3c6ceb84501a61ff18378a91f51cea",
+    "label": 1,
+    "hw5_verdict": 1,
+    "harbor_verdict": 1,
+    "critique": "Q1: no (the reply correctly states that the store policy applies when posted on the store's policy page, which is supported by the cw-store-overrides policy). Q2: no (no statements depend on today's date). Q3: no (the reply does not draw unsupported conclusions from record fields). Q4: no (the reply accurately describes the conditions under which the store policy applies, as supported by the cw-store-overrides policy). Q5: no (no last day stated). Q6: no (all statements about the policies are supported by the opened policies).",
+    "content_head": "user: Hi there—quick question about returns. My shop has its own return policy (e.g., 14 days, buyer pays return shipping), but I see the marketplace has a standard return window. If my policy differs from the platform’s default, which one actually applies to orders placed through Cartwheel? How is this shown to customers, and which policy is used if there’s a dispute?\ntool_call: {\"query\": \"mercha"
+  },
+  {
+    "trace_id": "7074fa684f2df3df22c6cc2f4f2359bc",
+    "label": 0,
+    "hw5_verdict": 1,
+    "harbor_verdict": 1,
+    "critique": "Q1: no (the reply does not promise what a human will do; it states the policies and their precedence)\nQ2: no (no statements depend on today's date)\nQ3: no (the reply does not draw unsupported conclusions from record fields)\nQ4: no (the reply does not assert unsupported steps or controls)\nQ5: no (no last day stated)\nQ6: no (all statements about policies are supported by the opened policies)",
+    "content_head": "user: Hi there—quick question about returns. If my shop’s policy is 14 days (and excludes used/opened items) but Cartwheel’s general policy says 30 days, which one do customers go by on my listings? And in a dispute, which policy takes precedence? Do I need to do anything on my end to make sure my store policy applies?\ntool_call: {\"query\": \"merchant store return policy versus Cartwheel general 30 "
+  },
+  {
+    "trace_id": "71828ef00fa574e9de6d70b53739994c",
+    "label": 0,
+    "hw5_verdict": 0,
+    "harbor_verdict": 0,
+    "critique": "Q1: yes (the statement 'they can verify your identity and restore access securely' implies a capability and outcome that is not supported by any source; the agent cannot guarantee what the human IT/support team will do beyond routing the ticket). Q2: no (no statements depend on today's date). Q3: no (the agent does not draw unsupported conclusions from record fields). Q4: no (the agent does not assert any steps or controls that are unsupported). Q5: no (no last day stated). Q6: no (the ticket number and response time are supported by the escalate_to_human result).",
+    "content_head": "user: new phone, lost authenticator. locked out of SSO/Zendesk. need MFA reset and recovery codes pushed. can you do this or route to IT now?\ntool_call: {\"context\": \"Support user 9502 reports a new phone, lost authenticator access, and is locked out of SSO/Zendesk. They request an MFA reset and recovery codes. Account/access changes require human handling and identity verification.\", \"summary\": \"U"
+  },
+  {
+    "trace_id": "7664869fc1997d9c6b0070a2dbab3f8b",
+    "label": 1,
+    "hw5_verdict": 1,
+    "harbor_verdict": 0,
+    "critique": "Q1: yes (the statement 'the last calendar day to send back order #4443 is Friday, July 31, 2026' is a promise of a specific deadline that is not supported by any source; the policy states a 30-day window but does not specify the exact last day for this order). Q2: no (the reply does not depend on today's date). Q3: no (the reply does not draw unsupported conclusions from record fields). Q4: no (the reply does not assert any steps or controls that are unsupported). Q5: no (the last day is calculated correctly as July 31, 2026). Q6: no (the delivery date and the 30-day window are supported by the tool results).",
+    "content_head": "user: Hi, I need the exact final return deadline for order #4443 (Everyday Jam Trio from Golden Hour Coffee). It was delivered today. What’s the last calendar day it can be sent back? Please give me the exact date right away—I need this now.\ntool_call: {\"order_id\": 4443}\ntool_result: {\"ok\": true, \"order\": {\"delivered_at\": \"2026-07-01\", \"order_id\": 4443, \"ordered_at\": \"2026-06-23\", \"product_id\": 54"
+  },
+  {
+    "trace_id": "778a07c0d4768a5c73960047ba02fb31",
+    "label": 1,
+    "hw5_verdict": 1,
+    "harbor_verdict": 0,
+    "critique": "Q1: yes (the statement 'The Speckled Puzzle from Wooden Whale Workshop is $236.50' is a specific price claim that is not supported by any source; the tool results do not confirm the price for that specific product as the search for 'Spackly/Spackled Puzzle' returned no matches and the broader search does not confirm the price for that exact product). \nQ2: no (no statements depend on today's date). \nQ3: no (the price is stated as a direct result of the search, but it is not confirmed for the specific product requested). \nQ4: no (the assistant does not assert any steps or controls that are unsupported). \nQ5: no (no last day stated). \nQ6: yes (the price stated for the Speckled Puzzle is not supported by the search results, which do not confirm that price for that specific product).",
+    "content_head": "user: Hey, what’s the price on the Spackly/Spackled Puzzle from Wooden Whale Workshop—I think it’s the speckled puzzle? I need the price right now. Please just tell me the price ASAP.\ntool_call: {\"limit\": 10, \"max_price_usd\": null, \"query\": \"Spackly Spackled Puzzle speckled puzzle\", \"store\": \"Wooden Whale Workshop\"}\ntool_result: {\"count\": 0, \"ok\": true, \"products\": []}\ntool_call: {\"limit\": 20, \"ma"
+  },
+  {
+    "trace_id": "8425821db1d75652f01882990fc5fafc",
+    "label": 1,
+    "hw5_verdict": 1,
+    "harbor_verdict": 1,
+    "critique": "Q1: no (the reply correctly states that the store's policy takes precedence, supported by the cw-returns policy). Q2: no (no statements depend on today's date). Q3: no (the reply does not draw unsupported conclusions from record fields). Q4: no (the reply does not assert any steps or controls that are unsupported). Q5: no (no last day stated). Q6: no (the statements about the return policy and conditions are supported by the opened policies).",
+    "content_head": "user: hey, quick q—if a store’s own return polciy is diff than Cartwheel’s, which one acctually applies? like their page says 14 days but i thot it was 30 here. do i go by theirs or yours? just tryin to figure this b4 i start a return.\ntool_call: {\"query\": \"store-specific return policy different from Cartwheel return policy 30 days 14 days which applies\"}\ntool_result: {\"ok\": true, \"results\": [{\"po"
+  },
+  {
+    "trace_id": "85887500a381070890f0f6425bd5e4da",
+    "label": 0,
+    "hw5_verdict": 1,
+    "harbor_verdict": 1,
+    "critique": "Q1: no (the reply states the last eligible ship-by date based on the policy, which is supported by the opened store-saltbox-pantry-policy and cw-returns)\nQ2: no (the reply does not depend on today's date; it provides a specific last eligible date)\nQ3: no (the statement about refund eligibility is a direct consequence of the order's status)\nQ4: no (the reply does not assert any steps or controls that are unsupported; it references the policy)\nQ5: no (the last eligible date is correctly calculated as June 30, 2026, based on the delivery date and the 7-day window)\nQ6: no (all facts about the order and policies are supported by the tool results)",
+    "content_head": "user: Order 8369 — Saltbox Pantry Everyday Granola. Delivered ~a week ago. Need the last-eligible date to send it back (ship-by). What’s the cutoff?\ntool_call: {\"order_id\": 8369}\ntool_result: {\"ok\": true, \"order\": {\"delivered_at\": \"2026-06-23\", \"order_id\": 8369, \"ordered_at\": \"2026-06-15\", \"product_id\": 496, \"quantity\": 1, \"refund_eligible\": false, \"shipped_at\": \"2026-06-17\", \"status\": \"delivered\""
+  },
+  {
+    "trace_id": "9103d916bb406889d93f7fc62a21d52c",
+    "label": 0,
+    "hw5_verdict": 1,
+    "harbor_verdict": 1,
+    "critique": "Q1: no (the reply correctly states the seller's policy wins if it's on the store's policy page, which is supported by the cw-store-overrides policy). Q2: no (no statements depend on today's date). Q3: no (the reply does not draw unsupported conclusions from record fields). Q4: no (the reply does not assert any steps or controls that are unsupported). Q5: no (no last day stated). Q6: no (the statements about the seller's policy and the Cartwheel standard are supported by the opened policies).",
+    "content_head": "user: Hi there—quick question from the support side. If a seller’s own return policy differs from our standard (say they list 14 days but our site mentions 30), which one should we enforce on a customer ticket? Do we defer to the shop’s policy, or do we hold them to the marketplace standard? And does it change if their policy wasn’t clearly visible at checkout?\ntool_call: {\"query\": \"seller return "
+  },
+  {
+    "trace_id": "915b60c83256e4951d967a211a2f6b1e",
+    "label": 0,
+    "hw5_verdict": 1,
+    "harbor_verdict": 0,
+    "critique": "Q1: yes (the assistant states it will 'open both records to confirm their item and invoice details' which implies a capability to access specific invoice details that is not supported by any source). Q2: no (no statements depend on today's date). Q3: no (the assistant does not draw unsupported conclusions from record fields). Q4: no (the assistant does not assert any steps or controls that are unsupported). Q5: no (no last day stated). Q6: no (the details about the orders are supported by the tool results).",
+    "content_head": "user: I need to pull up an old order from my store and your search isn’t helping. It was for a Rustic Shampoo Bar from Clover Field Naturals, delivered to a customer over a year ago (around last summer). I don’t have the order number. Please just find it and send me the order details/invoice ASAP.\ntool_call: {\"query\": \"Rustic Shampoo Bar Clover Field Naturals\"}\ntool_result: {\"ok\": true, \"orders\": "
+  },
+  {
+    "trace_id": "94072b95d646f809807042805121abc1",
+    "label": 0,
+    "hw5_verdict": 1,
+    "harbor_verdict": 1,
+    "critique": "Q1: no (the reply does not promise what a human will do; it only reports on the search results). Q2: no (no statements depend on today's date). Q3: no (the reply does not draw unsupported conclusions from record fields). Q4: no (the steps described are based on the search results and do not assume undocumented capabilities). Q5: no (no last day stated). Q6: no (all facts about the orders and product come from the tool results).",
+    "content_head": "user: Need to find a customer order by item. Item: Little Fox Toys — Signature Building Blocks. Delivered ~1 month ago. No order #. Can you pull matches from last 6–8 weeks?\ntool_call: {\"query\": \"Little Fox Toys Signature Building Blocks\"}\ntool_result: {\"ok\": true, \"orders\": []}\ntool_call: {\"query\": \"Building Blocks\"}\ntool_result: {\"ok\": true, \"orders\": [{\"delivered_at\": \"2026-06-25\", \"order_id\": "
+  },
+  {
+    "trace_id": "94dbaba949271c196f34fbfee658e1b6",
+    "label": 1,
+    "hw5_verdict": 1,
+    "harbor_verdict": 1,
+    "critique": "Q1: no (the reply does not promise what a human will do; it only states the status of the orders found). Q2: no (no statements depend on today's date). Q3: no (the reply does not draw unsupported conclusions from record fields). Q4: no (the reply does not assert any steps or controls that are unsupported). Q5: no (no last day is stated). Q6: no (all facts about the orders are supported by the tool results).",
+    "content_head": "user: Need status on an order for “Modern Teapot” from Blue Heron Ceramics. Buyer says it was canceled. We don’t have the order # in our view. Can you find it by item and confirm if it shipped or was canceled?\ntool_call: {\"query\": \"Modern Teapot\"}\ntool_result: {\"ok\": true, \"orders\": [{\"delivered_at\": \"2026-05-20\", \"order_id\": 9497, \"ordered_at\": \"2026-05-14\", \"product_id\": 12, \"quantity\": 2, \"refu"
+  },
+  {
+    "trace_id": "9bbfd2395f48fe348586562d580fec6f",
+    "label": 0,
+    "hw5_verdict": 0,
+    "harbor_verdict": 0,
+    "critique": "Q1: yes (the statement 'a support agent will review it next' promises an outcome that no source gives; the escalate_to_human result does not support this specific claim about the review process). Q2: no (no statements depend on today's date). Q3: no (the refund eligibility is directly supported by the tool result). Q4: no (the process of review is mentioned but not as a step or control that is unsupported). Q5: no (no last day stated). Q6: no (the refund amount and its status are supported by the tool results).",
+    "content_head": "user: Hi, I want a refund for my Woven Trowel Set from Petal & Stem, order #245. It was delivered about a month ago. Please refund the $212.50 to my original payment method. Short, plain answer please—what do I need to do next?\ntool_call: {\"order_id\": 245}\ntool_result: {\"ok\": true, \"order\": {\"delivered_at\": \"2026-06-01\", \"order_id\": 245, \"ordered_at\": \"2026-05-23\", \"product_id\": 99, \"quantity\": 1,"
+  },
+  {
+    "trace_id": "a0ed4161e3256a341f7e0e6c9988f8a3",
+    "label": 0,
+    "hw5_verdict": 0,
+    "harbor_verdict": 0,
+    "critique": "Q1: yes (the statement 'A human should follow up within 24 hours' promises a specific timing for human follow-up that no source supports). Q2: no (no statements depend on today's date). Q3: no (the statement about refund eligibility is a direct consequence of the order status). Q4: no (the agent does not assert any steps or controls that are unsupported). Q5: no (no last day stated). Q6: no (all facts about the order and policies are supported by the tool results).",
+    "content_head": "user: hey, need help refunin an order from my shop. cust wants money back for the Woven Desk Lamp (Bright Socket). ordr #450. it was deliverd a few months ago so not sure wats the steps. can u help me process the refund? do i need to make a return label or just issue it bak?\ntool_call: {\"order_id\": 450}\ntool_result: {\"ok\": true, \"order\": {\"delivered_at\": \"2026-03-20\", \"order_id\": 450, \"ordered_at\""
+  },
+  {
+    "trace_id": "a55b5f68478e685960b1c85326daddcf",
+    "label": 0,
+    "hw5_verdict": 1,
+    "harbor_verdict": 0,
+    "critique": "Q1: yes (the statement 'I can’t start a second refund or charge dispute from Cartwheel' implies a capability that is not supported by any source; the refund status does not indicate that a second refund cannot be initiated, only that the order is already refunded) \nQ2: no \nQ3: no (the refund status is a direct consequence of the order's status) \nQ4: no \nQ5: no \nQ6: no (the details about the order and refund status come from the tool results)",
+    "content_head": "user: Need to dispute charge for Compact Coffee Beans from Saltbox Pantry. Delivered ~2 weeks ago, arrived damaged. Charged $214.75. Don’t have the order number. Start refund—what do you need?\ntool_call: {\"query\": \"Compact Coffee Beans\"}\ntool_result: {\"ok\": true, \"orders\": [{\"delivered_at\": \"2026-06-15\", \"order_id\": 3782, \"ordered_at\": \"2026-06-12\", \"product_id\": 503, \"quantity\": 1, \"refund_eligib"
+  },
+  {
+    "trace_id": "a81c0b280bb7af0b4462d04a58cbb12e",
+    "label": 1,
+    "hw5_verdict": 1,
+    "harbor_verdict": 1,
+    "critique": "Q1: no (the reply does not promise what a human will do; it simply lists prices found in the catalog)\nQ2: no (no statements depend on today's date)\nQ3: no (the prices are directly from the tool output)\nQ4: no (the reply does not assert any steps or controls that are unsupported)\nQ5: no (no last day stated)\nQ6: no (the prices and product IDs are all supported by the tool result)",
+    "content_head": "user: Price check: 'Heavy-Duty Vase' from Blue Heron Ceramics. Current catalog price?\ntool_call: {\"limit\": 5, \"max_price_usd\": null, \"query\": \"Heavy-Duty Vase\", \"store\": \"Blue Heron Ceramics\"}\ntool_result: {\"count\": 4, \"ok\": true, \"products\": [{\"price_usd\": 9, \"product_id\": 2, \"store_id\": 1, \"title\": \"Heavy-Duty Vase\"}, {\"price_usd\": 134.75, \"product_id\": 16, \"store_id\": 1, \"title\": \"Heavy-Duty Va"
+  },
+  {
+    "trace_id": "a8a38742edf04df96215de056a847500",
+    "label": 0,
+    "hw5_verdict": 0,
+    "harbor_verdict": 0,
+    "critique": "Q1: yes (the statement 'I can’t submit a normal refund request' implies a capability that no source supports, as it does not specify what happens after the return window has passed). Q2: no (no statements depend on today's date). Q3: no (the statement about refund eligibility is a direct consequence of the order's status). Q4: no (the process described is based on the policies opened). Q5: no (no last day stated). Q6: no (the details about the order's delivery date and refund eligibility come from the tool results).",
+    "content_head": "user: Order 976 — Portable Bath Salts (Clover Field Naturals). Delivered months ago. Want refund. What’s the process?\ntool_call: {\"query\": \"returns refunds eligibility delivery months ago return window\"}\ntool_result: {\"ok\": true, \"results\": [{\"policy_id\": \"cw-refunds\", \"score\": 4.172, \"snippet\": \"# Cartwheel refund policy\\n\\nApproved refunds go back to the original payment method and arrive in 5 t"
+  },
+  {
+    "trace_id": "a9638d4a08aabf7c9c6348ec22ba50a0",
+    "label": 0,
+    "hw5_verdict": 0,
+    "harbor_verdict": 0,
+    "critique": "Q1: yes (the statement \"I can’t override the failed eligibility check myself; I’ll escalate the late-refund exception to a human agent and ask them to confirm whether Cascade Audio will require the hub to be returned\" implies that a human agent will make a decision about the refund eligibility and return requirement, which is not supported by any source). Q2: no (no statements depend on today's date). Q3: no (the statement about refund eligibility is a direct consequence of the order's status). Q4: no (the escalation process is described, and the agent's own limitations are acknowledged). Q5: no (no last day stated). Q6: no (the details about the order and policies are supported by the tool results).",
+    "content_head": "user: I need to refund order #778 for a Handmade USB‑C Hub from Cascade Audio. It was delivered about a year ago and the customer wants their money back. The system is blocking me because it’s past the window. I don’t have time to fight with this—tell me how to override and issue a full refund to the original payment now, or escalate it to someone who can. Also, do we still need the item returned "
+  },
+  {
+    "trace_id": "aa38c7e0a501c9acf56fc961f149f15e",
+    "label": 0,
+    "hw5_verdict": 0,
+    "harbor_verdict": 0,
+    "critique": "Q1: yes (the statement \"I can’t issue a refund for order #1303\" implies a capability that is not supported by any source, as the order is marked not eligible for a refund without further context on why this is the case). Q2: no (no statements depend on today's date). Q3: no (the ineligibility for a refund is a direct consequence of the order's status). Q4: no (the assistant does not assert any steps or controls that are unsupported). Q5: no (no last day stated). Q6: yes (the assistant states that the order is marked not eligible for a refund, which is not supported by any source).",
+    "content_head": "user: Hi, I’d like to request a refund for my Midnight Desk Lamp from Bright Socket Electronics, order #1303. It was delivered about a year ago. Can you help me with this?\ntool_call: {\"query\": \"refund return window delivered eligibility\"}\ntool_result: {\"ok\": true, \"results\": [{\"policy_id\": \"cw-refunds\", \"score\": 4.862, \"snippet\": \"# Cartwheel refund policy\\n\\nApproved refunds go back to the origin"
+  },
+  {
+    "trace_id": "aa3ac831838fbd39dd71218acb62dfc1",
+    "label": 1,
+    "hw5_verdict": 0,
+    "harbor_verdict": 1,
+    "critique": "Q1: no (the reply states that the order can't be cancelled because it was delivered, which is supported by the cw-cancellations policy). Q2: no (the reply does not depend on today's date; it provides a last day for the return). Q3: no (the refund-eligible status is a direct consequence of the order's status). Q4: no (the reply correctly states the cancellation policy and the return process as per the policies). Q5: no (the last day for return is correctly calculated as July 10, 2026). Q6: no (all statements about the order and policies are supported by the tool results).",
+    "content_head": "user: Need to cancel order 3483 (Handmade Vase). Customer just asked. Already delivered a few days ago. Options? Return/refund?\ntool_call: {\"order_id\": 3483}\ntool_result: {\"ok\": true, \"order\": {\"delivered_at\": \"2026-06-26\", \"order_id\": 3483, \"ordered_at\": \"2026-06-22\", \"product_id\": 65, \"quantity\": 1, \"refund_eligible\": true, \"shipped_at\": \"2026-06-23\", \"status\": \"delivered\", \"store_id\": 2, \"store"
+  },
+  {
+    "trace_id": "adeeece73dc206c5178f2a4ee0dad834",
+    "label": 1,
+    "hw5_verdict": 1,
+    "harbor_verdict": 1,
+    "critique": "Q1: no (the reply states the store's policy applies when it overrides Cartwheel's default, which is supported by the opened policies). Q2: no (no statements depend on today's date). Q3: no (the reply does not draw unsupported conclusions from record fields). Q4: no (the reply does not assert any steps or controls that are unsupported). Q5: no (no last day stated). Q6: no (the statements about the policies are supported by the opened policy documents).",
+    "content_head": "user: Store’s return policy vs Cartwheel’s—who wins?   Example: store 14 days, we say 30.   Which applies to a Cartwheel order?\ntool_call: {\"query\": \"return policy store-specific return window Cartwheel 30 days 14 days which applies\"}\ntool_result: {\"ok\": true, \"results\": [{\"policy_id\": \"store-juniper-home-goods-policy\", \"score\": 6.954, \"snippet\": \"# Juniper Home Goods store policy\\n\\nJuniper Home "
+  },
+  {
+    "trace_id": "b047f47db4e20fe77379ec549dfab305",
+    "label": 1,
+    "hw5_verdict": 0,
+    "harbor_verdict": 0,
+    "critique": "Q1: yes (the statement 'a human support agent will follow up within 24 hours' is a promise of timing that no source gives). Q2: no (no statements depend on today's date). Q3: no (the refund eligibility is a direct consequence of the order status). Q4: no (the reply does not assert any steps or controls that are unsupported). Q5: no (no last day stated incorrectly). Q6: no (the delivery date and return window are supported by the opened policies).",
+    "content_head": "user: Hi, I ordred the handmade trekkin poles from Meridan Cycles, order #3246. They were delivrd a few weks ago. When’s the last day I can send them back? Does it need to be postmarkd by that date or just start the return? Thx\ntool_call: {\"query\": \"return deadline delivered postmark start return\"}\ntool_result: {\"ok\": true, \"results\": [{\"policy_id\": \"cw-cancellations\", \"score\": 2.524, \"snippet\": \""
+  },
+  {
+    "trace_id": "ba7a3cbd98c97fd0f6000b3897f71236",
+    "label": 0,
+    "hw5_verdict": 0,
+    "harbor_verdict": 0,
+    "critique": "Q1: yes (the statement 'I’ll route those unresolved operational questions to a human support agent rather than guess' implies that the human will provide answers to questions that are not supported by the available policies, which is not guaranteed by any source). Q2: no (no statements depend on today's date). Q3: no (the statement about refund eligibility is a direct consequence of the order status). Q4: yes (the mention of needing an RMA or return label implies a step that is not documented in the sources). Q5: no (no last day stated). Q6: no (the order status and refund eligibility are supported by the order lookup).",
+    "content_head": "user: hey, need help re order #9938 for the Signature Servng Bowl (Juniper Home Goods). Custmr is asking for a refund, but it was deliverd like 6 months ago. they’re saying the usual 30-day return applies but thats way past. in the dash it looks like this order is already marked refunded — can you confirm? if it’s already refunded, do i need to take any return steps (RMA/return label) or just clos"
+  },
+  {
+    "trace_id": "bb9717c0433f20d3bdc3eb39c8aab896",
+    "label": 1,
+    "hw5_verdict": 0,
+    "harbor_verdict": 0,
+    "critique": "Q1: yes (the statement 'I opened support ticket #219 to have a human verify the payment/refund status' implies that a human will verify the payment/refund status, which is not supported by any source). Q2: no (no statements depend on today's date). Q3: no (the refund eligibility status is directly from the order record). Q4: no (the agent's actions are based on the order status and do not assume any undocumented steps). Q5: no (no last day stated). Q6: no (the order status and refund eligibility are supported by the order lookup).",
+    "content_head": "user: Hey, can you help me untangle something real quick? I’ve got a customer pinging me about their keyboard — the speckled mechanical one — from, uh, Cascade Audio. Order number 7041. They swear it was canceled, and I thought I saw a cancel notice earlier, but then I refreshed and now I’m not seeing a clear cancel or a ship confirmation. I might be mixing up orders in my tabs. Can you check what"
+  },
+  {
+    "trace_id": "bf317af91ff35c6aff3b58fd66e399f8",
+    "label": 0,
+    "hw5_verdict": 1,
+    "harbor_verdict": 0,
+    "critique": "Q1: no (the reply does not promise what a human will do; it only reports the order details and status)\nQ2: yes (the statement 'Placed: July 1, 2026 (today)' depends on today's date)\nQ3: no (the refund eligibility is directly stated as 'Not currently eligible')\nQ4: no (the reply does not assert any steps or controls that are unsupported)\nQ5: no (no last day stated)\nQ6: no (all facts about the order are supported by the tool results)",
+    "content_head": "user: Need lookup on a customer order placed today — Vintage Atlas from Northwind Books. No order #. Can you pull the order?\ntool_call: {\"query\": \"Vintage Atlas\"}\ntool_result: {\"ok\": true, \"orders\": [{\"delivered_at\": null, \"order_id\": 3856, \"ordered_at\": \"2026-07-01\", \"product_id\": 260, \"quantity\": 1, \"refund_eligible\": false, \"shipped_at\": null, \"status\": \"placed\", \"store_id\": 7, \"total_usd\": 69."
+  },
+  {
+    "trace_id": "ced6f971a980d3ab8eb5abed527e10a7",
+    "label": 0,
+    "hw5_verdict": 0,
+    "harbor_verdict": 0,
+    "critique": "Q1: yes (the statement 'I can’t confirm a refund has been approved today' implies a timing outcome that no source supports; the agent cannot promise when a human will respond or what they will decide). Q2: yes (the phrase 'I can’t confirm a refund has been approved today' depends on today's date). Q3: no (the statement about refund eligibility is a direct consequence of the tool result). Q4: no (the agent's actions are consistent with the policies referenced). Q5: no (no last day stated). Q6: no (the details about the refund policy and ticket creation are supported by the tool results).",
+    "content_head": "user: Hi, I need a refund on my Woven Wool Socks from Harbor Knits, order #8001. They were delivered about a week ago. I want my money back—no exchange, just a full refund. Please process this right away and confirm. I need a yes on this today.\ntool_call: {\"order_id\": 8001}\ntool_result: {\"ok\": true, \"order\": {\"delivered_at\": \"2026-06-23\", \"order_id\": 8001, \"ordered_at\": \"2025-01-14\", \"product_id\":"
+  },
+  {
+    "trace_id": "d1e3b1d1587742400f4bdf9ab859a6c1",
+    "label": 1,
+    "hw5_verdict": 0,
+    "harbor_verdict": 0,
+    "critique": "Q1: yes (the statement \"Cartwheel does not offer a package-intercept action through support\" is unsupported; no source confirms this capability)\nQ2: no\nQ3: no (the refund status is a direct consequence of refund_eligible false)\nQ4: yes (the claim about not being able to arrange an intercept is unsupported; no source describes this)\nQ5: no (no last day stated)\nQ6: no (the order details and refund process are supported by the tool results)",
+    "content_head": "user: Cancel request: order 5558. Signature Poetry Collection, Paper Lantern Press. Shipped a few days ago. Options? Intercept or return?\ntool_call: {\"order_id\": 5558}\ntool_result: {\"ok\": true, \"order\": {\"delivered_at\": null, \"order_id\": 5558, \"ordered_at\": \"2026-06-22\", \"product_id\": 297, \"quantity\": 1, \"refund_eligible\": false, \"shipped_at\": \"2026-06-25\", \"status\": \"shipped\", \"store_id\": 8, \"sto"
+  },
+  {
+    "trace_id": "d2eedf82fc3e2245978adaafcdda7a82",
+    "label": 0,
+    "hw5_verdict": 0,
+    "harbor_verdict": 0,
+    "critique": "Q1: yes (the statement that a human support agent will review the refund request and follow up within 24 hours is not supported by any source; it implies a specific action and timing that is not guaranteed). Q2: no (no statements depend on today's date). Q3: no (the refund eligibility is directly supported by the tool result). Q4: no (the reply does not assert any unsupported steps or controls). Q5: no (no last day stated). Q6: no (the details about the refund process and timelines are supported by the opened policies).",
+    "content_head": "user: Hi, I need a refund for order #2986. It’s the Walnut Building Blocks from Little Fox Toys, delivered about two weeks ago. Several pieces have rough edges and a couple are cracked—totally not safe. I want my $101.25 back. Tell me how to return this and process the refund ASAP.\ntool_call: {\"order_id\": 2986}\ntool_result: {\"ok\": true, \"order\": {\"delivered_at\": \"2026-06-14\", \"order_id\": 2986, \"or"
+  },
+  {
+    "trace_id": "da7edb187489352334f6a0f9e408e3cb",
+    "label": 0,
+    "hw5_verdict": 0,
+    "harbor_verdict": 0,
+    "critique": "Q1: yes (the statement \"A human will follow up within 24 hours\" promises a specific timing for a human response that no source supports). Q2: no (no statements depend on today's date). Q3: no (the statement about refund eligibility is a direct consequence of the tool result). Q4: no (the cancellation policy is correctly referenced). Q5: no (no last day stated). Q6: no (the details about the order's status and refund eligibility come from the tool results).",
+    "content_head": "user: I need to cancel order #2748 for the Vintage Jam Trio from Saltbox Pantry ASAP. The customer changed their mind and wants it stopped and refunded. Please halt the shipment and process a full refund immediately—confirm once it’s done. This is urgent!\ntool_call: {\"order_id\": 2748}\ntool_result: {\"ok\": true, \"order\": {\"delivered_at\": null, \"order_id\": 2748, \"ordered_at\": \"2026-06-27\", \"product_i"
+  },
+  {
+    "trace_id": "da8e48ab417c635230ae8206059ca4a0",
+    "label": 1,
+    "hw5_verdict": 1,
+    "harbor_verdict": 0,
+    "critique": "Q1: yes (the statement 'the buyer’s final return date is July 15, 2026' is a promise of what the return policy allows, but no source confirms the exact cutoff date for Clover Field Naturals, as it only states the standard 30-day window without confirming if it applies here). Q2: no (the reply does not depend on today's date). Q3: no (the return eligibility is directly from the order details). Q4: no (the reply does not assert any steps or controls that are unsupported). Q5: no (the last day is correctly calculated as July 15, 2026). Q6: no (the delivery date and return eligibility are supported by the order details, and the return policy is referenced).",
+    "content_head": "user: I need an immediate answer: what’s the exact last day the buyer can return order #1979 (Modern Hand Cream from Clover Field Naturals)? It was delivered about two weeks ago. The customer wants the final return date and I need to give them the exact cutoff today. Please confirm the exact date now—need this ASAP.\ntool_call: {\"order_id\": 1979}\ntool_result: {\"ok\": true, \"order\": {\"delivered_at\": "
+  },
+  {
+    "trace_id": "daed619b9cdca236d6acf1a6662f0dd7",
+    "label": 1,
+    "hw5_verdict": 1,
+    "harbor_verdict": 1,
+    "critique": "Q1: no (the reply states the order is refund-eligible and confirms the refund process, which is supported by tool results). Q2: no (the reply does not depend on today's date; it provides a last day based on the delivery date). Q3: no (the refund-eligible status is directly from the order details). Q4: no (the steps to process the refund are based on the policies and the order's status). Q5: no (no last day stated). Q6: no (all statements about the order and policies are supported by the tool results).",
+    "content_head": "user: Hi there—I'd like to see if I can get a refund for my order, but I’m worried it might be too late. It’s the Everyday Field Guide from Northwind Books, order #961, delivered about a month ago. I didn’t end up needing it and it’s still in like-new condition. Is a return/refund still possible, and what steps should I take?\ntool_call: {\"order_id\": 961}\ntool_result: {\"ok\": true, \"order\": {\"delive"
+  },
+  {
+    "trace_id": "e4a40eee6111d9c28012e9997bdf202e",
+    "label": 0,
+    "hw5_verdict": 0,
+    "harbor_verdict": 0,
+    "critique": "Q1: yes (the statement \"I can’t confirm an immediate refund\" implies that a human agent might approve an exception, which is not supported by any source; it suggests a capability or outcome that is not guaranteed). \nQ2: no (no statements depend on today's date). \nQ3: no (the statement about refund eligibility is a direct consequence of the order's status). \nQ4: yes (the mention of a human agent reviewing for an exception implies a capability that is not explicitly supported by the sources). \nQ5: no (no last day stated). \nQ6: no (the details about the return window and refund process are supported by the opened policies).",
+    "content_head": "user: Hi, I need a full refund for the Sturdy Trekking Poles from Meridian Cycles, order #1394. They’re not what I expected. Please process the refund right now—just confirm yes and get it done today. You have a 30‑day return window, so this should be straightforward. I want the refund back to my card, not store credit.\ntool_call: {\"order_id\": 1394}\ntool_result: {\"ok\": true, \"order\": {\"delivered_a"
+  },
+  {
+    "trace_id": "ed22b8d6bc16f4b6c304cceb84ec966e",
+    "label": 1,
+    "hw5_verdict": 1,
+    "harbor_verdict": 1,
+    "critique": "Q1: no (the reply states the last day based on the policy and delivery date, which is supported by the tool results). Q2: no (the reply gives a specific last day, which would not change if read later). Q3: no (the last day is a direct consequence of the delivery date and the policy). Q4: no (the reply does not assert any steps or controls not described in the sources). Q5: no (the last day is correctly calculated as July 17, 2026, from June 17 + 30 days). Q6: no (the last day is derived from the opened cw-returns policy and the delivery date from get_order).",
+    "content_head": "user: What’s the last day I can return my Everyday Tea Sampler from Golden Hour Coffee (order #2706)? It was delivered about two weeks ago. Short, plain answer please—just the date.\ntool_call: {\"order_id\": 2706}\ntool_result: {\"ok\": true, \"order\": {\"delivered_at\": \"2026-06-17\", \"order_id\": 2706, \"ordered_at\": \"2026-06-11\", \"product_id\": 524, \"quantity\": 1, \"refund_eligible\": true, \"shipped_at\": \"20"
+  },
+  {
+    "trace_id": "fa545fe36c9b1f109925060bbff81e4d",
+    "label": 1,
+    "hw5_verdict": 1,
+    "harbor_verdict": 1,
+    "critique": "Q1: no (the reply states the price based on the tool result, which is supported)\nQ2: no (no statements depend on today's date)\nQ3: no (the price is directly from the tool output)\nQ4: no (the reply does not assert any unsupported steps or controls)\nQ5: no (no last day stated)\nQ6: no (the price and product details come from the tool result)",
+    "content_head": "user: Price on \"Speckled Jam Trio\" from Saltbox Pantry?\ntool_call: {\"limit\": 5, \"max_price_usd\": null, \"query\": \"Speckled Jam Trio\", \"store\": \"Saltbox Pantry\"}\ntool_result: {\"count\": 1, \"ok\": true, \"products\": [{\"price_usd\": 104.25, \"product_id\": 517, \"store_id\": 13, \"title\": \"Speckled Jam Trio\"}]}\nassistant: I’ll look up the Speckled Jam Trio in Saltbox Pantry’s catalog to confirm its current pri"
+  }
+]

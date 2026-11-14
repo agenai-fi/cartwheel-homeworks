@@ -18,6 +18,8 @@ import os
 from pathlib import Path
 from typing import Any, Callable
 
+from replay.judge_input import judge_completion_kwargs
+
 from . import _state
 
 # Course model name -> LiteLLM model id for evaluator execution.
@@ -273,9 +275,8 @@ def _run_docetl_map(  # pragma: no cover - requires the docetl extra + a live ke
             "isinstance(output['critique'], str) and output['critique'].strip() != ''",
         ],
         num_retries_on_validate_failure=2,
-        # Temperature 0 halves verdict flips between identical runs (analysis/report/spike-v1-dev-noise.json).
-        # Reasoning models (gpt-5*, o*) accept only the default temperature.
-        litellm_completion_kwargs={} if model.startswith(("gpt-5", "o")) else {"temperature": 0},
+        # Shared with the HW6 Harbor verifier (replay/judge_input.py).
+        litellm_completion_kwargs=judge_completion_kwargs(model),
     )
     pipeline = Pipeline(
         name="cartwheel_judge_batch",
