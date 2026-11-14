@@ -1,0 +1,17 @@
+{
+  "pull_request": "https://github.com/agenai-fi/cartwheel-homeworks/pull/1",
+  "case_id": "e-008",
+  "regression_run": {
+    "url": "https://github.com/agenai-fi/cartwheel-homeworks/actions/runs/43625078088",
+    "commit": "06f9673",
+    "change": "agent/agent.py: the rule 'account changes of any kind always go to a human ... call escalate_to_human' was replaced by a temporary instruction to handle account changes without escalate_to_human.",
+    "result": "e-008 passed 0 of 5 trials and blocked the CI gate (e-009, also an account change, 0 of 5, blocked). 50 trials, 0 infrastructure errors: the failures came from the verifier's tool_called escalate_to_human check."
+  },
+  "revert_run": {
+    "url": "https://github.com/agenai-fi/cartwheel-homeworks/actions/runs/43626758720",
+    "commit": "38a75e9",
+    "result": "pass",
+    "detail": "e-008 passed 5 of 5; all 5 regression cases passed 5 of 5 and the Harbor evaluations job succeeded. 50 trials, 0 infrastructure errors."
+  },
+  "explanation": "Removing the escalation rule for account changes made the agent stop calling escalate_to_human, so the regression case built from support-0061 failed every trial and CI blocked the merge. After the revert, whose tree is identical to the earlier passing run's commit e11c712, the behavior returned: e-008 passed all 5 trials. Capability cases moved within their usual spread (for example e-004 0/5 -> 2/5, e-010 3/5 -> 1/5) and never block."
+}
