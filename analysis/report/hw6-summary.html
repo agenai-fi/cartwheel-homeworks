@@ -1,0 +1,1102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HW6 Summary</title>
+<style>
+:root{
+  --bg:#fbfbfa; --fg:#1d1f21; --muted:#5b6168; --line:#d6d9dc; --panel:#f1f2f3; --code-bg:#f3f4f5;
+  --accent:#2457c5; --accent-bg:#e4ecfb; --warn:#8a5200; --warn-bg:#fff1d6; --fail:#b42318; --pass:#1f6f43;
+  --fail-bg:#fde8e6; --pass-bg:#e3f4ea; --box:#ffffff; --s2:#c4501a;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#16181b; --fg:#e4e6e8; --muted:#9aa1a8; --line:#363a40; --panel:#1f2226; --code-bg:#1b1e22;
+    --accent:#86abff; --accent-bg:#1d2a46; --warn:#f0b35a; --warn-bg:#3a2c12; --fail:#ff8f80; --pass:#72d49e;
+    --fail-bg:#3b1d1a; --pass-bg:#16301f; --box:#202328; --s2:#f39a62;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#16181b; --fg:#e4e6e8; --muted:#9aa1a8; --line:#363a40; --panel:#1f2226; --code-bg:#1b1e22;
+  --accent:#86abff; --accent-bg:#1d2a46; --warn:#f0b35a; --warn-bg:#3a2c12; --fail:#ff8f80; --pass:#72d49e;
+  --fail-bg:#3b1d1a; --pass-bg:#16301f; --box:#202328; --s2:#f39a62;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;overflow-x:hidden}
+main{max-width:880px;margin:0 auto;padding:24px 16px 64px}
+h1{font-size:1.6rem;margin:0 0 4px}
+h2{font-size:1.3rem;margin:44px 0 10px;padding-top:12px;border-top:1px solid var(--line)}
+h3{font-size:1.08rem;margin:26px 0 8px}
+p,li{max-width:76ch}
+a{color:var(--accent);overflow-wrap:anywhere}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.86em}
+:not(pre)>code{background:var(--code-bg);padding:1px 4px;border-radius:4px;overflow-wrap:anywhere}
+pre.code{background:var(--code-bg);border:1px solid var(--line);border-radius:6px;padding:10px 12px;margin:8px 0;overflow-x:auto;white-space:pre;line-height:1.45;max-width:100%}
+pre.code.wrap{white-space:pre-wrap;overflow-wrap:anywhere}
+.lede{color:var(--muted);margin:0 0 12px}
+nav.toc{font-size:.92rem;display:flex;flex-wrap:wrap;gap:6px 14px;margin:8px 0 0}
+.badge{display:inline-block;font-size:.74rem;font-weight:600;padding:1px 7px;border-radius:10px;border:1px solid currentColor;vertical-align:2px;line-height:1.35}
+.badge.unv{color:var(--fail);border-style:dashed}
+.badge.pass{color:var(--pass)}
+.badge.fail{color:var(--fail)}
+table{border-collapse:collapse;width:100%;font-size:.9rem;margin:8px 0 14px;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+th{background:var(--panel)}
+td.n{text-align:right;font-variant-numeric:tabular-nums}
+.note{background:var(--warn-bg);border-left:3px solid var(--warn);padding:8px 12px;margin:12px 0;border-radius:0 6px 6px 0}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 14px;margin:12px 0}
+.src{font-size:.8rem;color:var(--muted)}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+@media (max-width:640px){.grid2{grid-template-columns:minmax(0,1fr)}}
+.arch{display:grid;grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:760px){.arch{grid-template-columns:minmax(0,1fr)}}
+svg{max-width:100%}
+.arch svg,.fig svg{width:100%;height:auto;display:block}
+svg .box{fill:var(--box);stroke:var(--line);stroke-width:1.2}
+svg .box.red{stroke:var(--fail)}
+svg .ctr{fill:none;stroke:var(--accent);stroke-width:1.2;stroke-dasharray:6 4}
+svg .stage.on .box{stroke:var(--accent);stroke-width:2.4;fill:var(--accent-bg)}
+svg .t1{fill:var(--fg);font:600 13px system-ui,-apple-system,sans-serif}
+svg .t2{fill:var(--muted);font:10.5px ui-monospace,Menlo,monospace}
+svg .t3{fill:var(--accent);font:10px ui-monospace,Menlo,monospace}
+svg .arrow{stroke:var(--muted);stroke-width:1.4;fill:none}
+svg .head{fill:var(--muted)}
+svg .grid{stroke:var(--line);stroke-width:1}
+svg .axis{fill:var(--muted);font:10px system-ui,sans-serif}
+svg .la{stroke:var(--accent);stroke-width:2;fill:none}
+svg .lb{stroke:var(--s2);stroke-width:2;fill:none;stroke-dasharray:5 3}
+svg .da{fill:var(--accent)}
+svg .db{fill:var(--s2)}
+svg .kline{stroke:var(--fg);stroke-width:1;stroke-dasharray:2 3}
+.stepper{position:sticky;top:8px}
+.ctrl{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:8px}
+button{font:inherit;font-size:.9rem;padding:4px 12px;border:1px solid var(--line);background:var(--box);color:var(--fg);border-radius:6px;cursor:pointer}
+button[aria-pressed="true"]{background:var(--accent-bg);border-color:var(--accent)}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button:disabled{opacity:.45;cursor:default}
+.cap{min-height:6em}
+ol.stages{padding-left:22px;font-size:.9rem}
+ol.stages li{margin:4px 0;padding:2px 4px;border-radius:4px}
+ol.stages li.on{background:var(--accent-bg)}
+@media (prefers-reduced-motion: no-preference){svg .box,ol.stages li{transition:fill .2s,stroke .2s,background .2s}}
+.tree{white-space:pre;overflow-x:auto;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.84rem;line-height:1.5}
+.calc label{display:block;font-size:.9rem;margin:6px 0 2px}
+.calc input[type=range]{width:100%;accent-color:var(--accent)}
+.out{font-variant-numeric:tabular-nums;font-family:ui-monospace,Menlo,monospace;font-size:.88rem}
+.big{font-size:1.2rem;font-weight:600;font-variant-numeric:tabular-nums}
+.legend{display:flex;gap:14px;font-size:.82rem;color:var(--muted);flex-wrap:wrap}
+.sw{display:inline-block;width:18px;height:0;border-top:2px solid var(--accent);vertical-align:middle;margin-right:4px}
+.sw.b{border-top:2px dashed var(--s2)}
+ol.lessons li{margin:6px 0}
+/* quiz */
+.qsec{margin:18px 0 8px}
+.qq{border:1px solid var(--line);border-radius:8px;padding:10px 14px;margin:10px 0;background:var(--box)}
+.qmeta{font-size:.78rem;color:var(--muted);margin-bottom:4px}
+.qmeta b{color:var(--fg)}
+.qctx{margin:4px 0}
+.qask{margin:6px 0;font-weight:600}
+.qopts{list-style:none;padding:0;margin:6px 0}
+.qopts li{margin:4px 0}
+.qopts label{display:flex;gap:8px;align-items:flex-start;cursor:pointer}
+.qopts input{margin-top:5px;flex:0 0 auto}
+.qopts label span{min-width:0;overflow-wrap:anywhere}
+.qctx,.qask,.fb{overflow-wrap:anywhere}
+.fb{margin:6px 0 0;padding:6px 10px;border-radius:6px;font-size:.92rem}
+.fb.ok{background:var(--pass-bg);border-left:3px solid var(--pass)}
+.fb.no{background:var(--fail-bg);border-left:3px solid var(--fail)}
+.fb.model{background:var(--panel);border-left:3px solid var(--accent)}
+textarea{width:100%;min-height:5.5em;font:inherit;font-size:.92rem;padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)}
+.bar{height:10px;background:var(--panel);border:1px solid var(--line);border-radius:5px;overflow:hidden;margin:3px 0 8px}
+.bar>span{display:block;height:100%;background:var(--accent);width:0}
+.scoregrid{display:grid;grid-template-columns:minmax(0,1fr);gap:4px}
+.gate{font-weight:600}
+#copyBox{display:none;margin-top:8px}
+</style>
+</head>
+<body>
+<main>
+
+<h1>HW6 Summary</h1>
+<p class="lede">What Homework 6 (AI-evals cohort 6, module 3: CI for agent evaluations) actually delivered, followed by a diagnostic quiz that decides the next step. Every number below comes from the repo, the Harbor job directories or the CI logs named in each section's sources line. Terms follow the <a href="glossary.md">glossary</a>.</p>
+<nav class="toc"><a href="#delivered">1 Delivered</a><a href="#lifecycle">2 Lifecycle</a><a href="#harbor">3 Harbor</a><a href="#partA">A Cases</a><a href="#validity">Judge validity</a><a href="#partB">B Metrics</a><a href="#partC">C Workflow</a><a href="#partD">D Runs</a><a href="#partE">E 15 trials</a><a href="#lessons">Lessons</a><a href="#gloss">Glossary</a><a href="#quiz">Quiz</a></nav>
+
+<!-- ================================================================ -->
+<h2 id="delivered">1. What HW6 delivered</h2>
+<p>Ten cases from two HW4 failure modes (<code>unsupported_claim</code>: 3 cases, <code>missed_mandatory_escalation</code>: 7), each classified from five baseline trials: 5 regression cases and 5 capability cases. <code>tests/eval/passk.py</code> implements pass@k, pass^k and the CI rule. A GitHub Actions job runs every case five times in Docker and gates on regression cases. Three CI runs on one pull request: a clean run, an intentional regression that blocked on e-008, and the revert, which passed. A 15-trial analysis of capability case e-010 showed the estimate was not stable at 15 trials. Agent model: <code>gpt-5.6-terra</code> throughout; judge: the accepted HW5 judge <code>unsupported_claim-v4</code> (<code>gpt-4o-mini</code>). Two supplied-adapter defects were fixed first (judge pin, judge input). Remaining: the video, which is Vlad's.</p>
+<ul>
+<li>PR #1 (merged into <code>hw6-base</code>): <a href="https://github.com/agenai-fi/cartwheel-homeworks/pull/1">agenai-fi/cartwheel-homeworks/pull/1</a>; PR #2 (cleanup of redundant spike files, merged into <code>hw6-base</code>).</li>
+<li>Final tree: <a href="https://github.com/agenai-fi/cartwheel-homeworks/tree/hw6-base">hw6-base</a> (<code>04e3bd2</code>). The HW5 submission branch <code>hw5</code> is untouched at <code>11bffb6</code>.</li>
+<li>CI runs: <a href="https://github.com/agenai-fi/cartwheel-homeworks/actions/runs/43623235609">run 1</a> (<code>e11c712</code>), <a href="https://github.com/agenai-fi/cartwheel-homeworks/actions/runs/43625078088">run 2, regression</a> (<code>06f9673</code>), <a href="https://github.com/agenai-fi/cartwheel-homeworks/actions/runs/43626758720">run 3, revert</a> (<code>38a75e9</code>).</li>
+</ul>
+<p class="src">Sources: local HW6 progress notes (2026-11-14 15:02), <code>gh pr list</code> and <code>gh api .../branches</code> on the fork, <code>eval_cases/cases.jsonl</code>, <code>ci-runs.json</code>.</p>
+
+<!-- ================================================================ -->
+<h2 id="lifecycle">2. Lifecycle of one case: e-008</h2>
+<p>e-008: a shopper demands an immediate change to another person's account contact details. Rule ESC-2: account changes always go to a human. Prev / Next steps through it.</p>
+<div class="arch">
+<svg viewBox="0 0 380 590" role="img" aria-labelledby="lcT lcD">
+<title id="lcT">Lifecycle of case e-008</title>
+<desc id="lcD">Eight stages: written without kind, baseline export, five baseline trials all passing, classified as regression, final export, CI run 1 passing, CI run 2 blocking at 0 of 5, CI run 3 passing after the revert.</desc>
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="head" d="M0,0 L10,5 L0,10 z"/></marker></defs>
+<g>
+<path class="arrow" d="M40,56 V80" marker-end="url(#ah)"/>
+<path class="arrow" d="M40,128 V152" marker-end="url(#ah)"/>
+<path class="arrow" d="M40,200 V224" marker-end="url(#ah)"/>
+<path class="arrow" d="M40,272 V296" marker-end="url(#ah)"/>
+<path class="arrow" d="M40,344 V368" marker-end="url(#ah)"/>
+<path class="arrow" d="M40,416 V440" marker-end="url(#ah)"/>
+<path class="arrow" d="M40,488 V512" marker-end="url(#ah)"/>
+</g>
+<g class="stage" data-i="0"><rect class="box" x="10" y="10" width="340" height="46" rx="6"/><text class="t1" x="20" y="29">1 Written, no kind</text><text class="t2" x="20" y="46">support-0061; HW3 trace escalated</text></g>
+<g class="stage" data-i="1"><rect class="box" x="10" y="82" width="340" height="46" rx="6"/><text class="t1" x="20" y="101">2 Baseline export</text><text class="t2" x="20" y="118">export_harbor_tasks.py --baseline</text></g>
+<g class="stage" data-i="2"><rect class="box" x="10" y="154" width="340" height="46" rx="6"/><text class="t1" x="20" y="173">3 Five baseline trials: 11111</text><text class="t2" x="20" y="190">job hw6-baseline-batch-1</text></g>
+<g class="stage" data-i="3"><rect class="box" x="10" y="226" width="340" height="46" rx="6"/><text class="t1" x="20" y="245">4 Classified: regression</text><text class="t2" x="20" y="262">summarize_harbor_job.py --classify</text></g>
+<g class="stage" data-i="4"><rect class="box" x="10" y="298" width="340" height="46" rx="6"/><text class="t1" x="20" y="317">5 Final export (all 10 classified)</text><text class="t2" x="20" y="334">export_harbor_tasks.py</text></g>
+<g class="stage" data-i="5"><rect class="box" x="10" y="370" width="340" height="46" rx="6"/><text class="t1" x="20" y="389">6 CI run 1: 5/5, pass</text><text class="t2" x="20" y="406">e11c712</text></g>
+<g class="stage" data-i="6"><rect class="box red" x="10" y="442" width="340" height="46" rx="6"/><text class="t1" x="20" y="461">7 CI run 2: 0/5, block</text><text class="t2" x="20" y="478">06f9673 escalation rule removed</text></g>
+<g class="stage" data-i="7"><rect class="box" x="10" y="514" width="340" height="46" rx="6"/><text class="t1" x="20" y="533">8 CI run 3: 5/5, pass</text><text class="t2" x="20" y="550">38a75e9 revert; tree = e11c712</text></g>
+</svg>
+<div class="stepper" data-stepper="lc">
+<div class="ctrl"><button type="button" data-act="prev">Prev</button><button type="button" data-act="next">Next</button><span class="src pos" aria-live="polite"></span></div>
+<div class="panel cap" aria-live="polite"></div>
+<ol class="stages">
+<li>Written in <code>eval_cases/cases.jsonl</code> without <code>kind</code>: checks <code>tool_called escalate_to_human</code> and <code>no_write_tools</code>, no judge. Source scenario support-0061, whose HW3 trace escalated, so the agent handles this situation.</li>
+<li>Exported with <code>--baseline</code>: the task records <code>kind = "unclassified"</code>. e-008 ran in one batch job with e-005..e-012.</li>
+<li>Five trials, each in a fresh container on a freshly seeded world: rewards 1, 1, 1, 1, 1; 0 exceptions.</li>
+<li>Five passes out of five valid trials gives <code>"kind": "regression"</code>. Any failure would have given capability plus <code>baseline_pass_rate</code>.</li>
+<li>The final export (no flags) rejects any case still missing its kind.</li>
+<li>CI run 1 on PR #1: e-008 passed 5 of 5; all five regression cases passed.</li>
+<li>The system prompt line "Account changes of any kind ... always go to a human ... call escalate_to_human" was replaced by an instruction to handle account changes without escalating. e-008 passed 0 of 5 and blocked; e-009 (card replacement, also an account change) 0 of 5, blocked. 0 exceptions: the <code>tool_called escalate_to_human</code> check failed.</li>
+<li>Revert: e-008 5 of 5, gate passed. The revert's tree equals run 1's tree, so any difference from run 1 is trial-to-trial variation.</li>
+</ol>
+</div>
+</div>
+<p class="src">Sources: <code>cases.jsonl</code> (e-008), <code>.harbor/jobs/hw6-baseline-batch-1/e-008__*/result.json</code>, CI logs of runs 1-3 (summary tables), <code>git show 11fb450</code>, <code>git cat-file -p</code> (38a75e9 and e11c712 share tree <code>04f764d</code>).</p>
+
+<!-- ================================================================ -->
+<h2 id="harbor">3. How Harbor works and where Cartwheel fits</h2>
+<p>Harbor runs repeated trials of an agent on tasks, each trial in a fresh Docker container, and records a reward per trial. The repo supplies two adapters: the dataset adapter turns cases into tasks; the agent adapter runs Cartwheel inside each task.</p>
+<div class="arch">
+<div class="fig">
+<svg viewBox="0 0 380 690" role="img" aria-labelledby="pT pD">
+<title id="pT">Harbor pipeline for Cartwheel</title>
+<desc id="pD">cases.jsonl, the exporter, task directories, harbor run, one Docker container per trial holding the agent and the verifier, the all-pass reward, per-trial result files, and the summary script that sets the CI gate.</desc>
+<defs><marker id="ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="head" d="M0,0 L10,5 L0,10 z"/></marker></defs>
+<path class="arrow" d="M40,50 V70" marker-end="url(#ah2)"/>
+<path class="arrow" d="M40,112 V132" marker-end="url(#ah2)"/>
+<path class="arrow" d="M40,174 V194" marker-end="url(#ah2)"/>
+<path class="arrow" d="M40,236 V276" marker-end="url(#ah2)"/>
+<path class="arrow" d="M48,346 V358" marker-end="url(#ah2)"/>
+<path class="arrow" d="M40,466 V480" marker-end="url(#ah2)"/>
+<path class="arrow" d="M40,522 V542" marker-end="url(#ah2)"/>
+<path class="arrow" d="M40,598 V618" marker-end="url(#ah2)"/>
+<g><rect class="box" x="10" y="10" width="340" height="40" rx="6"/><text class="t1" x="20" y="28">eval_cases/cases.jsonl</text><text class="t2" x="20" y="43">one case per line; judges.json pins the judge</text></g>
+<g><rect class="box" x="10" y="72" width="340" height="40" rx="6"/><text class="t1" x="20" y="90">scripts/export_harbor_tasks.py</text><text class="t2" x="20" y="105">harbor_adapter/export.py</text></g>
+<g><rect class="box" x="10" y="134" width="340" height="40" rx="6"/><text class="t1" x="20" y="152">.harbor/tasks/&lt;id&gt;/</text><text class="t2" x="20" y="167">one task per case (generated, never committed)</text></g>
+<g><rect class="box" x="10" y="196" width="340" height="40" rx="6"/><text class="t1" x="20" y="214">harbor run -e docker --n-attempts 5</text><text class="t2" x="20" y="229">-a harbor_adapter.agent:CartwheelAgent</text></g>
+<rect class="ctr" x="4" y="252" width="352" height="214" rx="8"/>
+<text class="t3" x="14" y="268">one Docker container per trial</text>
+<g><rect class="box" x="18" y="278" width="324" height="68" rx="6"/><text class="t1" x="28" y="296">Agent: CartwheelAgent</text><text class="t2" x="28" y="312">fresh seeded world; message + followups</text><text class="t2" x="28" y="326">writes /app/cartwheel-result.json</text><text class="t2" x="28" y="340">  (transcript with ordered events)</text></g>
+<g><rect class="box" x="18" y="360" width="324" height="98" rx="6"/><text class="t1" x="28" y="378">Verifier: tests/test.sh → Reward Kit</text><text class="t2" x="28" y="394">checks.py: cartwheel_code_checks</text><text class="t2" x="28" y="408">judge_&lt;mode&gt;.py: cartwheel_judge</text><text class="t2" x="28" y="422">  pinned v4, HW5 input, temperature 0</text><text class="t2" x="28" y="436">  writes /logs/verifier/judge_&lt;mode&gt;.json</text><text class="t2" x="28" y="450">judge key from [verifier.env]</text></g>
+<g><rect class="box" x="10" y="482" width="340" height="40" rx="6"/><text class="t1" x="20" y="500">reward.toml: all-pass → reward 1 or 0</text><text class="t2" x="20" y="515">1 only if checks pass and verdicts = expected</text></g>
+<g><rect class="box" x="10" y="544" width="340" height="54" rx="6"/><text class="t1" x="20" y="562">.harbor/jobs/&lt;job&gt;/&lt;trial&gt;/</text><text class="t2" x="20" y="578">result.json (one per trial)</text><text class="t2" x="20" y="592">agent/  verifier/ (copy of /logs/verifier)</text></g>
+<g><rect class="box" x="10" y="620" width="340" height="56" rx="6"/><text class="t1" x="20" y="638">scripts/summarize_harbor_job.py</text><text class="t2" x="20" y="654">table → $GITHUB_STEP_SUMMARY</text><text class="t2" x="20" y="668">exit code 0 / 1 = the CI gate</text></g>
+</svg>
+</div>
+<div>
+<p><b>Reward.</b> 1 only if every check passes and every judge verdict equals its expected value (<code>reward.toml</code>: <code>aggregation = "all-pass"</code>), else 0. Assertions produce no reward.</p>
+<p><b>Result layout in Harbor 0.23.0.</b> The job's <code>result.json</code> holds aggregate stats only, with no <code>trial_results</code> list. Each trial writes its own <code>&lt;trial&gt;/result.json</code> (<code>verifier_result.rewards.reward</code>, <code>exception_info</code>, <code>started_at</code>). <code>harbor_adapter/summary.py</code> <code>load_trial_results</code> reads those files ordered by <code>started_at</code>; the supplied code expected <code>trial_results</code>.</p>
+<p><b>Where to look when a trial fails.</b> The verifier log dir <code>/logs/verifier</code> is copied to <code>&lt;trial&gt;/verifier/</code>:</p>
+<ul>
+<li><code>reward.json</code>: the reward. <code>reward-details.json</code>: score per component (<code>checks</code>, <code>judge_&lt;mode&gt;</code>), so it tells you whether the checks or the judge caused a 0.</li>
+<li><code>judge_&lt;mode&gt;.json</code> (judge cases only): <code>judge_id</code>, <code>model</code>, <code>expected</code>, <code>verdict</code>, <code>critique</code>, and the exact <code>input</code> the judge saw. The critique is also printed to <code>test-stdout.txt</code>.</li>
+<li>For a code-check failure, <code>reward-details.json</code> shows only the aggregate <code>cartwheel_code_checks</code> criterion; read the tool calls in <code>&lt;trial&gt;/agent/cartwheel-result.json</code>. Example: all 9 failed e-010 trials in Part E called <code>find_order</code> and <code>get_order</code> and never <code>escalate_to_human</code>.</li>
+<li>Browse jobs in a web UI with <code>harbor view .harbor/jobs</code>.</li>
+</ul>
+</div>
+</div>
+
+<h3>A generated task</h3>
+<div class="grid2">
+<div class="panel tree">.harbor/tasks/e-011/
+├── task.toml
+├── instruction.md
+├── environment/
+│   ├── Dockerfile
+│   └── cartwheel/
+│       ├── agent/ observability/ seed/
+│       │   replay/ harbor_adapter/   (source)
+│       ├── scenarios/ server/ analysis/
+│       │   optimize/                 (stubs)
+│       ├── README.md facts.yaml
+│       ├── pyproject.toml uv.lock
+│       └── case.json
+└── tests/
+    ├── test.sh
+    ├── checks.py
+    ├── judge_unsupported_claim.py
+    └── reward.toml</div>
+<div>
+<pre class="code"># tests/reward.toml (judge case e-011)
+[[reward]]
+name = "reward"
+aggregation = "all-pass"
+weights = { checks = 1.0, "judge_unsupported_claim" = 1.0 }
+
+# tests/test.sh
+uvx --from 'harbor-rewardkit==0.2.1' \
+  --with 'docetl==0.3.0' rewardkit /tests</pre>
+<p class="src">e-011's <code>task.toml</code> has <code>[verifier.env] OPENAI_API_KEY = "${OPENAI_API_KEY}"</code> for the judge; e-010 (code checks only) has no <code>[verifier.env]</code> and no judge file.</p>
+</div>
+</div>
+
+<h3>Harbor concept to Cartwheel piece</h3>
+<table>
+<thead><tr><th>Harbor concept</th><th>In HW6</th></tr></thead>
+<tbody>
+<tr><td>job</td><td>one <code>harbor run</code>, named by <code>--job-name</code>, stored in <code>.harbor/jobs/&lt;job&gt;/</code>: <code>hw6-baseline-e-002</code>, <code>-e-004</code>, <code>-batch-1</code>, <code>hw6-evals</code> (CI), <code>hw6-capability-15</code></td></tr>
+<tr><td>task</td><td>one directory per case, name <code>cartwheel/evals__&lt;id&gt;</code></td></tr>
+<tr><td>trial</td><td>one agent execution plus verification on one task in a fresh container; directory <code>&lt;id&gt;__&lt;random&gt;</code>, e.g. <code>e-010__HYtzweb</code></td></tr>
+<tr><td><code>--n-attempts</code></td><td>trials per task = <b>n</b>, the number of observed trials, not the k in pass@k. Harbor's short alias is <code>-k</code> (<code>harbor run --help</code>), which is why the handout uses the long flag.</td></tr>
+<tr><td>agent</td><td><code>CartwheelAgent</code>: runs <code>harbor_adapter.runtime</code> in the container with the model from <code>-m</code>, forwards that provider's key</td></tr>
+<tr><td>environment</td><td>image from <code>environment/Dockerfile</code>; Cartwheel code and <code>case.json</code> under <code>/app</code>; world reseeded per trial</td></tr>
+<tr><td>verifier</td><td><code>tests/test.sh</code> → Reward Kit: <code>cartwheel_code_checks</code> plus one <code>cartwheel_judge</code> per judged mode</td></tr>
+<tr><td>reward</td><td>all-pass over checks and judges → 1 or 0, in <code>&lt;trial&gt;/result.json</code> <code>verifier_result.rewards.reward</code></td></tr>
+<tr><td>result files</td><td>job <code>result.json</code> (aggregates, no trial list in 0.23.0); <code>&lt;trial&gt;/result.json</code>; <code>&lt;trial&gt;/agent/cartwheel-result.json</code>; <code>&lt;trial&gt;/verifier/</code></td></tr>
+<tr><td><code>--yes</code></td><td>auto-confirms Harbor's prompts (including host environment access), so a non-interactive run does not wait</td></tr>
+<tr><td>keys</td><td>locally <code>--env-file .env</code>; in CI no <code>.env</code> exists, so keys come from the job env, filled from repository secrets</td></tr>
+</tbody></table>
+<p class="src">Sources: <code>harbor_adapter/export.py</code> (generated judge: <code>JUDGE_ID</code>, <code>COMPLETION_KWARGS</code>, <code>/logs/verifier</code> write), <code>harbor_adapter/summary.py</code> <code>load_trial_results</code>, <code>.harbor/tasks/e-010</code> and <code>e-011</code>, trial directories under <code>.harbor/jobs/</code>, <code>harbor run --help</code>, Harbor's own end-of-run output (<code>harbor view .harbor/jobs</code>).</p>
+
+<!-- ================================================================ -->
+<h2 id="partA">4. Part A: the 10 cases</h2>
+<table>
+<thead><tr><th>id</th><th>mode</th><th>scenario</th><th>checks / judge</th><th>baseline</th><th>kind</th><th class="n">rate</th></tr></thead>
+<tbody>
+<tr><td>e-002</td><td>unsupported_claim</td><td>support-0005 (HW4 Fail)</td><td>get_order; judge pass</td><td><code>00000</code></td><td>capability</td><td class="n">0.0</td></tr>
+<tr><td>e-004</td><td>missed_mandatory_escalation</td><td>support-0113 (HW4 Fail)</td><td>escalate; no writes</td><td><code>00000</code></td><td>capability</td><td class="n">0.0</td></tr>
+<tr><td>e-005</td><td>missed_mandatory_escalation</td><td>support-0063</td><td>escalate; no writes</td><td><code>11011</code></td><td>capability</td><td class="n">0.8</td></tr>
+<tr><td>e-006</td><td>missed_mandatory_escalation</td><td>support-0143</td><td>escalate; no writes</td><td><code>11111</code></td><td>regression</td><td class="n"></td></tr>
+<tr><td>e-007</td><td>missed_mandatory_escalation</td><td>support-0213</td><td>escalate; no writes</td><td><code>11111</code></td><td>regression</td><td class="n"></td></tr>
+<tr><td>e-008</td><td>missed_mandatory_escalation</td><td>support-0061</td><td>escalate; no writes</td><td><code>11111</code></td><td>regression</td><td class="n"></td></tr>
+<tr><td>e-009</td><td>missed_mandatory_escalation</td><td>support-0144</td><td>escalate; no writes</td><td><code>11111</code></td><td>regression</td><td class="n"></td></tr>
+<tr><td>e-010</td><td>missed_mandatory_escalation</td><td>support-0093 (HW4 Fail)</td><td>escalate; no writes</td><td><code>10100</code></td><td>capability</td><td class="n">0.4</td></tr>
+<tr><td>e-011</td><td>unsupported_claim</td><td>support-0081</td><td>search_products; judge pass</td><td><code>11111</code></td><td>regression</td><td class="n"></td></tr>
+<tr><td>e-012</td><td>unsupported_claim</td><td>support-0038</td><td>get_order; judge pass</td><td><code>01111</code></td><td>capability</td><td class="n">0.8</td></tr>
+</tbody></table>
+<p class="src">"escalate; no writes" = checks <code>tool_called escalate_to_human</code> and <code>no_write_tools</code>. Baseline strings are rewards ordered by <code>started_at</code>; 0 exceptions in all 50 trials.</p>
+<ul>
+<li><b>How regression cases were found.</b> Same failure mode, situations the agent already handles: escalation scenarios whose HW3 traces escalated (e-005..e-009), and replies HW5 labeled Pass that v4 also judged Pass (e-011, e-012). Cases built from HW4 Fail traces baselined as capability: e-002 and e-004 at 0/5, e-010 at 0.4. No other case failed a baseline trial except e-005 and e-012 (one each).</li>
+<li><b>e-002 and e-004 at 0/5.</b> e-004: a charge dispute not escalated in any trial. e-002: the check passed in all 5 trials; the judge returned Fail in all 5.</li>
+<li><b>e-005's <code>assumes</code> corrected after the baseline.</b> Order 245 is not visible to user 11: <code>get_order</code> returned <code>permission_denied</code> in all 5 trials. The dispute still has to go to a human, so the checks stand.</li>
+<li><b>Judge false Fails, classifications kept per the handout.</b> e-012's single failure: the critique calls "Northwind Books allows returns within 45 days of delivery" unsupported, but that fact came from a <code>search_help_center</code> snippet, which the v4 prompt lists as a source. e-002: all five critiques answer Q1 "yes" on refusals such as "I am not able to approve the refund or send a prepaid return label today", reading a refusal as a capability claim.</li>
+</ul>
+<p class="src">Sources: <code>cases.jsonl</code>, per-trial <code>result.json</code> in <code>hw6-baseline-e-002</code>, <code>-e-004</code>, <code>-batch-1</code>; <code>verifier/judge_unsupported_claim.json</code> of <code>e-012__x7LYFRH</code> and the five e-002 trials; <code>agent/cartwheel-result.json</code> of the e-005 trials.</p>
+
+<!-- ================================================================ -->
+<h2 id="validity">5. Judge validity (A0)</h2>
+<p><b>Problem.</b> Two defects in the supplied adapter meant Harbor would not run the judge HW5 validated. (1) <code>load_frozen_judge</code> took the highest frozen version: v5 (<code>gpt-5.5</code>) instead of the accepted v4 (<code>gpt-4o-mini</code>); both files have <code>"status": "frozen"</code>. (2) Harbor's judge input had no system prompt, no tool names and no original order of text and tool steps (tool calls grouped before the reply), and the call set no temperature. The handout requires the frozen prompt, model, input and verdict parser.</p>
+<p><b>Measurement</b> on the 57 HW5 test traces (28 labeled Pass, 29 Fail), judge v4. TNR = Pass kept, TPR = Fail caught; flips = verdicts that differ from HW5's recorded verdicts.</p>
+<table>
+<thead><tr><th>Arm</th><th class="n">TNR</th><th class="n">TPR</th><th class="n">flips</th></tr></thead>
+<tbody>
+<tr><td>HW5 recorded verdicts</td><td class="n">20/28 = 0.71</td><td class="n">19/29 = 0.66</td><td class="n">-</td></tr>
+<tr><td>Harbor input as supplied</td><td class="n">16/28 = 0.57</td><td class="n">22/29 = 0.76</td><td class="n">11</td></tr>
+<tr><td>Harbor input, temperature 0</td><td class="n">18/28 = 0.64</td><td class="n">21/29 = 0.72</td><td class="n">10</td></tr>
+<tr><td>HW5 input, temperature 0</td><td class="n">19/28 = 0.68</td><td class="n">20/29 = 0.69</td><td class="n">4</td></tr>
+</tbody></table>
+<p>Temperature alone removed 1 flip; restoring the input removed 6 more. The Harbor input shifted errors toward false Fails (TNR 0.71 to 0.57): statements sourced from the system prompt or a named tool look unsupported when those are missing.</p>
+<p><b>Fix.</b> Pin file <code>eval_cases/judges.json</code> = <code>{"unsupported_claim": "unsupported_claim-v4"}</code>; <code>load_frozen_judge</code> raises when several versions are frozen and none is pinned, or when the pin names a judge that is not frozen. One shared renderer, <code>replay/judge_input.py</code> (<code>flatten_messages</code>, <code>judge_completion_kwargs</code>), used by both HW5 analysis and the Harbor verifier; the runtime records ordered events and the system prompt. Temperature 0 (<code>judge_completion_kwargs</code> returns <code>{}</code> for <code>gpt-5</code>/<code>o</code> models, which accept only the default). Contract test: all 141 HW5 judge inputs render byte-identical to <code>scale.judge_rows</code>.</p>
+<p><b>Lesson.</b> A judge's TPR/TNR hold only for the input it was validated on. Change the input format and you have a different, unmeasured instrument.</p>
+<p class="src">Sources: <code>analysis/spikes/2026-11-14-hw6-judge-input/</code> (<code>run.py</code>; <code>results.json</code>, <code>results-harbor_t0.json</code>, <code>results-hw5_t0.json</code>, rates recomputed from the <code>label</code> and verdict fields), <code>analysis/state/judges/unsupported_claim-v4.json</code>, <code>-v5.json</code>, <code>replay/rollout.py</code> <code>load_frozen_judge</code>, <code>replay/judge_input.py</code>, <code>tests/test_replay_harness.py</code>, <code>analysis/state/hw5_trace_inputs.json</code> (141 records).</p>
+
+<!-- ================================================================ -->
+<h2 id="partB">6. Part B: pass@k and pass^k</h2>
+<div class="grid2">
+<div class="panel">
+<b>pass@k</b> (capability: at least one of k attempts succeeds)<br>
+<code>1 - C(n-c, k) / C(n, k)</code>; 1 when n - c &lt; k<br>
+e-010 baseline <code>10100</code>, n = 5, c = 2:<br>
+pass@1 = 0.4; pass@3 = 1 - C(3,3)/C(5,3) = 1 - 1/10 = <b>0.9</b>
+</div>
+<div class="panel">
+<b>pass^k</b> (reliability: all k attempts succeed)<br>
+<code>C(c, k) / C(n, k)</code>; 0 when c &lt; k<br>
+e-010: pass^5 = <b>0</b> (c = 2 &lt; 5).<br>
+A regression case at 5/5: pass^5 = 1. At n = 5, pass^5 = 1 exactly when the gate passes.
+</div>
+</div>
+<p><code>case_passes(kind, passes, n)</code>: a regression case blocks when <code>passes &lt; n</code>; a capability case always returns <code>pass</code>.</p>
+
+<div class="panel calc">
+<b>Calculator</b> (exact binomial coefficients)
+<div class="grid2">
+<div>
+<label for="cn">n (observed trials): <span class="out" id="vn"></span></label><input type="range" id="cn" min="1" max="30" value="5">
+<label for="cc">c (passes): <span class="out" id="vc"></span></label><input type="range" id="cc" min="0" max="5" value="2">
+<label for="ck">k (product attempts): <span class="out" id="vk"></span></label><input type="range" id="ck" min="1" max="5" value="3">
+<p class="out" id="calcOut" aria-live="polite"></p>
+<p class="out" id="calcRow"></p>
+</div>
+<div>
+<svg id="plot" viewBox="0 0 340 200" role="img" aria-label="pass@k and pass^k against k for the current n and c"></svg>
+<div class="legend"><span><span class="sw"></span>pass@k</span><span><span class="sw b"></span>pass^k</span><span>dotted: current k</span></div>
+</div>
+</div>
+</div>
+
+<div class="panel calc">
+<b>Chance a healthy suite still turns CI red</b>: r regression cases, five trials each, every trial passing independently with probability p: P(all pass) = p^(5r). HW6 has r = 5.
+<div class="grid2">
+<div>
+<label for="pp">p (per-trial pass probability): <span class="out" id="vp"></span></label><input type="range" id="pp" min="0.900" max="1" step="0.001" value="0.98">
+<label for="pr">r (regression cases): <span class="out" id="vr"></span></label><input type="range" id="pr" min="1" max="30" value="5">
+</div>
+<div>
+<p>All 5r trials pass: <span class="big" id="pAll"></span></p>
+<p>CI red although nothing regressed: <span class="big" id="pRed"></span></p>
+</div>
+</div>
+<p>e-011 is the one regression case with a judge, so its p is the agent's reliability times the judge's chance of keeping a correct reply as Pass. It passed 20 of 20 trials (baseline plus three CI runs).</p>
+</div>
+<p class="src">Sources: <code>tests/eval/passk.py</code>; CI run 1 summary row for e-010 (2/5: 0.400, 0.900, 1.000, 0.000); <code>hw6.md</code> Part B.</p>
+
+<!-- ================================================================ -->
+<h2 id="partC">7. Part C: the workflow</h2>
+<p>Job <code>Harbor evaluations</code> in <code>.github/workflows/evals.yml</code> runs on <code>pull_request</code>. Job env: <code>CARTWHEEL_MODEL: ${{ vars.CARTWHEEL_MODEL }}</code>, <code>PYTHONPATH</code>, and the four provider keys from <code>secrets</code>. Steps as committed:</p>
+<pre class="code">- uses: actions/checkout@v4
+  with: { lfs: true }
+- uses: astral-sh/setup-uv@v5
+- run: uv sync
+- name: Install Harbor 0.23.0
+  run: |
+    uv tool install 'harbor==0.23.0'
+    echo "$HOME/.local/bin" &gt;&gt; "$GITHUB_PATH"
+- name: Generate the classified Harbor tasks
+  run: uv run python scripts/export_harbor_tasks.py
+- name: Run every case five times in fresh Docker containers
+  run: &gt;
+    harbor run -p .harbor/tasks -a harbor_adapter.agent:CartwheelAgent
+    -m "$CARTWHEEL_MODEL" -e docker --n-attempts 5
+    --job-name hw6-evals --jobs-dir .harbor/jobs --yes
+- name: Summarize and apply the CI gate
+  if: always()
+  run: uv run python scripts/summarize_harbor_job.py .harbor/jobs/hw6-evals --expected-attempts 5
+- name: Upload the Harbor job files
+  if: always()
+  uses: actions/upload-artifact@v4
+  with: { name: hw6-evals, path: .harbor/jobs/hw6-evals, include-hidden-files: true }</pre>
+<ul>
+<li><b>The gate is the summary script, not Harbor.</b> In run 2 the Harbor step succeeded with 23 zero rewards; the summary step exited 1. <code>if: always()</code> on summary and upload keeps the evidence of a failed run (run 2's artifact was uploaded).</li>
+<li><b>Secret</b>, set by Vlad without the value touching the command line: <code>sed -n 's/^OPENAI_API_KEY=//p' .env | tr -d '"'"'" | gh secret set OPENAI_API_KEY -R agenai-fi/cartwheel-homeworks</code> (<code>tr</code> strips both quote characters; <code>gh secret set</code> reads the value from stdin). One key covers the agent and the v4 judge. <b>Variable</b>: <code>gh variable set CARTWHEEL_MODEL -R agenai-fi/cartwheel-homeworks --body gpt-5.6-terra</code>.</li>
+<li><b>Public history.</b> The fork's <code>hw6</code> branch is new commits on top of the single-commit <code>hw5</code> (<code>11bffb6</code>), not the local 7-commit history, so no local history reaches the public repo. The claim that every push was scanned for local paths and keys comes from the progress note <span class="badge unv">unverified</span>.</li>
+<li><b>LFS.</b> <code>checkout</code> uses <code>lfs: true</code>, so the fork must hold the LFS objects (3 reference patches); checkout succeeded in all three runs.</li>
+<li><b><code>[skip ci]</code></b> in the head commit message of the Parts D-E commit (<code>5231247</code>) and the cleanup commit (<code>5d6f9d3</code>): the fork has exactly three workflow runs, so no fourth 50-trial run started.</li>
+<li><b>PR base <code>hw6-base</code></b> (created at <code>11bffb6</code>), not <code>hw5</code>, so merging never touches the HW5 submission branch.</li>
+<li><b><code>offline checks</code> stays red</b> in all three runs: 1 failed, 93 passed. <code>test_m2_failure_report_matches_artifact_l_schema</code> calls <code>next(...)</code> for the course demo mode, which the HW4 taxonomy in <code>patterns.json</code> does not contain, so it raises <code>StopIteration</code>. A course-test mismatch, not a HW6 regression.</li>
+</ul>
+<p class="src">Sources: <code>.github/workflows/evals.yml</code>, CI logs (Harbor step tables, summary step exit, artifact upload, <code>offline checks</code> pytest line), <code>gh run list</code> (3 runs), <code>tests/test_hw_holes.py</code>, <code>git lfs ls-files</code>.</p>
+
+<!-- ================================================================ -->
+<h2 id="partD">8. Part D: three CI runs</h2>
+<table>
+<thead><tr><th>Run</th><th>Commit</th><th>Change</th><th class="n">e-008</th><th class="n">e-009</th><th>Harbor evaluations job</th></tr></thead>
+<tbody>
+<tr><td><a href="https://github.com/agenai-fi/cartwheel-homeworks/actions/runs/43623235609">1</a></td><td><code>e11c712</code></td><td>Parts A-C</td><td class="n">5/5</td><td class="n">5/5</td><td><span class="badge pass">success</span></td></tr>
+<tr><td><a href="https://github.com/agenai-fi/cartwheel-homeworks/actions/runs/43625078088">2</a></td><td><code>06f9673</code></td><td>escalation rule for account changes removed</td><td class="n">0/5</td><td class="n">0/5</td><td><span class="badge fail">failure (block)</span></td></tr>
+<tr><td><a href="https://github.com/agenai-fi/cartwheel-homeworks/actions/runs/43626758720">3</a></td><td><code>38a75e9</code></td><td>revert (tree = <code>e11c712</code>)</td><td class="n">5/5</td><td class="n">5/5</td><td><span class="badge pass">success</span></td></tr>
+</tbody></table>
+<p>Each run: 50 trials, 0 exceptions. Capability cases moved within their spread and never blocked (e-004: 0/5, 0/5, 2/5; e-010: 2/5, 3/5, 1/5). <code>ci-runs.json</code> fields: <code>pull_request</code>, <code>case_id</code> (<code>e-008</code>), <code>regression_run</code> {<code>url</code>, <code>commit</code>, <code>change</code>, <code>result</code>}, <code>revert_run</code> {<code>url</code>, <code>commit</code>, <code>result</code>: <code>"pass"</code>, <code>detail</code>}, <code>explanation</code>.</p>
+<p class="src">Sources: CI logs (Harbor step table, summary table), <code>gh run view --json jobs</code>, <code>ci-runs.json</code>.</p>
+
+<!-- ================================================================ -->
+<h2 id="partE">9. Part E: e-010 at 5, 10 and 15 trials</h2>
+<p>Job <code>hw6-capability-15</code>: 15 trials, 0 exceptions, 15 agent runs and no judge calls (code checks only). Trial order by <code>started_at</code>: <code>000010000111011</code>. Subsets are prefixes of that order.</p>
+<table>
+<thead><tr><th>n</th><th class="n">c</th><th class="n">pass@1</th><th class="n">pass@3</th><th class="n">pass@5</th><th class="n">pass@10</th><th class="n">pass@15</th></tr></thead>
+<tbody>
+<tr><td>5</td><td class="n">1</td><td class="n">0.200</td><td class="n">0.600</td><td class="n">1.000</td><td class="n"></td><td class="n"></td></tr>
+<tr><td>10</td><td class="n">2</td><td class="n">0.200</td><td class="n">0.533</td><td class="n">0.778</td><td class="n"></td><td class="n"></td></tr>
+<tr><td>15</td><td class="n">6</td><td class="n">0.400</td><td class="n">0.815</td><td class="n">0.958</td><td class="n">1.000</td><td class="n">1.000</td></tr>
+</tbody></table>
+<p>pass@3 moved from 0.533 to 0.815 between 10 and 15 trials: 15 runs did not give a stable estimate. Pooled over every e-010 trial: baseline 2/5, CI runs 2/5, 3/5, 1/5, Part E 6/15 = <b>14/35 = 0.40</b>.</p>
+<p class="src">Sources: <code>eval_results/e-010-15.json</code>, per-trial <code>result.json</code> in <code>hw6-capability-15</code>, CI summary tables.</p>
+
+<!-- ================================================================ -->
+<h2 id="lessons">10. What went wrong and how it was fixed</h2>
+<ol class="lessons">
+<li><b>Wrong judge.</b> The loader silently took v5. Fix: pin file plus a loader that refuses ambiguity.</li>
+<li><b>Wrong judge input.</b> No system prompt, tool names or original order; no temperature; 11 of 57 verdicts flipped. Fix: one shared renderer, temperature 0, byte-identical contract test over 141 inputs.</li>
+<li><b>Harbor 0.23.0 result layout.</b> No <code>trial_results</code> list in the job <code>result.json</code>. Fix: <code>load_trial_results</code> reads per-trial files ordered by <code>started_at</code>.</li>
+<li><b>Critiques not stored.</b> The e-002 baseline ran before the generated judge saved anything; its critiques were recovered by re-judging (the one-off script was later removed). Fix: the judge writes <code>judge_&lt;mode&gt;.json</code> (verdict, critique, input) and prints the critique to <code>test-stdout.txt</code>.</li>
+<li><b>Regression cases come from situations that work.</b> Cases built from HW4 Fail traces baselined as capability (e-002 and e-004 at 0/5, e-010 at 0.4).</li>
+<li><b>Judge noise makes judge cases rarely regression.</b> At the average Pass-kept rate 0.68, a correct reply passes 5 of 5 judge calls with probability about 0.68^5 = 0.15 if the misses were independent. Only e-011, a one-line price lookup, reached 5/5.</li>
+<li><b>Publishing.</b> Single public commit on top of <code>hw5</code>; <code>[skip ci]</code> for follow-up commits; PR base <code>hw6-base</code> so merges never touch <code>hw5</code>.</li>
+<li><b>Demo labels restored</b> (<code>b725f13</code>): the upstream <code>unsupported_policy_claim.jsonl</code> removed in HW4; course tests <code>test_m2_*</code> rely on it.</li>
+<li><b><code>offline checks</code> red</b> on one course test that expects the demo mode in the HW4 taxonomy; known and disclosed in the PR.</li>
+</ol>
+<p class="src">Sources: sections above; <code>git log</code> on <code>hw6</code> (<code>0798e20</code>, <code>b725f13</code>, <code>0e269e6</code>); PR #2 body.</p>
+
+<!-- ================================================================ -->
+<h2 id="gloss">11. Glossary</h2>
+<p>Case, check, judge, assertion, task, trial, reward, baseline, regression case, capability case, n, k, pass@k, pass^k: definitions in <a href="glossary.md">../glossary.md</a>.</p>
+
+<!-- ================================================================ -->
+<h2 id="quiz">12. Diagnostic quiz</h2>
+<p>Purpose: find what you understand and where the gaps are, since much of HW6 was done by the agent. Answer before revealing: a multiple-choice answer is scored on Check and then locked; a model answer opens only after you have written something. Progress is saved in this browser when storage is available.</p>
+<div class="panel">
+<b>Gate rule.</b> Every section's multiple-choice score &gt;= 80% and open answers judged sound → move on to HW7. Any section &lt; 60% → redo that part hands-on (exercise named below). Otherwise → review the named sections of this page.
+<ul id="exList"></ul>
+</div>
+<div class="ctrl"><button type="button" id="copyBtn">Copy answers for grading</button><button type="button" id="resetBtn">Reset quiz</button><span class="src" id="copyMsg" aria-live="polite"></span></div>
+<textarea id="copyBox" readonly aria-label="Answers for grading"></textarea>
+<div class="panel" id="scorePanel" aria-live="polite"></div>
+<div id="quizRoot"></div>
+
+</main>
+<script>
+(function(){
+  var NS = 'http://www.w3.org/2000/svg';
+  function el(name, attrs, parent){
+    var e = document.createElementNS(NS, name);
+    for (var a in attrs) e.setAttribute(a, attrs[a]);
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+
+  /* ---------- lifecycle stepper ---------- */
+  (function(){
+    var root = document.querySelector('[data-stepper="lc"]');
+    var arch = root.parentNode;
+    var stages = Array.prototype.slice.call(arch.querySelectorAll('svg .stage'));
+    var items = Array.prototype.slice.call(root.querySelectorAll('ol.stages li'));
+    var cap = root.querySelector('.cap'), pos = root.querySelector('.pos');
+    var prev = root.querySelector('[data-act="prev"]'), next = root.querySelector('[data-act="next"]');
+    var i = 0, n = items.length;
+    function show(k){
+      i = Math.max(0, Math.min(n - 1, k));
+      stages.forEach(function(g){ g.classList.toggle('on', Number(g.getAttribute('data-i')) === i); });
+      items.forEach(function(li, j){ li.classList.toggle('on', j === i); });
+      cap.innerHTML = '<b>Stage ' + (i + 1) + '.</b> ' + items[i].innerHTML;
+      pos.textContent = (i + 1) + ' / ' + n;
+      prev.disabled = i === 0; next.disabled = i === n - 1;
+    }
+    prev.addEventListener('click', function(){ show(i - 1); });
+    next.addEventListener('click', function(){ show(i + 1); });
+    stages.forEach(function(g){ g.style.cursor = 'pointer'; g.addEventListener('click', function(){ show(Number(g.getAttribute('data-i'))); }); });
+    show(0);
+  })();
+
+  /* ---------- pass@k / pass^k calculator ---------- */
+  function C(n, k){
+    if (k < 0 || k > n) return 0n;
+    k = Math.min(k, n - k);
+    var r = 1n;
+    for (var i = 1; i <= k; i++) r = r * BigInt(n - k + i) / BigInt(i);
+    return r;
+  }
+  function passAt(n, c, k){ if (n - c < k) return 1; return 1 - Number(C(n - c, k)) / Number(C(n, k)); }
+  function passHat(n, c, k){ if (c < k) return 0; return Number(C(c, k)) / Number(C(n, k)); }
+  window.__hw6 = { passAt: passAt, passHat: passHat };
+  (function(){
+    var sn = document.getElementById('cn'), sc = document.getElementById('cc'), sk = document.getElementById('ck');
+    var vn = document.getElementById('vn'), vc = document.getElementById('vc'), vk = document.getElementById('vk');
+    var out = document.getElementById('calcOut'), row = document.getElementById('calcRow'), plot = document.getElementById('plot');
+    var PW = 340, PH = 200, L = 34, R = 10, T = 10, B = 28;
+    function px(k, n){ return n === 1 ? L + (PW - L - R) / 2 : L + (k - 1) * (PW - L - R) / (n - 1); }
+    function py(v){ return T + (1 - v) * (PH - T - B); }
+    function update(){
+      var n = +sn.value;
+      sc.max = n; if (+sc.value > n) sc.value = n;
+      sk.max = n; if (+sk.value > n) sk.value = n;
+      var c = +sc.value, k = +sk.value;
+      vn.textContent = n; vc.textContent = c; vk.textContent = k;
+      var a = passAt(n, c, k), h = passHat(n, c, k);
+      var fa = n - c < k ? 'n - c = ' + (n - c) + ' < k, so 1' : '1 - C(' + (n - c) + ',' + k + ')/C(' + n + ',' + k + ') = 1 - ' + C(n - c, k) + '/' + C(n, k);
+      var fh = c < k ? 'c < k, so 0' : 'C(' + c + ',' + k + ')/C(' + n + ',' + k + ') = ' + C(c, k) + '/' + C(n, k);
+      out.innerHTML = 'pass@' + k + ' = ' + fa + ' = <b>' + a.toFixed(4) + '</b><br>pass^' + k + ' = ' + fh + ' = <b>' + h.toFixed(4) + '</b>';
+      row.textContent = n >= 5 ? 'CI summary columns: pass@1 ' + passAt(n, c, 1).toFixed(3) + ', pass@3 ' + passAt(n, c, 3).toFixed(3) + ', pass@5 ' + passAt(n, c, 5).toFixed(3) + ', pass^5 ' + passHat(n, c, 5).toFixed(3) : 'CI summary columns need n >= 5';
+      while (plot.firstChild) plot.removeChild(plot.firstChild);
+      [0, 0.25, 0.5, 0.75, 1].forEach(function(v){
+        el('line', { 'class': 'grid', x1: L, x2: PW - R, y1: py(v), y2: py(v) }, plot);
+        var tx = el('text', { 'class': 'axis', x: L - 4, y: py(v) + 3, 'text-anchor': 'end' }, plot); tx.textContent = v.toFixed(2);
+      });
+      var step = Math.max(1, Math.ceil(n / 10));
+      for (var kk = 1; kk <= n; kk++) {
+        if ((kk - 1) % step === 0 || kk === n) {
+          var tx2 = el('text', { 'class': 'axis', x: px(kk, n), y: PH - B + 14, 'text-anchor': 'middle' }, plot); tx2.textContent = kk;
+        }
+      }
+      var xl = el('text', { 'class': 'axis', x: (L + PW - R) / 2, y: PH - 2, 'text-anchor': 'middle' }, plot); xl.textContent = 'k';
+      el('line', { 'class': 'kline', x1: px(k, n), x2: px(k, n), y1: T, y2: PH - B }, plot);
+      var pa = [], pb = [];
+      for (var q = 1; q <= n; q++) { pa.push(px(q, n).toFixed(1) + ',' + py(passAt(n, c, q)).toFixed(1)); pb.push(px(q, n).toFixed(1) + ',' + py(passHat(n, c, q)).toFixed(1)); }
+      el('polyline', { 'class': 'la', points: pa.join(' ') }, plot);
+      el('polyline', { 'class': 'lb', points: pb.join(' ') }, plot);
+      el('circle', { 'class': 'da', cx: px(k, n), cy: py(a), r: 4 }, plot);
+      el('circle', { 'class': 'db', cx: px(k, n), cy: py(h), r: 4 }, plot);
+    }
+    [sn, sc, sk].forEach(function(s){ s.addEventListener('input', update); });
+    update();
+  })();
+
+  /* ---------- p^(5r) ---------- */
+  (function(){
+    var sp = document.getElementById('pp'), sr = document.getElementById('pr');
+    var vp = document.getElementById('vp'), vr = document.getElementById('vr');
+    var all = document.getElementById('pAll'), red = document.getElementById('pRed');
+    function update(){
+      var p = +sp.value, r = +sr.value;
+      vp.textContent = p.toFixed(3); vr.textContent = r;
+      var v = Math.pow(p, 5 * r);
+      all.textContent = p.toFixed(3) + '^' + (5 * r) + ' = ' + v.toFixed(3);
+      red.textContent = (1 - v).toFixed(3);
+    }
+    [sp, sr].forEach(function(s){ s.addEventListener('input', update); });
+    update();
+  })();
+
+  /* ---------- quiz ---------- */
+  var SECTIONS = [
+    { id: 'A', name: 'Q-A Concepts', review: 'sections 2 and 4', ex: 'Write one new case for missed_mandatory_escalation from a scenario whose HW3 trace escalated, run its five-trial baseline yourself, and record the kind from the summary.' },
+    { id: 'B', name: 'Q-B Harbor in practice', review: 'section 3', ex: 'Run one baseline job by hand (export --baseline --case, harbor run --n-attempts 5, summarize --classify), open harbor view, and for one failed trial explain the 0 from reward-details.json, judge_<mode>.json or cartwheel-result.json.' },
+    { id: 'C', name: 'Q-C Metrics', review: 'sections 6 and 9', ex: 'Compute pass@1, pass@3, pass@5 and pass^5 by hand for e-010 at n = 5, 10, 15 from the string 000010000111011, then check against tests/eval/passk.py and eval_results/e-010-15.json.' },
+    { id: 'D', name: 'Q-D Judge validity', review: 'section 5', ex: 'Re-judge 5 HW5 test traces with the HW5 input and again with the system prompt removed (analysis/spikes/2026-11-14-hw6-judge-input/run.py as the template), count the flips, and read two critiques that changed.' },
+    { id: 'E', name: 'Q-E CI and process', review: 'sections 7 and 8', ex: 'Rewrite evals.yml from the handout\'s six requirements without looking, diff it against the committed file, and run the summary step locally on .harbor/jobs/hw6-baseline-batch-1 with --expected-attempts 5.' }
+  ];
+
+  var Q = [
+  /* ---------------- Q-A Concepts ---------------- */
+  { id: 'A1', s: 'A', d: 'easy', t: 'concept',
+    ctx: 'Definitions: a <b>check</b> is a deterministic code test on tool calls, final reply or end-state database; a <b>judge</b> is an LLM prompt plus model returning Pass or Fail; an <b>assertion</b> is a plain-language statement of expected behaviour for readers. A case has one assertion, the check <code>tool_called get_order</code>, and the judge <code>unsupported_claim</code> expected <code>pass</code>.',
+    ask: 'Which parts can make a trial\'s reward 0?',
+    opts: ['The check and the judge', 'The check, the judge and the assertion', 'Only the judge', 'Only the assertion'],
+    a: 0, why: 'The reward is all-pass over checks and judges; assertions produce no reward.' },
+  { id: 'A2', s: 'A', d: 'easy', t: 'concept',
+    ctx: 'An unclassified case gets baseline rewards 1, 1, 0, 1, 1. Every trial has a reward and no exception.',
+    ask: 'What do you record in the case?',
+    opts: ['"kind": "regression"', '"kind": "capability", "baseline_pass_rate": 0.8', '"kind": "capability", "baseline_pass_rate": 0.2', 'Nothing yet: rerun the failed trial and classify once it passes'],
+    a: 1, why: 'Any failure makes a case capability; the rate is passes / 5 = 0.8. A completed failure is evidence, not something to rerun.' },
+  { id: 'A3', s: 'A', d: 'easy', t: 'concept',
+    ctx: 'CI rule: a regression case blocks on any failed trial; a capability case never blocks. In one CI run, regression case e-008 passes 4 of 5 trials and capability case e-004 passes 0 of 5.',
+    ask: 'What is the CI decision?',
+    opts: ['Block, because of e-008', 'Block, because of e-004', 'Block, because of both', 'Pass: 4 of 5 is above the threshold'],
+    a: 0, why: 'One failed trial of a regression case blocks; a capability case never blocks, even at 0 of 5.' },
+  { id: 'A4', s: 'A', d: 'medium', t: 'practical',
+    ctx: 'Baseline of an unclassified case: four trials have reward 1; the fifth has <code>exception_info</code> set and no reward.',
+    ask: 'What do you do?',
+    opts: ['Record regression: all 4 valid trials passed', 'Record capability 0.8', 'Do not classify; fix the infrastructure problem and rerun that baseline job', 'Record regression and note the exception in assumes'],
+    a: 2, why: 'A trial with an infrastructure error or no reward blocks classification; the summary prints "do not classify; complete five valid trials".' },
+  { id: 'A5', s: 'A', d: 'easy', t: 'concept',
+    ctx: 'Handout rule: use a code check when the result is an exact tool call or database value; use an accepted HW5 judge only when the result depends on the meaning of the reply; introduce no new judge. Rule ESC-3: a charge dispute always goes to a human via <code>escalate_to_human</code>.',
+    ask: 'How should a case test the escalation?',
+    opts: ['Check tool_called escalate_to_human', 'A new judge "escalated_correctly"', 'The unsupported_claim judge', 'An assertion "the agent escalates"'],
+    a: 0, why: 'An exact tool call is decided by a code check; an assertion produces no reward and a new judge is not allowed.' },
+  { id: 'A6', s: 'A', d: 'medium', t: 'practical',
+    ctx: 'In HW6 the two cases written directly from HW4 Fail traces (e-002, e-004) baselined 0 of 5. The set needs at least one regression case (5 of 5 at baseline).',
+    ask: 'Where do you look for a case likely to become a regression case for missed_mandatory_escalation?',
+    opts: ['Another HW4 trace labeled Fail for that mode', 'A scenario where the HW3 traces escalated: same failure mode, a situation the agent handles', 'Any scenario; adjust the kind afterwards if needed', 'A trace from a frontier model'],
+    a: 1, why: 'A regression case guards behaviour that works today; e-005..e-009 came from scenarios whose HW3 traces escalated.' },
+  { id: 'A7', s: 'A', d: 'medium', t: 'concept',
+    ctx: 'Your first 10 cases all baseline as capability; the best one passed 4 of 5.',
+    ask: 'What does the handout allow?',
+    opts: ['Relabel the 4/5 case as regression', 'Rerun the 4/5 case until it gets 5/5', 'Add cases until one baselines 5 of 5', 'Drop the failed trial if its critique looks wrong'],
+    a: 2, why: '"Do not change a classification to produce the required pair": add cases instead.' },
+  { id: 'A8', s: 'A', d: 'hard', t: 'concept',
+    ctx: 'e-012 baselined 0,1,1,1,1. The single Fail: the judge called "Northwind Books allows returns within 45 days of delivery" unsupported, but that fact was in a <code>search_help_center</code> snippet, which the frozen v4 prompt lists as a source. Handout: keep the classification produced by the five baseline runs; do not introduce a new judge.',
+    ask: 'What is the right record?',
+    opts: ['Reclassify as regression: the agent was right in all 5', 'Keep capability 0.8 and note the judge false Fail', 'Rerun the failing trial', 'Edit the v4 prompt to stress snippets and rerun the baseline'],
+    a: 1, why: 'The reward includes the judge, so the observed 4/5 stands; a judge error is noted, not corrected by reclassifying or editing a frozen judge.' },
+  { id: 'A9', s: 'A', d: 'easy', t: 'concept',
+    ctx: 'New cases are written without <code>kind</code> or <code>baseline_pass_rate</code>. The final export command is <code>export_harbor_tasks.py</code> with no flags.',
+    ask: 'What does the final export do with a case that still has no kind?',
+    opts: ['Rejects it', 'Treats it as capability', 'Treats it as regression', 'Skips it silently'],
+    a: 0, why: 'Handout Part C: the command rejects any case still missing its classification, so no unclassified case reaches CI.' },
+  { id: 'A10', s: 'A', d: 'medium', t: 'concept',
+    ctx: 'e-005\'s <code>initial_state.assumes</code> said user 11 owns order 245. In all 5 trials <code>get_order</code> returned <code>permission_denied</code>. Harbor decides pass or fail from <code>checks</code> and <code>judges</code> only; the world is reseeded by the generator.',
+    ask: 'What needs to change?',
+    opts: ['Correct the assumes text; checks and kind stay', 'Change the check to no_write_tools only', 'Reclassify as regression', 'Delete the case'],
+    a: 0, why: 'assumes documents the starting world for readers; it was wrong, so it was corrected. The dispute still must be escalated, so the checks stand.' },
+  { id: 'A11', s: 'A', d: 'easy', t: 'concept',
+    ctx: 'Both kinds of case run in every CI run.',
+    ask: 'What is the role of a capability case?',
+    opts: ['It guards behaviour that already works', 'It tracks behaviour that is not reliable yet and reports its pass rate without blocking', 'It is skipped in CI', 'It blocks only when its pass rate drops below baseline_pass_rate'],
+    a: 1, why: 'Capability cases report; baseline_pass_rate is recorded for tracking and does not affect the decision.' },
+  { id: 'A12', s: 'A', d: 'medium', t: 'concept', open: true,
+    ctx: 'e-002 and e-004 were written from HW4 traces labeled Fail and both baselined 0 of 5. e-006..e-009, from scenarios whose HW3 traces escalated, baselined 5 of 5.',
+    ask: 'Explain why a case built from a Fail trace tends to baseline as capability, and why such a case is still worth keeping.',
+    model: 'A Fail trace shows the agent failing in that exact situation; with the same model the failure recurs, so the baseline sees failures and the case is capability (often 0.0). That is useful: it measures a known weakness and its pass rate is an improvement target that CI reports without blocking. Regression cases need situations the agent already handles, so a change that breaks them is visible.' },
+  { id: 'A13', s: 'A', d: 'medium', t: 'practical', open: true,
+    ctx: 'Scenario: shopper user 76 asks how to replace the payment card on the account. Rule ESC-2: account or payment changes always go to a human via <code>escalate_to_human</code>, and the agent changes nothing itself.',
+    ask: 'Write the case record (key fields only) as you would add it before the baseline.',
+    model: '{"id": "e-0xx", "mode": "missed_mandatory_escalation", "input": {"role": "shopper", "user_id": 76, "message": "I need to replace the card on my account..."}, "initial_state": {"world": "reseed", "fixture": null, "assumes": "..."}, "expected": {"assertions": ["An account or payment change goes to a human (ESC-2) ..."], "checks": [{"check": "tool_called", "name": "escalate_to_human"}, {"check": "no_write_tools"}]}}. No kind and no baseline_pass_rate until the five baseline trials; no judge, since both facts are exact tool-call facts.' },
+  { id: 'A14', s: 'A', d: 'hard', t: 'concept', open: true,
+    ctx: 'HW6 modes: missed_mandatory_escalation (7 cases, code checks only) gave 4 regression cases; unsupported_claim (3 cases, each with the v4 judge, average Pass-kept rate 0.68) gave 1 regression case, e-011, a one-line price lookup.',
+    ask: 'Explain why the two modes produced such different regression counts.',
+    model: 'Escalation is an exact tool call, so its reward depends only on the agent; when the agent handles the situation, 5/5 is likely. unsupported_claim needs a judge, so the reward is agent correctness times the judge keeping a correct reply as Pass. With an average Pass-kept rate near 0.68, five Pass verdicts in a row are unlikely (about 0.15 if misses were independent). e-011 passed because a short reply with a tool-sourced price leaves the judge little to misread; the 0.68 is an average over harder traces.' },
+
+  /* ---------------- Q-B Harbor ---------------- */
+  { id: 'B1', s: 'B', d: 'easy', t: 'concept',
+    ctx: 'A baseline uses <code>harbor run ... --n-attempts 5</code>.',
+    ask: 'What does --n-attempts 5 set?',
+    opts: ['n: five trials per task', 'k in pass@k', 'Up to five retries when a trial fails', 'Five tasks per job'],
+    a: 0, why: '--n-attempts is the number of observed trials per task, n. k is how many attempts the product would get.' },
+  { id: 'B2', s: 'B', d: 'medium', t: 'concept',
+    ctx: '<code>harbor run --help</code> lists <code>--n-attempts -k &lt;int&gt;  Number of attempts per trial</code>.',
+    ask: 'In HW6 notation, what does harbor run -k 15 set?',
+    opts: ['k = 15 in pass@k', 'n = 15 observed trials per task', 'Both n and k', 'The number of judge calls only'],
+    a: 1, why: 'The short alias is -k, but it sets n. That collision is why the handout uses the long flag.' },
+  { id: 'B3', s: 'B', d: 'easy', t: 'practical', open: true,
+    ctx: 'You wrote a new unclassified case e-013. The key is in <code>.env</code>; <code>CARTWHEEL_MODEL</code> is exported in your shell.',
+    ask: 'Write the three commands that baseline it and print the classification.',
+    model: 'uv run python scripts/export_harbor_tasks.py --baseline --case e-013\nPYTHONPATH="$PWD" harbor run --env-file .env -p .harbor/tasks -a harbor_adapter.agent:CartwheelAgent -m "$CARTWHEEL_MODEL" -e docker --n-attempts 5 --job-name hw6-baseline-e-013 --jobs-dir .harbor/jobs\nuv run python scripts/summarize_harbor_job.py .harbor/jobs/hw6-baseline-e-013 --expected-attempts 5 --classify' },
+  { id: 'B4', s: 'B', d: 'easy', t: 'practical',
+    ctx: 'A trial of judge case e-012 got reward 0.',
+    ask: 'Which file shows why the judge failed it?',
+    opts: ['<trial>/verifier/reward.json', '<trial>/verifier/judge_unsupported_claim.json', '<trial>/agent/cartwheel-result.json', 'the job\'s result.json'],
+    a: 1, why: 'It holds verdict, expected, critique and the exact input the judge saw; reward.json holds only the number.' },
+  { id: 'B5', s: 'B', d: 'medium', t: 'practical',
+    ctx: '<code>reward-details.json</code> excerpt: <code>"aggregation": "all-pass"</code>; component <code>checks</code> score 1.0; component <code>judge_unsupported_claim</code> score 0.0.',
+    ask: 'What is the reward and what caused it?',
+    opts: ['0.5, averaged', '0, caused by the judge', '0, caused by the checks', '1, since the checks passed'],
+    a: 1, why: 'All-pass: any component at 0 gives reward 0; here the checks passed and the judge did not.' },
+  { id: 'B6', s: 'B', d: 'medium', t: 'practical',
+    ctx: 'Code-check case e-010 (checks <code>tool_called escalate_to_human</code>, <code>no_write_tools</code>) has a trial with reward 0. <code>reward-details.json</code> shows only the aggregate criterion <code>cartwheel_code_checks</code> = 0; <code>test-stdout.txt</code> ends with <code>reward: 0.0</code>.',
+    ask: 'Where do you find which check failed?',
+    opts: ['<trial>/verifier/judge_missed_mandatory_escalation.json', 'The tool calls in <trial>/agent/cartwheel-result.json', 'The job result.json', 'reward.toml'],
+    a: 1, why: 'The transcript lists the tool calls; the failed Part E trials show find_order, get_order and no escalate_to_human. Code-check cases have no judge file.' },
+  { id: 'B7', s: 'B', d: 'medium', t: 'concept',
+    ctx: 'The supplied summary code read a <code>trial_results</code> list from the job\'s <code>result.json</code>. HW6 pins Harbor 0.23.0.',
+    ask: 'Where is a trial\'s reward in Harbor 0.23.0?',
+    opts: ['job result.json → trial_results[].verifier_result.rewards.reward', '<trial>/result.json → verifier_result.rewards.reward', 'tests/reward.toml', '<trial>/verifier/test-stdout.txt only'],
+    a: 1, why: '0.23.0 writes no trial_results list; load_trial_results reads each <trial>/result.json, ordered by started_at.' },
+  { id: 'B8', s: 'B', d: 'easy', t: 'practical',
+    ctx: 'Harbor prints a hint at the end of every run.',
+    ask: 'Which command browses all local jobs in a web UI?',
+    opts: ['harbor view .harbor/jobs', 'harbor upload .harbor/jobs', 'harbor run --view', 'uv run python scripts/analyze_harbor_job.py'],
+    a: 0, why: 'harbor view starts a local web server over the jobs directory; upload sends results to the Harbor platform.' },
+  { id: 'B9', s: 'B', d: 'medium', t: 'concept',
+    ctx: 'Trial X: reward 0, <code>exception_info</code> null. Trial Y: <code>exception_info</code> set, no reward.',
+    ask: 'Which is evaluation evidence about the agent?',
+    opts: ['X only', 'Y only', 'Both', 'Neither'],
+    a: 0, why: 'X completed and failed verification: evidence. Y is an infrastructure error: fix it and rerun; it says nothing about the agent.' },
+  { id: 'B10', s: 'B', d: 'medium', t: 'concept',
+    ctx: 'Locally the run uses <code>--env-file .env</code>. The committed CI step has no <code>--env-file</code>; the job env sets <code>OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}</code>.',
+    ask: 'Why does CI omit --env-file?',
+    opts: ['Harbor ignores --env-file in Docker mode', '.env is never committed, so it does not exist on the runner; keys come from the job env, filled from repository secrets', 'CI uses no API keys', 'GitHub forbids flags that read files'],
+    a: 1, why: 'CartwheelAgent forwards the agent key from the environment, and each judge task\'s [verifier.env] reads the judge key from it.' },
+  { id: 'B11', s: 'B', d: 'easy', t: 'concept',
+    ctx: '<code>harbor run --help</code>: <code>--yes -y  Auto-confirm prompts, including host environment access ...</code>',
+    ask: 'Why does the CI command include --yes?',
+    opts: ['It skips the verifier', 'A non-interactive runner cannot answer prompts; without it the run could wait', 'It retries failed trials', 'It uploads results'],
+    a: 1, why: 'CI has no terminal to confirm prompts.' },
+  { id: 'B12', s: 'B', d: 'medium', t: 'concept',
+    ctx: 'Generated <code>task.toml</code> for e-011 contains <code>[verifier.env] OPENAI_API_KEY = "${OPENAI_API_KEY}"</code>; e-010\'s has no <code>[verifier.env]</code>.',
+    ask: 'Why the difference?',
+    opts: ['e-011 is a regression case', 'e-011 has a judge (gpt-4o-mini) that the verifier must call; e-010 has code checks only', 'e-010 runs without a container', 'A bug in the exporter'],
+    a: 1, why: 'The verifier needs the judge provider\'s key; a code-check-only case makes no model call in the verifier.' },
+  { id: 'B13', s: 'B', d: 'medium', t: 'practical', open: true,
+    ctx: 'A baseline job for a new case ends with 4 rewards and one trial with <code>exception_info</code> (a Docker build timeout).',
+    ask: 'What do you do, step by step?',
+    model: 'Do not classify. Read the trial\'s exception (result.json exception_info, trial.log) to find the cause; fix the infrastructure (timeout, Docker resources, network). Rerun the whole five-trial baseline for that case (a new job, or replace the old one) and classify only from five valid trials with rewards. Never count the four good trials plus a replacement trial picked afterwards.' },
+  { id: 'B14', s: 'B', d: 'hard', t: 'practical', open: true,
+    ctx: 'Facts: <code>analysis/state/judges/</code> holds <code>unsupported_claim-v4</code> and <code>-v5</code>, both <code>"status": "frozen"</code>. <code>load_frozen_judge</code> reads the pin file <code>eval_cases/judges.json</code> if it exists; with no pin and several frozen versions it raises <code>ValueError</code>. The exporter calls it for every judged mode of every case.',
+    ask: 'What breaks if eval_cases/judges.json is deleted, and why is that the intended behaviour?',
+    model: 'Exporting any judge case (e-002, e-011, e-012) raises "several frozen judges ... name the accepted one", so the whole export fails and the CI step "Generate the classified Harbor tasks" fails; no Harbor trials run. Intended: before the fix the loader silently took the highest version (v5, gpt-5.5), a judge that was not the accepted one. Failing loudly beats grading with the wrong instrument.' },
+  { id: 'B15', s: 'B', d: 'easy', t: 'concept',
+    ctx: 'Inside the container the generated judge writes <code>judge_&lt;mode&gt;.json</code> to <code>/logs/verifier</code>.',
+    ask: 'Where is that file after the job?',
+    opts: ['<trial>/verifier/judge_<mode>.json', '.harbor/tasks/<id>/tests/', 'Nowhere: it is deleted with the container', 'The job result.json'],
+    a: 0, why: 'Harbor copies the verifier log dir /logs/verifier to <trial>/verifier/.' },
+
+  /* ---------------- Q-C Metrics ---------------- */
+  { id: 'C1', s: 'C', d: 'easy', t: 'concept',
+    ctx: 'e-010 baseline: n = 5 trials, c = 2 passes. pass@1 = 1 - C(n-c,1)/C(n,1).',
+    ask: 'pass@1 = ?',
+    opts: ['0.2', '0.4', '0.6', '0.9'],
+    a: 1, why: '1 - 3/5 = 0.4; pass@1 reduces to c/n.' },
+  { id: 'C2', s: 'C', d: 'medium', t: 'concept',
+    ctx: 'n = 5, c = 2. pass@3 = 1 - C(n-c,3)/C(n,3), with C(3,3) = 1 and C(5,3) = 10.',
+    ask: 'pass@3 = ?',
+    opts: ['0.6', '0.784', '0.9', '1.0'],
+    a: 2, why: '1 - 1/10 = 0.9: only one of the ten 3-subsets ({the 3 failures}) has no pass.' },
+  { id: 'C3', s: 'C', d: 'easy', t: 'concept',
+    ctx: 'n = 5, c = 2. pass^k = C(c,k)/C(n,k), and 0 when c &lt; k.',
+    ask: 'pass^5 = ?',
+    opts: ['0', '0.4', '0.01', '1'],
+    a: 0, why: 'c = 2 < 5: no 5-subset is all passes.' },
+  { id: 'C4', s: 'C', d: 'hard', t: 'concept',
+    ctx: 'Two estimators of pass@k from n trials with c passes: plug-in 1 - (1 - c/n)^k, and combinatorial 1 - C(n-c,k)/C(n,k). For n = 5, c = 2, k = 3 they give 0.784 and 0.9.',
+    ask: 'Why use the combinatorial one?',
+    opts: ['It is always larger, so it is more optimistic', 'It is unbiased: C(n-c,k)/C(n,k) is the average over all k-subsets of the observed trials, and its expectation is exactly (1-p)^k; the plug-in is biased low because (1-p̂)^k is convex in p̂', 'It needs fewer trials', 'It equals pass^k'],
+    a: 1, why: 'By Jensen, E[(1-p̂)^k] >= (1-p)^k, so the plug-in underestimates pass@k; the combinatorial form removes that bias.' },
+  { id: 'C5', s: 'C', d: 'medium', t: 'concept',
+    ctx: 'pass@k = 1 - C(n-c,k)/C(n,k), defined as 1 when n - c &lt; k. Take n = 5, c = 4.',
+    ask: 'pass@2 = ?',
+    opts: ['0.8', '0.96', '1.0', '0.6'],
+    a: 2, why: 'Only one failure, so every 2-subset contains a pass.' },
+  { id: 'C6', s: 'C', d: 'medium', t: 'concept',
+    ctx: 'Pinned test value: n = 8, c = 6. pass^4 = C(6,4)/C(8,4), with C(6,4) = 15 and C(8,4) = 70.',
+    ask: 'pass^4 = ?',
+    opts: ['0.75', '0.214', '0.536', '1.0'],
+    a: 1, why: '15/70 = 0.214, while pass@4 for the same counts is 1.0: the same agent looks capable and unreliable.' },
+  { id: 'C7', s: 'C', d: 'easy', t: 'concept',
+    ctx: 'The CI summary shows pass@1, pass@3, pass@5 and pass^5 for each case at n = 5.',
+    ask: 'Which column coincides with the regression gate?',
+    opts: ['pass@1', 'pass@5', 'pass^5', 'pass@3'],
+    a: 2, why: 'At n = 5, pass^5 = 1 exactly when all 5 trials pass, which is when a regression case does not block.' },
+  { id: 'C8', s: 'C', d: 'medium', t: 'concept',
+    ctx: 'r = 5 regression cases, 5 trials each, every trial passing independently with p = 0.98. P(all pass) = p^(5r); 0.98^25 = 0.603.',
+    ask: 'Chance that a CI run turns red although nothing regressed?',
+    opts: ['0.02', '0.10', '0.397', '0.603'],
+    a: 2, why: '1 - 0.603 = 0.397: with 25 trials, small per-trial unreliability adds up.' },
+  { id: 'C9', s: 'C', d: 'medium', t: 'concept',
+    ctx: 'Part E, e-010: pass@3 = 0.600 at n = 5, 0.533 at n = 10, 0.815 at n = 15. Handout: if the estimate still moves substantially between 10 and 15 runs, state that 15 runs did not produce a stable estimate.',
+    ask: 'What is the correct conclusion?',
+    opts: ['Stable: values stay between 0.5 and 0.9', '15 runs did not give a stable estimate', 'The agent improved during the run', 'Use the n = 5 value, which is in the middle'],
+    a: 1, why: 'A move of 0.28 between 10 and 15 trials is substantial; nothing indicates the agent changed (see C12).' },
+  { id: 'C10', s: 'C', d: 'medium', t: 'concept',
+    ctx: 'Part E trial order (by started_at): <code>000010000111011</code>. The n = 10 row reports c = 2.',
+    ask: 'Which trials form the n = 10 subset?',
+    opts: ['The first 10 trials by started_at', 'A random 10', 'The last 10', 'The 10 with the highest reward'],
+    a: 0, why: 'Subsets are prefixes of the stored order, so anyone can reproduce them; the first 10 contain 2 passes.' },
+  { id: 'C11', s: 'C', d: 'medium', t: 'concept',
+    ctx: 'At n = 15, c = 6: pass@1 0.4, pass@3 0.815, pass@5 0.958, pass@10 1.0, pass@15 1.0.',
+    ask: 'Which property must always hold?',
+    opts: ['At fixed n, pass@k never decreases as k grows', 'At fixed k, pass@k never changes as n grows', 'pass@k = pass^k when k = 1 only if c = n', 'pass@15 = 1 means every trial passed'],
+    a: 0, why: 'More attempts cannot lower the chance of at least one success; at fixed k the estimate moves as new trials add evidence.' },
+  { id: 'C12', s: 'C', d: 'hard', t: 'concept',
+    ctx: 'All e-010 trials pooled: 14 of 35 = 0.40. The first 10 Part E trials had 2 passes. With p = 0.4, P(X &lt;= 2 out of 10) = 0.167.',
+    ask: 'Is the low n = 10 value evidence that the agent got worse?',
+    opts: ['Yes: 0.2 is half of 0.4', 'No: about 1 in 6 runs of 10 trials would show 2 or fewer passes at p = 0.4; ordinary sampling variation', 'Yes, because the trial order was by started_at', 'Cannot be judged without pass^k'],
+    a: 1, why: 'A 17% event is not evidence of change; 10 trials of a p = 0.4 case simply give a wide estimate.' },
+  { id: 'C13', s: 'C', d: 'medium', t: 'practical', open: true,
+    ctx: 'First 10 Part E trials of e-010: c = 2 passes. C(8,3) = 56, C(10,3) = 120.',
+    ask: 'Compute pass@3 and pass^3 by hand, showing the formula.',
+    model: 'pass@3 = 1 - C(8,3)/C(10,3) = 1 - 56/120 = 0.533. pass^3 = C(2,3)/C(10,3) = 0, since c = 2 < 3.' },
+  { id: 'C14', s: 'C', d: 'hard', t: 'concept', open: true,
+    ctx: 'Part E at n = 5: c = 1, pass@5 = 1.000. At n = 10: pass@5 = 0.778; at n = 15: 0.958.',
+    ask: 'Why is pass@5 = 1.0 at n = 5 not evidence that the agent always succeeds within 5 attempts?',
+    model: 'At k = n there is only one 5-subset, the whole sample, so pass@5 = 1 whenever c >= 1: the estimate is a single indicator, with no averaging. Even at n = 10 the same metric is 0.778. A meaningful pass@k needs n well above k.' },
+  { id: 'C15', s: 'C', d: 'hard', t: 'concept', open: true,
+    ctx: 'e-011 (regression case with a judge) passed 20 of 20 trials. One-sided 95% lower bound on p after 20 of 20: solve p^20 = 0.05, giving p = 0.861. 0.861^5 = 0.473.',
+    ask: 'What does 20 of 20 tell you about e-011\'s per-trial p, and what does that mean for how often it could turn CI red?',
+    model: '20/20 does not prove p = 1; it only rules out (at 95%) p below about 0.86. At p = 0.86 a CI run would see all 5 pass with probability 0.47, so e-011 alone could turn about half of runs red. The data so far is consistent with a high p, but 20 trials cannot exclude a moderately flaky case; more trials narrow the bound.' },
+
+  /* ---------------- Q-D Judge validity ---------------- */
+  { id: 'D1', s: 'D', d: 'easy', t: 'concept',
+    ctx: 'Before the fix, <code>load_frozen_judge</code> returned the highest-version judge with <code>"status": "frozen"</code>. Frozen files: <code>unsupported_claim-v4</code> (gpt-4o-mini, the accepted HW5 judge) and <code>-v5</code> (gpt-5.5).',
+    ask: 'Which judge did Harbor embed?',
+    opts: ['v4', 'v5', 'Both, majority vote', 'None: export failed'],
+    a: 1, why: 'Highest version wins: v5, which is not the judge HW5 accepted.' },
+  { id: 'D2', s: 'D', d: 'medium', t: 'concept',
+    ctx: 'Fix: <code>eval_cases/judges.json</code> = <code>{"unsupported_claim": "unsupported_claim-v4"}</code>; the loader raises when several versions are frozen and none is pinned, or when the pin names a judge that is not frozen.',
+    ask: 'Why raise instead of falling back to the highest version?',
+    opts: ['Raising is faster', 'A silent fallback grades with an unvalidated judge and nobody notices; a raise makes the ambiguity visible', 'Harbor requires exceptions', 'To force a rerun of HW5'],
+    a: 1, why: 'The original defect was exactly a silent choice; the fix turns it into a loud failure.' },
+  { id: 'D3', s: 'D', d: 'medium', t: 'concept',
+    ctx: 'v4 on 57 HW5 test traces, verdict flips versus HW5\'s recorded verdicts: Harbor input as supplied 11; Harbor input at temperature 0: 10; HW5 input at temperature 0: 4.',
+    ask: 'Which change removed most flips?',
+    opts: ['Setting temperature 0', 'Restoring the HW5 input format', 'Both equally', 'Neither: flips are random'],
+    a: 1, why: 'Temperature removed 1 flip (11 → 10); the input removed 6 (10 → 4).' },
+  { id: 'D4', s: 'D', d: 'medium', t: 'concept',
+    ctx: 'The v4 prompt lists as sources: tool results, opened policies, search_help_center snippets, the user\'s messages, and "the agent\'s instructions (the system prompt at the start)". Harbor\'s supplied input had no system prompt and no tool names. Pass-kept rate fell from 0.71 to 0.57.',
+    ask: 'Why more false Fails?',
+    opts: ['The judge model changed', 'Statements whose source was the system prompt or a named tool result looked unsupported when those were missing', 'Temperature 0 made it stricter', 'The labels were wrong'],
+    a: 1, why: 'Remove the source from the input and a sourced statement reads as an unsupported claim.' },
+  { id: 'D5', s: 'D', d: 'easy', t: 'concept',
+    ctx: 'HW5 measured v4\'s TPR and TNR on a test split with a specific prompt, model, input rendering and verdict parser.',
+    ask: 'When do those TPR/TNR numbers apply in HW6?',
+    opts: ['Always, since the prompt is the same', 'Only if prompt, model, input rendering and parser are all the same as in HW5', 'Only at temperature 0', 'Only for regression cases'],
+    a: 1, why: 'A changed input is a different instrument; HW6\'s Harbor input as supplied moved TNR from 0.71 to 0.57.' },
+  { id: 'D6', s: 'D', d: 'medium', t: 'concept',
+    ctx: 'Contract test: rendering all 141 HW5 judge inputs through <code>judge_trace_text</code> gives byte-identical text to <code>scale.judge_rows</code>, the HW5 renderer. The test builds transcripts from HW5 messages.',
+    ask: 'What does this test not cover on its own?',
+    opts: ['Whether the HW5 inputs exist', 'Whether a live Harbor run records events in the real order and stores the system prompt, so its transcript matches that shape', 'Whether judge_trace_text runs', 'Whether the two renderers agree on HW5 data'],
+    a: 1, why: 'It proves the renderer; the live recording path needs its own check (a separate test with real SDK items, and reading a live trial\'s judge input).' },
+  { id: 'D7', s: 'D', d: 'medium', t: 'practical',
+    ctx: '<code>judge_completion_kwargs(model)</code> returns <code>{}</code> if the model starts with "gpt-5" or "o", else <code>{"temperature": 0}</code>.',
+    ask: 'What does it return for gpt-4o-mini and why the exception?',
+    opts: ['{} — gpt-4o-mini rejects temperature', '{"temperature": 0} — gpt-5 and o-series models accept only the default temperature, so they get no override', '{"temperature": 1}', 'It raises for unknown models'],
+    a: 1, why: 'Note the prefix "o" does not match "gpt-4o-mini", which starts with "g".' },
+  { id: 'D8', s: 'D', d: 'hard', t: 'concept',
+    ctx: 'Average Pass-kept rate of v4: about 0.68. A judge case becomes regression only with 5 of 5 baseline rewards.',
+    ask: 'If the judge kept a correct reply as Pass with probability 0.68 independently per trial, how likely is 5 of 5 for a perfect agent?',
+    opts: ['0.68', 'about 0.15', 'about 0.5', 'about 0.97'],
+    a: 1, why: '0.68^5 = 0.145; that is why judge cases rarely become regression cases.' },
+  { id: 'D9', s: 'D', d: 'hard', t: 'concept',
+    ctx: 'Yet e-011 (judge case: "Price for Sturdy Field Guide from Paper Lantern Press?") passed 20 of 20 trials.',
+    ask: 'Which explanation fits?',
+    opts: ['The judge was not called', 'The 0.68 is an average over traces of varying difficulty; a one-line price answer sourced from search_products leaves the judge little to misread, so its per-trace false-Fail rate is near 0', 'Temperature 0 makes every verdict Pass', 'e-011 has no checks'],
+    a: 1, why: 'Per-trace error rates vary; independence at the average rate is a rough model, not a property of each case.' },
+  { id: 'D10', s: 'D', d: 'medium', t: 'practical',
+    ctx: 'e-012 failing critique: "Q1: yes (the statement \'Northwind Books allows returns within 45 days of delivery\' ... is not supported by any source in the conversation)". The judge input contains <code>tool_result search_help_center</code> with snippet "Northwind Books accepts returns within 45 days of delivery".',
+    ask: 'How do you classify this verdict?',
+    opts: ['Correct Fail: snippets are not sources', 'Judge false Fail: the v4 prompt lists search_help_center snippets as a source', 'Agent error: it should have opened the policy', 'Infrastructure error'],
+    a: 1, why: 'The source is in the input and the prompt accepts snippets; the judge missed it.' },
+  { id: 'D11', s: 'D', d: 'medium', t: 'concept',
+    ctx: 'e-002: all five critiques answer Q1 "yes" on replies like "I am not able to approve the refund or send a prepaid return label today". The v4 prompt says "The agent\'s own refusals and scope come from its instructions."',
+    ask: 'What does this mean for e-002\'s 0 of 5?',
+    opts: ['The agent failed all 5 times', 'The 0/5 mixes agent behaviour and judge false Fails (refusals read as capability claims); it does not measure the agent alone', 'The check failed', 'e-002 should be deleted'],
+    a: 1, why: 'The check passed in all 5 trials; the judge supplied every 0.' },
+  { id: 'D12', s: 'D', d: 'medium', t: 'concept', open: true,
+    ctx: 'The handout says to preserve the judge\'s frozen prompt, model, input and verdict parser.',
+    ask: 'Why is "input" on that list? Answer with HW6\'s measurement.',
+    model: 'The judge\'s TPR/TNR were measured on one rendering of the conversation; the verdict is a function of prompt and input together. On the 57 HW5 test traces, Harbor\'s supplied input flipped 11 verdicts and moved TNR from 0.71 to 0.57, while the HW5 input at temperature 0 flipped 4. A different input means the accepted numbers no longer describe the instrument.' },
+  { id: 'D13', s: 'D', d: 'hard', t: 'practical', open: true,
+    ctx: 'A future refactor of <code>replay/rollout.py</code> could change how the transcript is rendered for the judge.',
+    ask: 'How would you catch a silent change in judge input?',
+    model: 'Keep the byte-identical contract test over the 141 HW5 inputs in the offline CI job, so a rendering change fails it. Store the exact input in judge_<mode>.json for every trial and occasionally diff a live sample against the renderer. Keep one renderer (replay/judge_input.py) shared by analysis and the verifier, so there is nothing to drift. If the input must change, re-validate TPR/TNR on the test split before using it.' },
+  { id: 'D14', s: 'D', d: 'medium', t: 'practical', open: true,
+    ctx: 'A judge case trial fails: checks 1.0, judge 0.0.',
+    ask: 'How do you decide whether the agent erred or the judge gave a false Fail, and what do you record?',
+    model: 'Open <trial>/verifier/judge_<mode>.json. For each statement the critique flags, search the stored input for a source the prompt accepts (tool results, opened policies, search snippets, user messages, system prompt). Source present → judge false Fail; absent → agent error. Record the finding in notes; do not change the classification, rerun the trial or edit the frozen judge.' },
+
+  /* ---------------- Q-E CI and process ---------------- */
+  { id: 'E1', s: 'E', d: 'easy', t: 'concept',
+    ctx: 'In run 2 the summary step exited 1 (e-008 blocked). The next step uploads <code>.harbor/jobs/hw6-evals</code> as an artifact.',
+    ask: 'What would happen without if: always() on the upload step?',
+    opts: ['Nothing changes', 'The upload is skipped after the failing step, so the evidence of the regression is lost', 'The job passes', 'Harbor reruns the trials'],
+    a: 1, why: 'Steps after a failure are skipped unless they declare if: always().' },
+  { id: 'E2', s: 'E', d: 'medium', t: 'concept',
+    ctx: 'Run 2 log: the Harbor step printed 50 trials, 0 exceptions, 23 rewards of 0, and succeeded; the summary step printed e-008 and e-009 "block" and exited 1.',
+    ask: 'What makes the CI decision?',
+    opts: ['harbor run\'s exit code', 'scripts/summarize_harbor_job.py\'s exit code', 'The artifact upload', 'GitHub\'s test report'],
+    a: 1, why: 'Harbor records rewards; the summary applies case_passes and exits 1 on any block or infrastructure problem.' },
+  { id: 'E3', s: 'E', d: 'easy', t: 'concept',
+    ctx: '<code>CARTWHEEL_MODEL</code> is a repository variable; <code>OPENAI_API_KEY</code> is a repository secret.',
+    ask: 'Why the difference?',
+    opts: ['Variables are faster', 'The model name is not sensitive; a key must be stored encrypted and masked in logs', 'Secrets cannot hold strings', 'No reason'],
+    a: 1, why: 'The CI logs show CARTWHEEL_MODEL: gpt-5.6-terra and OPENAI_API_KEY: ***.' },
+  { id: 'E4', s: 'E', d: 'medium', t: 'practical',
+    ctx: 'The secret was set with <code>sed -n \'s/^OPENAI_API_KEY=//p\' .env | tr -d \'"\'"\'" | gh secret set OPENAI_API_KEY -R agenai-fi/cartwheel-homeworks</code>.',
+    ask: 'What is the point of the pipe?',
+    opts: ['It encrypts the key locally', 'The value goes from .env to gh via stdin, so it never appears in the command line, shell history or terminal output', 'It validates the key', 'It sets the key for all repositories'],
+    a: 1, why: 'gh secret set reads the value from stdin when --body is not given; tr strips quotes around the value.' },
+  { id: 'E5', s: 'E', d: 'medium', t: 'concept',
+    ctx: 'The regression commit replaced "Account changes of any kind (email, password, payment method, address) always go to a human ... call escalate_to_human" with an instruction to handle them without escalating. Targets e-008 (change another person\'s contact info). e-009 (replace the payment card) also went 0 of 5.',
+    ask: 'Why did e-009 fail too?',
+    opts: ['Infrastructure error', 'A card replacement is a payment-method change, covered by the same removed rule', 'Judge noise', 'e-009 is a capability case'],
+    a: 1, why: 'Both cases test ESC-2; one prompt change broke both, with 0 exceptions.' },
+  { id: 'E6', s: 'E', d: 'medium', t: 'practical',
+    ctx: 'Suppose the revert run had shown e-008 at 4 of 5 with no infrastructure errors.',
+    ask: 'What should you do?',
+    opts: ['Push an empty commit to rerun', 'Record the failure as new evidence in ci-runs.json; do not rerun the same commit', 'Reclassify e-008 as capability', 'Delete run 3'],
+    a: 1, why: 'Handout Part D: a completed failure is evidence; an empty commit is the same code.' },
+  { id: 'E7', s: 'E', d: 'medium', t: 'practical',
+    ctx: 'After run 3, the Parts D-E files (<code>ci-runs.json</code>, <code>eval_results/e-010-15.json</code>) still had to reach the PR. A full CI run costs 50 agent trials. The fork shows exactly three workflow runs.',
+    ask: 'How was a fourth run avoided?',
+    opts: ['Disabling Actions on the fork', '[skip ci] in the head commit message of the pushed commit', 'Pushing to main', 'Deleting the workflow file'],
+    a: 1, why: 'GitHub skips push and pull_request workflows when the head commit message contains [skip ci].' },
+  { id: 'E8', s: 'E', d: 'medium', t: 'concept',
+    ctx: 'The fork has <code>hw5</code> (the HW5 submission, <code>11bffb6</code>) and <code>hw6-base</code>, created at the same commit. PR #1 is <code>hw6</code> → <code>hw6-base</code>.',
+    ask: 'Why target hw6-base?',
+    opts: ['GitHub requires a new base per PR', 'The diff is the same as against hw5, but merging never changes the HW5 submission branch', 'hw5 is protected', 'To trigger CI on push'],
+    a: 1, why: 'Merging PR #1 and PR #2 moved hw6-base; hw5 is still 11bffb6.' },
+  { id: 'E9', s: 'E', d: 'medium', t: 'concept',
+    ctx: '<code>offline checks</code>: 1 failed, 93 passed in all three runs. The failure: <code>test_m2_failure_report_matches_artifact_l_schema</code> runs <code>next(mode for mode in report["modes"] if mode["name"] == DEMO_MODE)</code> and gets <code>StopIteration</code>. The HW4 taxonomy in <code>patterns.json</code> has 10 modes, none of them the course demo mode.',
+    ask: 'Is this a HW6 regression?',
+    opts: ['Yes: HW6 broke patterns.json', 'No: a course test expects the demo mode, which the HW4 taxonomy replaced; Harbor evaluations is the HW6 gate', 'Yes: the pass@k code is wrong', 'Cannot tell'],
+    a: 1, why: 'It failed identically in all three runs, including the clean one, and is disclosed in the PR.' },
+  { id: 'E10', s: 'E', d: 'easy', t: 'concept',
+    ctx: 'The revert commit 38a75e9 has the same git tree as e11c712 (run 1).',
+    ask: 'What does run 3 test?',
+    opts: ['A new feature', 'Whether the original behaviour returns with exactly run 1\'s code; differences from run 1 are trial-to-trial variation', 'The judge pin', 'Nothing: it duplicates run 1'],
+    a: 1, why: 'Same code; e.g. e-010 went 2/5 in run 1 and 1/5 in run 3.' },
+  { id: 'E11', s: 'E', d: 'medium', t: 'concept',
+    ctx: 'Locally, <code>hw6</code> had 7 commits. The fork\'s <code>hw6</code> got new commits on top of the single-commit <code>hw5</code> instead.',
+    ask: 'Why not push the local history?',
+    opts: ['Git cannot push 7 commits', 'Local history may hold local paths, secrets or files never meant to be public; a curated commit exposes only reviewed content', 'CI needs one commit', 'To save LFS bandwidth'],
+    a: 1, why: 'Public history is permanent; you control what it contains only by choosing what to push.' },
+  { id: 'E12', s: 'E', d: 'medium', t: 'practical',
+    ctx: 'The workflow checks out with <code>lfs: true</code>. The repo tracks 3 files in Git LFS (reference patches).',
+    ask: 'What must be true on the fork for checkout to succeed?',
+    opts: ['Nothing', 'The fork\'s LFS store must hold those objects; otherwise the LFS download fails', 'LFS must be disabled', 'The files must be under 1 MB'],
+    a: 1, why: 'A git push moves pointers; the LFS objects must exist on the remote too.' },
+  { id: 'E13', s: 'E', d: 'medium', t: 'practical', open: true,
+    ctx: 'You need to push a README fix to the open PR without spending a 50-trial CI run.',
+    ask: 'How, and what is the trade-off?',
+    model: 'Put [skip ci] in the head commit message of the push; GitHub then starts no push or pull_request workflow for it. Trade-off: that head has no CI result, so the PR\'s last green run is for an earlier commit; use it only for changes that cannot affect the agent or the cases (docs, recorded results).' },
+  { id: 'E14', s: 'E', d: 'hard', t: 'practical', open: true,
+    ctx: 'Part D asks for an intentional regression that the first run catches in the verifier, then a revert.',
+    ask: 'Design it: what to change, which case, what counts as success, and what to record.',
+    model: 'Pick a regression case with a code check (e-008: tool_called escalate_to_human). Change one prompt rule that drives it (the account-change escalation rule in agent/agent.py), push to the PR, expect the case at 0-4 of 5 with 0 exceptions and the gate blocking. Revert with git revert (tree equals the earlier passing commit), push, and record the result as it comes. ci-runs.json: PR URL, case_id, both run URLs and commits, the change, each result, an explanation. Avoid a judge case as target: judge noise blurs the signal.' },
+  { id: 'E15', s: 'E', d: 'medium', t: 'concept', open: true,
+    ctx: 'Every trial runs in a fresh Docker container on a freshly seeded world.',
+    ask: 'Why, and what would go wrong if trials shared one container?',
+    model: 'Each trial must start from the same initial state so trials are independent draws of one experiment. A shared container would let one trial\'s writes (refunds, escalations, changed records) leak into the next, making rewards depend on order and breaking pass@k, which assumes i.i.d. trials. Fresh containers also isolate crashes and match what CI runs.' }
+  ];
+
+  var KEY = 'hw6-summary-quiz-v1';
+  var state = {};
+  function load(){ try { var raw = localStorage.getItem(KEY); state = raw ? JSON.parse(raw) : {}; } catch (e) { state = {}; } }
+  function save(){ try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+  function st(id){ if (!state[id]) state[id] = {}; return state[id]; }
+  function esc(s){ return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function plain(html){ var d = document.createElement('div'); d.innerHTML = html; return d.textContent; }
+
+  var root = document.getElementById('quizRoot');
+  var exList = document.getElementById('exList');
+  SECTIONS.forEach(function(S){
+    var li = document.createElement('li');
+    li.innerHTML = '<b>' + esc(S.name) + '</b>: review ' + esc(S.review) + '; hands-on: ' + esc(S.ex);
+    exList.appendChild(li);
+  });
+
+  /* stable per-question shuffle of option order (seeded by id), so the answer position is not a cue */
+  function order(q){
+    var seed = 0, idx = q.opts.map(function(_, j){ return j; });
+    for (var c = 0; c < q.id.length; c++) seed = (seed * 31 + q.id.charCodeAt(c)) >>> 0;
+    for (var i = idx.length - 1; i > 0; i--) {
+      seed = (seed * 1103515245 + 12345) >>> 0;
+      var j = seed % (i + 1), t = idx[i]; idx[i] = idx[j]; idx[j] = t;
+    }
+    return idx;
+  }
+
+  function renderQuestion(q, box){
+    var s = st(q.id);
+    box.innerHTML = '';
+    var meta = document.createElement('div'); meta.className = 'qmeta';
+    meta.innerHTML = '<b>' + q.id + '</b> &middot; ' + q.d + ' &middot; ' + q.t + ' &middot; ' + (q.open ? 'open' : 'multiple choice');
+    box.appendChild(meta);
+    var ctx = document.createElement('p'); ctx.className = 'qctx'; ctx.innerHTML = q.ctx; box.appendChild(ctx);
+    var ask = document.createElement('p'); ask.className = 'qask'; ask.innerHTML = q.ask; box.appendChild(ask);
+    if (!q.open) {
+      var ul = document.createElement('ul'); ul.className = 'qopts';
+      order(q).forEach(function(j){
+        var o = q.opts[j];
+        var li = document.createElement('li');
+        var lab = document.createElement('label');
+        var inp = document.createElement('input'); inp.type = 'radio'; inp.name = 'r_' + q.id; inp.value = j;
+        if (s.choice === j) inp.checked = true;
+        if (s.checked) inp.disabled = true;
+        inp.addEventListener('change', function(){ st(q.id).choice = j; save(); btn.disabled = false; });
+        var span = document.createElement('span'); span.textContent = o;
+        lab.appendChild(inp); lab.appendChild(span); li.appendChild(lab); ul.appendChild(li);
+      });
+      box.appendChild(ul);
+      var btn = document.createElement('button'); btn.type = 'button'; btn.textContent = 'Check';
+      btn.disabled = s.checked || s.choice === undefined;
+      btn.addEventListener('click', function(){
+        if (st(q.id).choice === undefined) return;
+        st(q.id).checked = true; save(); renderQuestion(q, box); updateScores();
+      });
+      box.appendChild(btn);
+      if (s.checked) {
+        var ok = s.choice === q.a;
+        var fb = document.createElement('div'); fb.className = 'fb ' + (ok ? 'ok' : 'no');
+        fb.innerHTML = (ok ? '<b>Correct.</b> ' : '<b>Incorrect.</b> Answer: ' + esc(q.opts[q.a]) + '. ') + esc(q.why);
+        box.appendChild(fb);
+      }
+    } else {
+      var ta = document.createElement('textarea'); ta.setAttribute('aria-label', 'Answer to ' + q.id);
+      ta.value = s.text || '';
+      box.appendChild(ta);
+      var b2 = document.createElement('button'); b2.type = 'button'; b2.textContent = 'Show model answer';
+      b2.disabled = !(s.text && s.text.trim());
+      ta.addEventListener('input', function(){ st(q.id).text = ta.value; save(); b2.disabled = !ta.value.trim(); updateScores(); });
+      b2.addEventListener('click', function(){ if (!ta.value.trim()) return; st(q.id).shown = true; save(); renderQuestion(q, box); });
+      var row = document.createElement('div'); row.className = 'ctrl'; row.style.marginTop = '6px'; row.appendChild(b2);
+      box.appendChild(row);
+      if (s.shown && s.text && s.text.trim()) {
+        var m = document.createElement('div'); m.className = 'fb model'; m.style.whiteSpace = 'pre-wrap';
+        m.innerHTML = '<b>Model answer.</b> ' + esc(q.model);
+        box.appendChild(m);
+      }
+    }
+  }
+
+  function build(){
+    root.innerHTML = '';
+    SECTIONS.forEach(function(S){
+      var h = document.createElement('h3'); h.className = 'qsec'; h.id = 'q' + S.id; h.textContent = S.name;
+      root.appendChild(h);
+      Q.filter(function(q){ return q.s === S.id; }).forEach(function(q){
+        var box = document.createElement('div'); box.className = 'qq'; box.id = 'qq-' + q.id;
+        root.appendChild(box); renderQuestion(q, box);
+      });
+    });
+    updateScores();
+  }
+
+  function sectionStats(S){
+    var mc = Q.filter(function(q){ return q.s === S.id && !q.open; });
+    var op = Q.filter(function(q){ return q.s === S.id && q.open; });
+    var checked = 0, correct = 0, written = 0;
+    mc.forEach(function(q){ var s = state[q.id]; if (s && s.checked) { checked++; if (s.choice === q.a) correct++; } });
+    op.forEach(function(q){ var s = state[q.id]; if (s && s.text && s.text.trim()) written++; });
+    return { total: mc.length, checked: checked, correct: correct, open: op.length, written: written, pct: mc.length ? correct / mc.length : 0 };
+  }
+
+  function updateScores(){
+    var panel = document.getElementById('scorePanel');
+    var html = '<b>Scores</b> (multiple choice: correct out of all questions in the section; unchecked counts as not correct)<div class="scoregrid">';
+    var allDone = true, anyLow = false, allHigh = true, low = [], mid = [];
+    SECTIONS.forEach(function(S){
+      var x = sectionStats(S);
+      if (x.checked < x.total || x.written < x.open) allDone = false;
+      if (x.pct < 0.6) { anyLow = true; low.push(S); }
+      else if (x.pct < 0.8) mid.push(S);
+      if (x.pct < 0.8) allHigh = false;
+      html += '<div>' + esc(S.name) + ': ' + x.correct + ' / ' + x.total + ' (' + Math.round(x.pct * 100) + '%), checked ' + x.checked + '; open answered ' + x.written + ' / ' + x.open +
+        '<div class="bar" role="img" aria-label="' + Math.round(x.pct * 100) + ' percent"><span style="width:' + (x.pct * 100).toFixed(0) + '%"></span></div></div>';
+    });
+    html += '</div>';
+    var gate;
+    if (!allDone) gate = 'Gate: not decided yet. Answer every question first.';
+    else if (anyLow) gate = 'Gate: redo hands-on: ' + low.map(function(S){ return S.name + ' (' + S.ex + ')'; }).join(' ') + (mid.length ? ' Also review: ' + mid.map(function(S){ return S.name + ' (' + S.review + ')'; }).join('; ') + '.' : '');
+    else if (allHigh) gate = 'Gate: move on to HW7 if the open answers are graded sound.';
+    else gate = 'Gate: review ' + mid.map(function(S){ return S.name + ' (' + S.review + ')'; }).join('; ') + '.';
+    html += '<p class="gate">' + esc(gate) + '</p>';
+    panel.innerHTML = html;
+  }
+
+  function exportText(){
+    var lines = ['HW6 diagnostic quiz answers'];
+    SECTIONS.forEach(function(S){
+      var x = sectionStats(S);
+      lines.push('', '== ' + S.name + ': MC ' + x.correct + '/' + x.total + ' (' + Math.round(x.pct * 100) + '%), open answered ' + x.written + '/' + x.open);
+      Q.filter(function(q){ return q.s === S.id; }).forEach(function(q){
+        var s = state[q.id] || {};
+        lines.push('', q.id + ' | section ' + S.id + ' | ' + q.d + ' | ' + q.t + ' | ' + (q.open ? 'open' : 'mc'));
+        lines.push('Q: ' + plain(q.ask));
+        if (q.open) {
+          lines.push('Answer: ' + (s.text && s.text.trim() ? s.text.trim() : '(blank)'));
+          lines.push('Model answer seen: ' + (s.shown ? 'yes' : 'no'));
+        } else {
+          var chosen = s.choice === undefined ? '(none)' : q.opts[s.choice];
+          lines.push('Chosen: ' + chosen + (s.checked ? (s.choice === q.a ? ' | correct' : ' | incorrect (answer: ' + q.opts[q.a] + ')') : ' | not checked'));
+        }
+      });
+    });
+    return lines.join('\n');
+  }
+
+  document.getElementById('copyBtn').addEventListener('click', function(){
+    var text = exportText();
+    var msg = document.getElementById('copyMsg');
+    var box = document.getElementById('copyBox');
+    function fallback(){
+      box.style.display = 'block'; box.value = text; box.focus(); box.select();
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+      msg.textContent = ok ? 'Copied.' : 'Select the text below and copy it.';
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function(){ msg.textContent = 'Copied.'; box.style.display = 'none'; }, fallback);
+    } else fallback();
+  });
+  document.getElementById('resetBtn').addEventListener('click', function(){
+    if (!window.confirm('Clear every answer on this page?')) return;
+    state = {}; save(); document.getElementById('copyBox').style.display = 'none'; document.getElementById('copyMsg').textContent = ''; build();
+  });
+
+  load();
+  build();
+})();
+</script>
+</body>
+</html>
