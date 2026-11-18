@@ -23,3 +23,6 @@ __pycache__/
 .venv/
 .pytest_cache/
 scenarios/demo_pilot_gt.json
+
+# HW7 monitor local output (verdicts, rendered records)
+monitoring/output/

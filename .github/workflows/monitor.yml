@@ -1,0 +1,52 @@
+name: monitor
+
+# Daily failure-rate monitor over the previous 24 hours of Cartwheel traces.
+# Langfuse runs on the operator's Mac (LANGFUSE_HOST = http://localhost:3001),
+# so the job runs on a self-hosted runner on that Mac. Only schedule and manual
+# triggers: no pull_request trigger, so fork code never reaches this runner.
+on:
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: monitor
+  cancel-in-progress: false
+
+jobs:
+  monitor:
+    runs-on: [self-hosted, cartwheel-monitor]
+    timeout-minutes: 30
+    env:
+      LANGFUSE_HOST: ${{ vars.LANGFUSE_HOST }}
+      LANGFUSE_PUBLIC_KEY: ${{ secrets.LANGFUSE_PUBLIC_KEY }}
+      LANGFUSE_SECRET_KEY: ${{ secrets.LANGFUSE_SECRET_KEY }}
+      # The frozen judge (unsupported_claim-v4) runs on gpt-4o-mini. No Cartwheel
+      # model key: the job reads existing traces and never runs the agent.
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync
+
+      # run.py rebuilds each conversation's system prompt from the users table;
+      # the seed is deterministic, so this matches the database the agent used.
+      - name: Seed the Cartwheel database
+        run: uv run python -m seed.generate
+
+      - name: Monitor the previous 24 hours
+        run: uv run python -m monitoring.run --last-hours 24
+
+      - name: Upload the monitoring output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: monitor-${{ github.run_id }}
+          path: |
+            monitoring/output
+            monitoring/history.jsonl
+            monitoring/prevalence.svg
+          if-no-files-found: warn

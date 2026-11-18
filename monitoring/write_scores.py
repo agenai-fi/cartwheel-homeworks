@@ -70,8 +70,29 @@ def build_score_records(
         A list of score record dicts with keys: score_id, name, value,
         data_type, trace_id, comment (comment is None for verdicts).
     """
-    ### YOUR CODE HERE (hw7)
-    raise NotImplementedError("hw7: implement build_score_records")
+    def verdict(kind: str, trace_id: str, value: int) -> dict[str, Any]:
+        return {
+            "score_id": _stable_id(mode, kind, trace_id),
+            "name": f"{mode}_{kind}",
+            "value": float(value),
+            "data_type": "NUMERIC",
+            "trace_id": trace_id,
+            "comment": None,
+        }
+
+    e = estimate
+    return [
+        *(verdict("verdict", t, v) for t, v in random_verdicts.items()),
+        *(verdict("risk_verdict", t, v) for t, v in risk_verdicts.items()),
+        {
+            "score_id": _stable_id(mode, "prevalence", batch_label),
+            "name": f"{mode}_corrected_prevalence",
+            "value": float(e["corrected"]),
+            "data_type": "NUMERIC",
+            "trace_id": None,
+            "comment": f"95% CI {e['ci_low']}-{e['ci_high']}, raw {e['raw']}, n={e['n_sample']}",
+        },
+    ]
 
 
 # ---------------------------------------------------------------------------

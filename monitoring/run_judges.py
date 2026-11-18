@@ -18,8 +18,9 @@ import tempfile
 from pathlib import Path
 from typing import Any
 
-from analysis.helpers.tools import _load_judge, _test_labels_and_preds
 from agent.agent import LITELLM_COURSE_MODELS
+from analysis.helpers.tools import _load_judge, _test_labels_and_preds
+from replay.judge_input import judge_completion_kwargs
 
 
 def _decode_judge_rows(
@@ -105,7 +106,20 @@ def judge_sample(
                 "Use specific evidence from the provided trace. Then return result "
                 "as exactly Pass when the named failure is absent, or Fail when present."
             ),
-            output={"schema": {"critique": "string", "result": "string"}},
+            # v4 was validated with HW5's batch settings (analysis/helpers/scale.py
+            # _run_docetl_map): strict structured output, a validate rule with two
+            # re-asks, and temperature 0. Its sensitivity and specificity hold only
+            # for those settings, so the monitor sends the same ones.
+            output={
+                "schema": {"critique": "string", "result": "string"},
+                "mode": "structured_output",
+            },
+            validate=[
+                "output['result'] in ('Pass', 'Fail')",
+                "isinstance(output['critique'], str) and output['critique'].strip() != ''",
+            ],
+            num_retries_on_validate_failure=2,
+            litellm_completion_kwargs=judge_completion_kwargs(judge["model"]),
         )
         pipeline = Pipeline(
             name="cartwheel_monitor",

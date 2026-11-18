@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from typing import Any, Sequence
 
+import numpy as np
+
 
 def corrected_mode_prevalence(
     sample_preds: Sequence[int],
@@ -55,5 +57,53 @@ def corrected_mode_prevalence(
             lengths, a value is not 0 or 1, a class is absent, the judge is
             missing a usable correction, or no bootstrap replicate is valid.
     """
-    ### YOUR CODE HERE (hw7)
-    raise NotImplementedError("hw7: implement corrected_mode_prevalence")
+    sample = np.asarray(sample_preds, dtype=int)
+    labels = np.asarray(test_labels, dtype=int)
+    preds = np.asarray(test_preds, dtype=int)
+    if sample.size == 0 or labels.size == 0:
+        raise ValueError("sample and held-out inputs must be non-empty")
+    if labels.size != preds.size:
+        raise ValueError("test_labels and test_preds have different lengths")
+    if any(not np.isin(a, (0, 1)).all() for a in (sample, labels, preds)):
+        raise ValueError("every verdict and label must be 0 or 1")
+    if not (labels == 1).any() or not (labels == 0).any():
+        raise ValueError("the held-out labels need both failures and passes")
+    if not 0 < confidence < 1:
+        raise ValueError(f"confidence must be in (0, 1), got {confidence}")
+
+    se = float(preds[labels == 1].mean())
+    sp = float(1 - preds[labels == 0].mean())
+    j = se + sp - 1
+    if j <= 0:
+        raise ValueError(f"no usable correction: sensitivity + specificity - 1 = {j:.4f} <= 0")
+    raw = float(sample.mean())
+    corrected = min(1.0, max(0.0, (raw + sp - 1) / j))
+
+    # Percentile bootstrap: both sources of uncertainty, resampled independently.
+    rng = np.random.default_rng(seed)
+    b = bootstrap_iterations
+    raw_b = sample[rng.integers(0, sample.size, size=(b, sample.size))].mean(axis=1)
+    idx = rng.integers(0, labels.size, size=(b, labels.size))
+    yb, pb = labels[idx], preds[idx]
+    n_fail, n_pass = (yb == 1).sum(axis=1), (yb == 0).sum(axis=1)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        se_b = ((yb == 1) & (pb == 1)).sum(axis=1) / n_fail
+        sp_b = ((yb == 0) & (pb == 0)).sum(axis=1) / n_pass
+        j_b = se_b + sp_b - 1
+        valid = (n_fail > 0) & (n_pass > 0) & (j_b > 0)
+        if not valid.any():
+            raise ValueError("no bootstrap replicate has a usable correction")
+        est = np.clip((raw_b[valid] + sp_b[valid] - 1) / j_b[valid], 0.0, 1.0)
+    alpha = (1 - confidence) / 2
+    ci_low, ci_high = np.quantile(est, [alpha, 1 - alpha])
+
+    return {
+        "raw": round(raw, 4),
+        "corrected": round(corrected, 4),
+        "ci_low": round(float(ci_low), 4),
+        "ci_high": round(float(ci_high), 4),
+        "confidence": confidence,
+        "failure_sensitivity": round(se, 4),
+        "pass_specificity": round(sp, 4),
+        "n_sample": int(sample.size),
+    }
