@@ -10,6 +10,18 @@ chosen before any judge result. Numbers below come from `history.jsonl` and `out
 | before (HW3 run) | 2026-09-20 17:15:25 - 18:18:11 | 53 / 50 | 5/10 | 0.5 | 0.58 [0.00, 1.00] |
 | after (new run) | 2026-11-18 19:42:46 - 19:53:58 | 53 / 50 | 7/10 | 0.7 | 1.00 [0.23, 1.00] |
 
+![Corrected prevalence per period with intervals and the 0.15 threshold](prevalence.svg)
+
+### Langfuse dashboard
+
+Local Langfuse, project `cartwheel-dev`, dashboard "HW7 monitor: unsupported_claim". Scores are dated by
+the conversation time; on a 90-day range the bars are weekly and labeled by week start, so the before
+period appears under "Sep 13" (week of Sep 20) and the after period under "Nov 15" (week of Nov 18).
+Top: random-sample verdict (share flagged, 0.5 then 0.7) and risk-group verdict. Bottom: traces flagged by
+either score (46 flags: 12 random, 34 risk) and the corrected prevalence per period (0.58 then 1.0).
+
+![Langfuse dashboard for the HW7 monitor](dashboard.png)
+
 ## 1. Did the corrected failure estimate move?
 
 The point estimate rose from 0.58 to 1.00: two more flags in the 10 random conversations (5 to 7).
