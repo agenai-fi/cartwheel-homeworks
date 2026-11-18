@@ -128,6 +128,11 @@ def post_scores(records: list[dict[str, Any]]) -> int:
             kwargs["trace_id"] = record["trace_id"]
         if record.get("comment"):
             kwargs["comment"] = record["comment"]
+        if record.get("timestamp"):
+            # When the scored traffic happened; without it Langfuse uses the write time.
+            from datetime import datetime
+
+            kwargs["timestamp"] = datetime.fromisoformat(record["timestamp"])
         client.create_score(**kwargs)
     client.flush()
     return len(records)

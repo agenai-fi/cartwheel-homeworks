@@ -47,5 +47,8 @@ sample (10 per period gives an interval near [0, 1]) or validate and freeze a st
   rebuild byte-identical from Langfuse.
 - Langfuse rejects a score without a trace, so each period's `corrected_prevalence` score is attached
   to one stable trace per period ("monitor unsupported_claim <label>").
+- Scores are dated by the traffic they measure (a verdict at its conversation's last trace, a
+  prevalence at its period end; `post_scores` passes the timestamp), so the dashboard plots the
+  before period on 2026-09-20 and the after period on 2026-11-18 rather than on the write date.
 - The scheduled workflow runs on a self-hosted runner because Langfuse is local. Its manual run
   (re-reading the after period) succeeded; its overlapping scores were removed from Langfuse.
