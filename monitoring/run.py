@@ -85,6 +85,7 @@ def build_record(group: list[dict], users: dict) -> dict[str, Any]:
         "scenario_id": loader.scenario_of(group[0]),
         "session_id": loader.session_of(group[0]),
         "trace_ids": [t["id"] for t in group],
+        "timestamp": group[-1]["timestamp"],
         "tools": sorted({s["tool"] for t in turns for s in t["steps"] if s["kind"] == "tool"}),
         "turn_count": len(group),  # one trace per user message
         "models": sorted(set().union(*(generation_models(t) for t in group))),
@@ -186,7 +187,8 @@ def main(argv: list[str] | None = None) -> int:
           f" (union {counts['n_risk']})")
     print(f"judge calls: {counts['n_judged']} with {cfg['judge_id']}")
     if args.dry_run:
-        path = write_output(label, {**base, **counts, **plan_ids}, records)
+        # A separate file, so a dry run never overwrites a judged period's verdicts.
+        path = write_output(f"{label}.plan", {**base, **counts, **plan_ids}, records)
         print(f"dry run: no judge call. Wrote {path}")
         return 0
 
@@ -210,6 +212,7 @@ def main(argv: list[str] | None = None) -> int:
     # Langfuse (3.225) rejects a score with no trace, so the period's prevalence
     # score goes on one stable "monitor period" trace per label.
     scores[-1]["trace_id"] = period_trace(cfg["judge_mode"], label, {**base, **counts}, estimate)
+    stamp_scores(scores, {r["id"]: r["timestamp"] for r in records}, end)
     print(f"scores sent to Langfuse: {post_scores(scores)}")
 
     path = write_output(label, {**base, **counts, **plan_ids, "random_verdicts": random_verdicts,
@@ -218,6 +221,14 @@ def main(argv: list[str] | None = None) -> int:
     draw_chart(cfg["threshold"], cfg["judge_mode"])
     print(f"Wrote {path}, {HISTORY.name}, {CHART.name}")
     return 0
+
+
+def stamp_scores(scores: list[dict], trace_times: dict[str, str], period_end: dt.datetime) -> None:
+    """Date each score by the traffic it measures, so dashboards plot it at that time:
+    a verdict at its conversation's last trace, the prevalence at the period end."""
+    for s in scores:
+        s["timestamp"] = (trace_times[s["trace_id"]] if s["name"].endswith("verdict")
+                          else period_end.isoformat())
 
 
 def period_trace(mode: str, label: str, run: dict, estimate: dict) -> str:
